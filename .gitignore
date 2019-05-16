@@ -1,0 +1,46 @@
+# Project-specific
+# Data folder is now included into version control system.
+#Assets/Data/
+Assets/UnityVS/
+# Scenes are now included into version control system.
+#*.unity
+
+# =============== #
+# Unity generated #
+# =============== #
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Ll]ibrary/
+sysinfo.txt
+
+# ===================================== #
+# Visual Studio / MonoDevelop generated #
+# ===================================== #
+.vs/
+[Ee]xported[Oo]bj/
+*.svd
+/*.userprefs
+/*.csproj
+*.csproj.user
+*.pidb
+*.suo
+/*.sln*
+/*.user
+*.unityproj
+*.booproj
+packages/
+bin/
+obj/
+*.Designer.cs
+
+# ============ #
+# OS generated #
+# ============ #
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+[Tt]humbs.db
