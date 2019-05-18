@@ -1,6 +1,6 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
+[SelectionBase]
 [RequireComponent ( typeof ( CharacterController ) )]
 public class BouncingBallCharacter : MonoBehaviour {
 	[SerializeField]
