@@ -2,9 +2,15 @@
 
 [RequireComponent ( typeof ( BouncingBallCharacter ) )]
 public class BouncingBallCharacterMouseInput : MonoBehaviour {
+	[SerializeField]
+	private float _inputPlaneWidth = 6;
+	public float InputPlaneWidth => _inputPlaneWidth;
+	[SerializeField]
+	private float _fullSwipeRotationDeg = 180;
+	public float FullSwipeRotationDeg => _fullSwipeRotationDeg;
 	private BouncingBallCharacter character;
 	private bool isDragging;
-	private Vector3 prevMouseGroundPos;
+	private Vector3 prevMouseInputPlanePos;
 
 	private void Awake () {
 		character = GetComponent <BouncingBallCharacter> ();
@@ -13,16 +19,17 @@ public class BouncingBallCharacterMouseInput : MonoBehaviour {
 	private void Update () {
 		if ( Input.GetMouseButtonDown ( 0 ) ) {
 			isDragging = true;
-			prevMouseGroundPos = GetMouseInputPlanePosition ();
+			prevMouseInputPlanePos = GetMouseInputPlanePosition ();
 			return;
 		} else if ( Input.GetMouseButtonUp ( 0 ) )
 			isDragging = false;
 
 		if ( isDragging ) {
-			var curMouseGroundPos = GetMouseInputPlanePosition ();
-			var delta = curMouseGroundPos - prevMouseGroundPos;
-			character.InputHorizontalMotion += delta.x;
-			prevMouseGroundPos = curMouseGroundPos;
+			var curMouseInputPlanePos = GetMouseInputPlanePosition ();
+			var delta = curMouseInputPlanePos - prevMouseInputPlanePos;
+			var rotation = FullSwipeRotationDeg * delta.x / InputPlaneWidth;
+			character.InputHorizontalRotationDeg += rotation;
+			prevMouseInputPlanePos = curMouseInputPlanePos;
 		}
 	}
 

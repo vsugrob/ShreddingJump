@@ -38,7 +38,7 @@ public class BouncingBallCharacter : MonoBehaviour {
 		get { return	_verticalVelocity; }
 		set { _verticalVelocity = Mathf.Clamp ( value, -MaxVelocity, MaxVelocity ); }
 	}
-	public float InputHorizontalMotion { get; set; }
+	public float InputHorizontalRotationDeg { get; set; }
 	private CharacterController charController;
 
 	private void Awake () {
