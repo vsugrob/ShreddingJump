@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 [SelectionBase]
 [RequireComponent ( typeof ( CharacterController ) )]
@@ -12,6 +13,9 @@ public class BouncingBallCharacter : MonoBehaviour {
 	[SerializeField]
 	private float _jumpHeight = 2;
 	public float JumpHeight => _jumpHeight;
+	[SerializeField]
+	private float _rotationStepAngleDeg = 18;
+	public float RotationStepAngleDeg => _rotationStepAngleDeg;
 	public float JumpAscencionTime {
 		get {
 			/* System of equations:
@@ -39,16 +43,77 @@ public class BouncingBallCharacter : MonoBehaviour {
 		set { _verticalVelocity = Mathf.Clamp ( value, -MaxVelocity, MaxVelocity ); }
 	}
 	public float InputHorizontalRotationDeg { get; set; }
+	private const float MaxInputHorizontalRotationDeg = 2000;
 	private CharacterController charController;
+	private float initialDistFromCenter;
 
 	private void Awake () {
 		charController = GetComponent <CharacterController> ();
 	}
 
+	private void Start () {
+		CaptureInitalValues ();
+	}
+
+	private void CaptureInitalValues () {
+		CaptureInitialAngle ();
+		CaptureInitialDistFromCenter ();
+	}
+
+	private void CaptureInitialAngle () {
+	}
+
+	private void CaptureInitialDistFromCenter () {
+		var pos = transform.position;
+		var vFromCenterHorz = new Vector3 ( pos.x, 0, pos.z );
+		initialDistFromCenter = vFromCenterHorz.magnitude;
+	}
+
 	private void FixedUpdate () {
+		PerformVerticalMotion ();
+		PerformRotationMotion ();
+	}
+
+	private void PerformVerticalMotion () {
 		VerticalVelocity += PhysicsHelper.VerticalGravityMagnitude * Time.fixedDeltaTime;
 		var motion = Vector3.up * VerticalVelocity * Time.fixedDeltaTime;
 		charController.Move ( motion );
+	}
+
+	private void PerformRotationMotion () {
+		if ( InputHorizontalRotationDeg == 0 )
+			return;
+
+		InputHorizontalRotationDeg = Mathf.Clamp ( InputHorizontalRotationDeg, -MaxInputHorizontalRotationDeg, MaxInputHorizontalRotationDeg );
+		var pos = transform.position;
+		var angleAroundY = Mathf.Atan2 ( pos.x, pos.z );
+		var inputAngle = InputHorizontalRotationDeg * Mathf.Deg2Rad;
+		int inputAngleSign = Math.Sign ( inputAngle );
+		var targetAngle = angleAroundY + inputAngle;
+		var angleStep = Mathf.Sign ( inputAngle ) * RotationStepAngleDeg * Mathf.Deg2Rad;
+		bool angleStepIsExcessive;
+		do {
+			var angleDiff = targetAngle - angleAroundY;
+			if ( inputAngle > 0 )
+				angleStepIsExcessive = angleDiff <= angleStep;
+			else
+				angleStepIsExcessive = angleDiff >= angleStep;
+
+			if ( angleStepIsExcessive )
+				angleAroundY = targetAngle;
+			else
+				angleAroundY += angleStep;
+
+			var newPos = new Vector3 (
+				Mathf.Sin ( angleAroundY ) * initialDistFromCenter,
+				pos.y,
+				Mathf.Cos ( angleAroundY ) * initialDistFromCenter
+			);
+			var motion = newPos - pos;
+			charController.Move ( motion );
+		} while ( !angleStepIsExcessive );
+
+		InputHorizontalRotationDeg = 0;
 	}
 
 	private Vector3 lastContactPoint;

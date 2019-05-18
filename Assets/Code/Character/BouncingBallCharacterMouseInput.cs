@@ -28,7 +28,7 @@ public class BouncingBallCharacterMouseInput : MonoBehaviour {
 			var curMouseInputPlanePos = GetMouseInputPlanePosition ();
 			var delta = curMouseInputPlanePos - prevMouseInputPlanePos;
 			var rotation = FullSwipeRotationDeg * delta.x / InputPlaneWidth;
-			character.InputHorizontalRotationDeg += rotation;
+			character.InputHorizontalRotationDeg -= rotation;
 			prevMouseInputPlanePos = curMouseInputPlanePos;
 		}
 	}
