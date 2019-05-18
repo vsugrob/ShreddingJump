@@ -13,8 +13,7 @@ public class CharacterCameraController : MonoBehaviour {
 	[SerializeField]
 	private float _targetTopPos = 0.85f;
 	public float TargetTopPos => _targetTopPos;
-	private BouncingBallCharacter character;
-	private float initialLookAngleCos;
+	private float initialLookAngleDeg;
 	private float initialDistFromCenter;
 
 	private void Start () {
@@ -29,10 +28,7 @@ public class CharacterCameraController : MonoBehaviour {
 	}
 
 	private void CaptureInitialLookAngle () {
-		var nLook = transform.forward;
-		var vHorz = new Vector3 ( nLook.x, 0, nLook.z );
-		var nHorz = vHorz.normalized;
-		initialLookAngleCos = Vector3.Dot ( nLook, nHorz );
+		initialLookAngleDeg = transform.eulerAngles.x;
 	}
 
 	private void CaptureInitialDistFromCenter () {
@@ -46,6 +42,7 @@ public class CharacterCameraController : MonoBehaviour {
 		if ( targetTf == null )
 			return;
 
+		// Rotate camera around Y axis along the target.
 		var targetPos = targetTf.position;
 		var targetAngleAroundY = Mathf.Atan2 ( targetPos.x, targetPos.z );
 		var cameraPos = transform.position;
@@ -53,5 +50,7 @@ public class CharacterCameraController : MonoBehaviour {
 		float cameraAngleAroundY = targetAngleAroundY + Mathf.PI;
 		transform.SetPositionAndRotation ( cameraCenterPos, Quaternion.Euler ( 0, cameraAngleAroundY * Mathf.Rad2Deg, 0 ) );
 		transform.position -= transform.forward * initialDistFromCenter;
+		// Set camera vertical rotation.
+		transform.Rotate ( initialLookAngleDeg, 0, 0 );
 	}
 }
