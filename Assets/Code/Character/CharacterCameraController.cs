@@ -42,15 +42,20 @@ public class CharacterCameraController : MonoBehaviour {
 		if ( targetTf == null )
 			return;
 
-		// Rotate camera around Y axis along the target.
-		var targetPos = targetTf.position;
+		RotateAroundYAlongTarget ( targetTf.position );
+		SetVerticalRotation ();
+	}
+
+	private void RotateAroundYAlongTarget ( Vector3 targetPos ) {
 		var targetAngleAroundY = Mathf.Atan2 ( targetPos.x, targetPos.z );
 		var cameraPos = transform.position;
 		var cameraCenterPos = new Vector3 ( 0, cameraPos.y, 0 );
 		float cameraAngleAroundY = targetAngleAroundY + Mathf.PI;
 		transform.SetPositionAndRotation ( cameraCenterPos, Quaternion.Euler ( 0, cameraAngleAroundY * Mathf.Rad2Deg, 0 ) );
 		transform.position -= transform.forward * initialDistFromCenter;
-		// Set camera vertical rotation.
+	}
+
+	private void SetVerticalRotation () {
 		transform.Rotate ( initialLookAngleDeg, 0, 0 );
 	}
 }
