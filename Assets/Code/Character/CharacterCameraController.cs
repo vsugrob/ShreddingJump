@@ -40,8 +40,8 @@ public class CharacterCameraController : MonoBehaviour {
 
 	private void CaptureInitialDistFromCenter () {
 		var pos = transform.position;
-		var vFromCenter = new Vector3 ( pos.x, 0, pos.z );
-		initialDistFromCenter = vFromCenter.magnitude;
+		var vFromCenterHorz = new Vector3 ( pos.x, 0, pos.z );
+		initialDistFromCenter = vFromCenterHorz.magnitude;
 	}
 
 	private void LateUpdate () {
@@ -53,6 +53,19 @@ public class CharacterCameraController : MonoBehaviour {
 		RotateAroundYAlongTarget ( targetPos );
 		SetVerticalRotation ();
 		FitInVerticalBoundaries ( targetPos );
+	}
+
+	private void RotateAroundYAlongTarget ( Vector3 targetPos ) {
+		var targetAngleAroundY = Mathf.Atan2 ( targetPos.x, targetPos.z );
+		var cameraPos = transform.position;
+		var cameraCenterPos = new Vector3 ( 0, cameraPos.y, 0 );
+		float cameraAngleAroundY = targetAngleAroundY + Mathf.PI;
+		transform.SetPositionAndRotation ( cameraCenterPos, Quaternion.Euler ( 0, cameraAngleAroundY * Mathf.Rad2Deg, 0 ) );
+		transform.position -= transform.forward * initialDistFromCenter;
+	}
+
+	private void SetVerticalRotation () {
+		transform.Rotate ( initialLookAngleDeg, 0, 0 );
 	}
 
 	private void FitInVerticalBoundaries ( Vector3 targetPos ) {
@@ -89,18 +102,5 @@ public class CharacterCameraController : MonoBehaviour {
 		var yDiff = yDiffOnYAxis * k;
 		transform.position = new Vector3 ( cameraPos.x, cameraPos.y + yDiff, cameraPos.z );
 		return	true;
-	}
-
-	private void RotateAroundYAlongTarget ( Vector3 targetPos ) {
-		var targetAngleAroundY = Mathf.Atan2 ( targetPos.x, targetPos.z );
-		var cameraPos = transform.position;
-		var cameraCenterPos = new Vector3 ( 0, cameraPos.y, 0 );
-		float cameraAngleAroundY = targetAngleAroundY + Mathf.PI;
-		transform.SetPositionAndRotation ( cameraCenterPos, Quaternion.Euler ( 0, cameraAngleAroundY * Mathf.Rad2Deg, 0 ) );
-		transform.position -= transform.forward * initialDistFromCenter;
-	}
-
-	private void SetVerticalRotation () {
-		transform.Rotate ( initialLookAngleDeg, 0, 0 );
 	}
 }
