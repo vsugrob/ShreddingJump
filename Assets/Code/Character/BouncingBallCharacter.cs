@@ -43,7 +43,7 @@ public class BouncingBallCharacter : MonoBehaviour {
 		set { _verticalVelocity = Mathf.Clamp ( value, -MaxVelocity, MaxVelocity ); }
 	}
 	public float InputHorizontalRotationDeg { get; set; }
-	private const float MaxInputHorizontalRotationDeg = 2000;
+	private const float MaxInputHorizontalRotationDeg = 180;
 	private CharacterController charController;
 	private float initialDistFromCenter;
 
