@@ -111,6 +111,7 @@ public class BouncingBallCharacter : MonoBehaviour {
 			);
 			var motion = newPos - pos;
 			charController.Move ( motion );
+			pos = newPos;
 		} while ( !angleStepIsExcessive );
 
 		InputHorizontalRotationDeg = 0;
