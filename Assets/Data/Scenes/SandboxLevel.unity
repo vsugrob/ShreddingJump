@@ -3378,6 +3378,7 @@ MonoBehaviour:
   _maxVelocity: 20
   _jumpMaxPlatformHitAngleDeg: 45
   _jumpHeight: 2
+  _rotationStepAngleDeg: 18
 --- !u!114 &870455657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3390,6 +3391,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cef7a48ac8137d64c8b5a5e46448cc84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _inputPlaneWidth: 7
+  _fullSwipeRotationDeg: 180
 --- !u!1 &1145646300
 GameObject:
   m_ObjectHideFlags: 0
