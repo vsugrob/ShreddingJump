@@ -1068,7 +1068,7 @@ PrefabInstance:
     - target: {fileID: 7720386778793699810, guid: d17d899ec3312084e813d039f466e712,
         type: 3}
       propertyPath: m_Name
-      value: Arch90 (1)
+      value: Sector90 (1)
       objectReference: {fileID: 0}
     - target: {fileID: 7720386778793699811, guid: d17d899ec3312084e813d039f466e712,
         type: 3}
@@ -3677,7 +3677,7 @@ PrefabInstance:
     - target: {fileID: 7720386778793699810, guid: d17d899ec3312084e813d039f466e712,
         type: 3}
       propertyPath: m_Name
-      value: Arch90
+      value: Sector90
       objectReference: {fileID: 0}
     - target: {fileID: 7720386778793699811, guid: d17d899ec3312084e813d039f466e712,
         type: 3}
@@ -6648,7 +6648,7 @@ PrefabInstance:
     - target: {fileID: 7720386778793699810, guid: d17d899ec3312084e813d039f466e712,
         type: 3}
       propertyPath: m_Name
-      value: Arch90 (2)
+      value: Sector90 (2)
       objectReference: {fileID: 0}
     - target: {fileID: 7720386778793699811, guid: d17d899ec3312084e813d039f466e712,
         type: 3}
@@ -10668,7 +10668,7 @@ PrefabInstance:
     - target: {fileID: 3044745884032809509, guid: 6d2275ad59c478b4d851063058cab466,
         type: 3}
       propertyPath: m_Name
-      value: Arch315
+      value: Sector315
       objectReference: {fileID: 0}
     - target: {fileID: 2998837825846752593, guid: 6d2275ad59c478b4d851063058cab466,
         type: 3}
@@ -19165,7 +19165,7 @@ PrefabInstance:
     - target: {fileID: 4462668190596474936, guid: dfe8c4cad77886d439a7ca9f538f9ca0,
         type: 3}
       propertyPath: m_Name
-      value: Arch135
+      value: Sector135
       objectReference: {fileID: 0}
     - target: {fileID: 4646384495749911214, guid: dfe8c4cad77886d439a7ca9f538f9ca0,
         type: 3}
@@ -22850,7 +22850,7 @@ PrefabInstance:
     - target: {fileID: 2671625017585472060, guid: ed1889a005db6694eaa4f36174c3e135,
         type: 3}
       propertyPath: m_Name
-      value: Arch225
+      value: Sector225
       objectReference: {fileID: 0}
     - target: {fileID: 8302489270233264404, guid: ed1889a005db6694eaa4f36174c3e135,
         type: 3}
@@ -28929,7 +28929,7 @@ PrefabInstance:
     - target: {fileID: 501840074852606483, guid: e41879a34db4656469d138c20a98b286,
         type: 3}
       propertyPath: m_Name
-      value: Arch180
+      value: Sector180
       objectReference: {fileID: 0}
     - target: {fileID: 7740308087753481898, guid: e41879a34db4656469d138c20a98b286,
         type: 3}
@@ -33808,7 +33808,7 @@ PrefabInstance:
     - target: {fileID: 6508174246820930130, guid: 9d8e99b430b13514fa6956d8879f9a97,
         type: 3}
       propertyPath: m_Name
-      value: Arch270
+      value: Sector270
       objectReference: {fileID: 0}
     - target: {fileID: 6508174246820930125, guid: 9d8e99b430b13514fa6956d8879f9a97,
         type: 3}
@@ -41087,7 +41087,7 @@ PrefabInstance:
     - target: {fileID: 6661832129051323383, guid: b5ab69b8c911fcd46a35adce9d913060,
         type: 3}
       propertyPath: m_Name
-      value: Arch45
+      value: Sector45
       objectReference: {fileID: 0}
     - target: {fileID: 6661832129051323377, guid: b5ab69b8c911fcd46a35adce9d913060,
         type: 3}
@@ -42376,7 +42376,7 @@ PrefabInstance:
     - target: {fileID: 7720386778793699810, guid: d17d899ec3312084e813d039f466e712,
         type: 3}
       propertyPath: m_Name
-      value: Arch90
+      value: Sector90
       objectReference: {fileID: 0}
     - target: {fileID: 7720386778793699811, guid: d17d899ec3312084e813d039f466e712,
         type: 3}
