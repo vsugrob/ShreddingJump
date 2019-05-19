@@ -6819,7 +6819,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13e4ed5ee1d79234782df8d83d41828a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _angularSpeed: 135
+  _angularSpeed: 60
   _enableBoundaries: 1
   _minAngle: 190
   _maxAngle: 340
@@ -12592,7 +12592,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13e4ed5ee1d79234782df8d83d41828a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _angularSpeed: 135
+  _angularSpeed: 60
   _enableBoundaries: 0
   _minAngle: 190
   _maxAngle: 340
