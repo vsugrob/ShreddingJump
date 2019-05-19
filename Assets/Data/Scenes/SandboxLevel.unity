@@ -3357,7 +3357,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 2
   m_Height: 0.4
-  m_Radius: 0.2
+  m_Radius: 0.15
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.04
@@ -3376,7 +3376,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxVelocity: 20
-  _jumpMaxPlatformHitAngleDeg: 45
+  _jumpMaxPlatformHitAngleDeg: 70
   _jumpHeight: 2
   _rotationStepAngleDeg: 18
 --- !u!114 &870455657
