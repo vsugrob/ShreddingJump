@@ -14,6 +14,9 @@ public class BouncingBallCharacter : MonoBehaviour {
 	private float _jumpHeight = 2;
 	public float JumpHeight => _jumpHeight;
 	[SerializeField]
+	private float _minJumpInterval = 0.2f;
+	public float MinJumpInterval => _minJumpInterval;
+	[SerializeField]
 	private float _gravityScale = 2.75f;
 	public float GravityScale => _gravityScale;
 	[SerializeField]
@@ -52,6 +55,7 @@ public class BouncingBallCharacter : MonoBehaviour {
 	private CharacterController charController;
 	private AudioSource audioSource;
 	private float initialDistFromCenter;
+	private float lastJumpTime = float.NegativeInfinity;
 
 	private void Awake () {
 		charController = GetComponent <CharacterController> ();
@@ -137,6 +141,11 @@ public class BouncingBallCharacter : MonoBehaviour {
 	}
 
 	private void Jump () {
+		var timeSinceLastJump = Time.fixedTime - lastJumpTime;
+		if ( timeSinceLastJump < MinJumpInterval )
+			return;
+
+		lastJumpTime = Time.fixedTime;
 		VerticalVelocity = JumpVelocity;
 		if ( BounceClip != null )
 			audioSource.PlayOneShot ( BounceClip );
