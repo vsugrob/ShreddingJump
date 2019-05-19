@@ -27,6 +27,9 @@ public class BouncingBallCharacter : MonoBehaviour {
 	[SerializeField]
 	private AudioClip _bounceClip;
 	public AudioClip BounceClip => _bounceClip;
+	[SerializeField]
+	private AudioClip _deathClip;
+	public AudioClip DeathClip => _deathClip;
 	public event KillerObstacleHit KillerObstacleHit;
 	public float JumpAscencionTime {
 		get {
@@ -140,6 +143,9 @@ public class BouncingBallCharacter : MonoBehaviour {
 		var gameObject = hit.gameObject;
 		var obstacle = gameObject.GetComponent <KillerObstacle> ();
 		if ( obstacle != null ) {
+			if ( DeathClip != null )
+				audioSource.PlayOneShot ( DeathClip );
+
 			KillerObstacleHit?.Invoke ( this, obstacle );
 			return;
 		}
