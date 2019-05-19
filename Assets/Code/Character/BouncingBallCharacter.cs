@@ -14,6 +14,9 @@ public class BouncingBallCharacter : MonoBehaviour {
 	private float _jumpHeight = 2;
 	public float JumpHeight => _jumpHeight;
 	[SerializeField]
+	private float _gravityScale = 2.75f;
+	public float GravityScale => _gravityScale;
+	[SerializeField]
 	private float _rotationStepAngleDeg = 18;
 	public float RotationStepAngleDeg => _rotationStepAngleDeg;
 	public float JumpAscencionTime {
@@ -31,17 +34,16 @@ public class BouncingBallCharacter : MonoBehaviour {
 			 * -2 * h / g = t^2
 			 * Sqrt ( -2 * h / g ) = t
 			 * By knowing t and g we can calculate v0 with the first equation v0 = g * t. */
-			var g = PhysicsHelper.VerticalGravityMagnitude;
-			var t = Mathf.Sqrt ( -2 * JumpHeight / g );
-			return	t;
+			return	Mathf.Sqrt ( -2 * JumpHeight / LocalVerticalGravityMagnitude );
 		}
 	}
-	public float JumpVelocity => -PhysicsHelper.VerticalGravityMagnitude * JumpAscencionTime;
+	public float JumpVelocity => -LocalVerticalGravityMagnitude * JumpAscencionTime;
 	private float _verticalVelocity;
 	public float VerticalVelocity {
 		get { return	_verticalVelocity; }
 		set { _verticalVelocity = Mathf.Clamp ( value, -MaxVelocity, MaxVelocity ); }
 	}
+	public float LocalVerticalGravityMagnitude => PhysicsHelper.VerticalGravityMagnitude * GravityScale;
 	public float InputHorizontalRotationDeg { get; set; }
 	private const float MaxInputHorizontalRotationDeg = 180;
 	private CharacterController charController;
@@ -75,7 +77,7 @@ public class BouncingBallCharacter : MonoBehaviour {
 	}
 
 	private void PerformVerticalMotion () {
-		VerticalVelocity += PhysicsHelper.VerticalGravityMagnitude * Time.fixedDeltaTime;
+		VerticalVelocity += LocalVerticalGravityMagnitude * Time.fixedDeltaTime;
 		var motion = Vector3.up * VerticalVelocity * Time.fixedDeltaTime;
 		charController.Move ( motion );
 	}

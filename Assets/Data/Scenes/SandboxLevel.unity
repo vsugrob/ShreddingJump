@@ -3377,8 +3377,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxVelocity: 20
   _jumpMaxPlatformHitAngleDeg: 70
-  _jumpHeight: 2
+  _jumpHeight: 1.75
   _rotationStepAngleDeg: 18
+  DJumpAscencionTime: 0
 --- !u!114 &870455657
 MonoBehaviour:
   m_ObjectHideFlags: 0
