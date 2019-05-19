@@ -3617,8 +3617,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxVelocity: 20
   _jumpMaxPlatformHitAngleDeg: 70
-  _jumpHeight: 1.75
-  _gravityScale: 2.75
+  _jumpHeight: 2
+  _minJumpInterval: 0.2
+  _gravityScale: 3
   _rotationStepAngleDeg: 18
   _bounceClip: {fileID: 8300000, guid: 1b1e326456e58cc43b6e4c8efb10b60b, type: 3}
 --- !u!114 &870455657
