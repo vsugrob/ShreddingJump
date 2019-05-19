@@ -19,6 +19,9 @@ public class BouncingBallCharacter : MonoBehaviour {
 	[SerializeField]
 	private float _rotationStepAngleDeg = 18;
 	public float RotationStepAngleDeg => _rotationStepAngleDeg;
+	[SerializeField]
+	private AudioClip _bounceClip;
+	public AudioClip BounceClip => _bounceClip;
 	public float JumpAscencionTime {
 		get {
 			/* System of equations:
@@ -47,10 +50,12 @@ public class BouncingBallCharacter : MonoBehaviour {
 	public float InputHorizontalRotationDeg { get; set; }
 	private const float MaxInputHorizontalRotationDeg = 180;
 	private CharacterController charController;
+	private AudioSource audioSource;
 	private float initialDistFromCenter;
 
 	private void Awake () {
 		charController = GetComponent <CharacterController> ();
+		audioSource = GetComponentInChildren <AudioSource> ();
 	}
 
 	private void Start () {
@@ -133,6 +138,8 @@ public class BouncingBallCharacter : MonoBehaviour {
 
 	private void Jump () {
 		VerticalVelocity = JumpVelocity;
+		if ( BounceClip != null )
+			audioSource.PlayOneShot ( BounceClip );
 	}
 
 	private void OnDrawGizmos () {
