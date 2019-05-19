@@ -6,6 +6,9 @@ public class ObjectRotator : MonoBehaviour {
 	private float _angularSpeed = 135;
 	public float AngularSpeedDeg => _angularSpeed;
 	[SerializeField]
+	private bool _enableBoundaries = true;
+	public bool EnableBoundaries => _enableBoundaries;
+	[SerializeField]
 	private float _minAngle = 0;
 	public float MinAngleDeg => _minAngle;
 	[SerializeField]
@@ -48,19 +51,24 @@ public class ObjectRotator : MonoBehaviour {
 			angleStep = -angleStep;
 
 		var angle = AngleDeg;
-		var minAngle = MinAngleDeg;
-		var maxAngle = MaxAngleDeg;
-		MathHelper.SortMinMax ( ref minAngle, ref maxAngle );
-		bool isOnInnerArc = minAngle <= angle && angle <= maxAngle;
-		float targetAngle;
-		if ( isOnInnerArc )
-			targetAngle = angleStep > 0 ? maxAngle : minAngle;
-		else
-			targetAngle = angleStep > 0 ? minAngle : maxAngle;
+		if ( EnableBoundaries ) {
+			var positiveStep = angleStep >= 0;
+			angle = MathHelper.ToNormAngleDeg ( angle );
+			var minAngle = MathHelper.ToNormAngleDeg ( MinAngleDeg );
+			var maxAngle = MathHelper.ToNormAngleDeg ( MaxAngleDeg );
+			float arcToMin = MathHelper.ArcBetweenDegNorm ( angle, minAngle, positiveStep );
+			float arcToMax = MathHelper.ArcBetweenDegNorm ( angle, maxAngle, positiveStep );
+			float targetAngle;
+			if ( positiveStep )
+				targetAngle = arcToMin < arcToMax ? minAngle : maxAngle;
+			else
+				targetAngle = arcToMin < arcToMax ? maxAngle : minAngle;
 
-		bool metBoundary = MathHelper.StepTowardsAngleDeg ( ref angle, targetAngle, angleStep );
-		if ( metBoundary )
-			MovingForward = !MovingForward;
+			var metBoundary = MathHelper.StepTowardsAngleDegNorm ( ref angle, targetAngle, angleStep );
+			if ( metBoundary )
+				MovingForward = !MovingForward;
+		} else
+			angle += angleStep;
 
 		AngleDeg = angle;
 	}

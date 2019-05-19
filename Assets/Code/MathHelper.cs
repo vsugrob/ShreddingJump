@@ -54,7 +54,7 @@ public static class MathHelper {
 	}
 
 	public static bool StepTowardsAngleDegNorm ( ref float angleNorm, float targetAngleNorm, float step ) {
-		var diff = targetAngleNorm - angleNorm;
+		var diff = ArcBetweenDegNorm ( angleNorm, targetAngleNorm, step >= 0 );
 		bool stepIsExcessive = diff > 0 ? diff <= step : diff >= step;
 		if ( stepIsExcessive )
 			angleNorm = targetAngleNorm;
@@ -62,6 +62,12 @@ public static class MathHelper {
 			angleNorm += step;
 
 		return	stepIsExcessive;
+	}
+
+	public static float ArcBetweenDeg ( float startAngleNorm, float endAngleNorm, bool positiveStep ) {
+		startAngleNorm = ToNormAngleDeg ( startAngleNorm );
+		endAngleNorm = ToNormAngleDeg ( endAngleNorm );
+		return	ArcBetweenDegNorm ( startAngleNorm, endAngleNorm, positiveStep );
 	}
 
 	public static float ArcBetweenDegNorm ( float startAngleNorm, float endAngleNorm, bool positiveStep ) {
