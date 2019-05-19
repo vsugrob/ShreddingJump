@@ -108,18 +108,21 @@ public class BouncingBallCharacter : MonoBehaviour {
 		int inputAngleSign = Math.Sign ( inputAngle );
 		var targetAngle = angleAroundY + inputAngle;
 		var angleStep = Mathf.Sign ( inputAngle ) * RotationStepAngleDeg * Mathf.Deg2Rad;
-		bool angleStepIsExcessive;
-		do {
-			angleStepIsExcessive = MathHelper.StepTowards ( ref angleAroundY, targetAngle, angleStep );
-			var newPos = new Vector3 (
-				Mathf.Sin ( angleAroundY ) * initialDistFromCenter,
-				pos.y,
-				Mathf.Cos ( angleAroundY ) * initialDistFromCenter
-			);
-			var motion = newPos - pos;
-			charController.Move ( motion );
-			pos = newPos;
-		} while ( !angleStepIsExcessive );
+		const float AngleStepEpsilon = ( Mathf.PI / 180 ) * 0.5f;
+		if ( Mathf.Abs ( angleStep ) > AngleStepEpsilon ) {
+			bool angleStepIsExcessive;
+			do {
+				angleStepIsExcessive = MathHelper.StepTowards ( ref angleAroundY, targetAngle, angleStep );
+				var newPos = new Vector3 (
+					Mathf.Sin ( angleAroundY ) * initialDistFromCenter,
+					pos.y,
+					Mathf.Cos ( angleAroundY ) * initialDistFromCenter
+				);
+				var motion = newPos - pos;
+				charController.Move ( motion );
+				pos = newPos;
+			} while ( !angleStepIsExcessive );
+		}
 
 		InputHorizontalRotationDeg = 0;
 	}
