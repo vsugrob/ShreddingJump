@@ -896,8 +896,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _targetTransform: {fileID: 870455654}
-  _targetTopViewportY: 0.85
-  _targetBottomViewportY: 0.5
+  _targetTopViewportY: 0.9
+  _targetBottomViewportY: 0.6
 --- !u!43 &677877615
 Mesh:
   m_ObjectHideFlags: 0
