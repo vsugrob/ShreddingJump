@@ -1,6 +1,8 @@
 ﻿using System;
 using UnityEngine;
 
+public delegate void KillerObstacleHit ( BouncingBallCharacter character, KillerObstacle obstacle );
+
 [SelectionBase]
 [RequireComponent ( typeof ( CharacterController ) )]
 public class BouncingBallCharacter : MonoBehaviour {
@@ -25,6 +27,7 @@ public class BouncingBallCharacter : MonoBehaviour {
 	[SerializeField]
 	private AudioClip _bounceClip;
 	public AudioClip BounceClip => _bounceClip;
+	public event KillerObstacleHit KillerObstacleHit;
 	public float JumpAscencionTime {
 		get {
 			/* System of equations:
@@ -133,6 +136,14 @@ public class BouncingBallCharacter : MonoBehaviour {
 	private void OnControllerColliderHit ( ControllerColliderHit hit ) {
 		lastContactPoint = hit.point;
 		lastContactNormal = hit.normal;
+
+		var gameObject = hit.gameObject;
+		var obstacle = gameObject.GetComponent <KillerObstacle> ();
+		if ( obstacle != null ) {
+			KillerObstacleHit?.Invoke ( this, obstacle );
+			return;
+		}
+
 		var nDotUp = Vector3.Dot ( Vector3.up, hit.normal );
 		var maxCos = Mathf.Cos ( JumpMaxPlatformHitAngleRad );
 		bool isJumpableSurfaceAngle = nDotUp >= maxCos;
