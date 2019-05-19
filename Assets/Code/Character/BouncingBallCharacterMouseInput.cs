@@ -10,26 +10,32 @@ public class BouncingBallCharacterMouseInput : MonoBehaviour {
 	public float FullSwipeRotationDeg => _fullSwipeRotationDeg;
 	private BouncingBallCharacter character;
 	private bool isDragging;
-	private Vector3 prevMouseInputPlanePos;
+	private float prevMousePosOnInputPlane;
+	private float inputPlaneHorzExtentOnViewport;
 
 	private void Awake () {
 		character = GetComponent <BouncingBallCharacter> ();
 	}
 
 	private void Update () {
+		var camera = Camera.main;
+		if ( camera == null )
+			return;
+
+		CalculateInputPlaneHorzExtent ( camera );
 		if ( Input.GetMouseButtonDown ( 0 ) ) {
 			isDragging = true;
-			prevMouseInputPlanePos = GetMouseInputPlanePosition ();
+			prevMousePosOnInputPlane = GetMousePositionOnInputPlane ( camera );
 			return;
 		} else if ( Input.GetMouseButtonUp ( 0 ) )
 			isDragging = false;
 
 		if ( isDragging ) {
-			var curMouseInputPlanePos = GetMouseInputPlanePosition ();
-			var delta = curMouseInputPlanePos - prevMouseInputPlanePos;
-			var rotation = FullSwipeRotationDeg * delta.x / InputPlaneWidth;
-			character.InputHorizontalRotationDeg -= rotation;
-			prevMouseInputPlanePos = curMouseInputPlanePos;
+			var curMousePosOnInputPlane = GetMousePositionOnInputPlane ( camera );
+			var delta = curMousePosOnInputPlane - prevMousePosOnInputPlane;
+			prevMousePosOnInputPlane = curMousePosOnInputPlane;
+			var rotation = FullSwipeRotationDeg * delta;
+			character.InputHorizontalRotationDeg += rotation;
 		}
 	}
 
@@ -38,11 +44,9 @@ public class BouncingBallCharacterMouseInput : MonoBehaviour {
 			isDragging = false;
 	}
 
-	private Vector3 GetMouseInputPlanePosition () {
-		var camera = Camera.main;
-		var ray = camera.ScreenPointToRay ( Input.mousePosition );
+	private void CalculateInputPlaneHorzExtent ( Camera camera ) {
 		var cameraTf = camera.transform;
-		var nLook = cameraTf.forward.normalized;
+		var nLook = cameraTf.forward;
 		var cameraPos = cameraTf.position;
 		var centerPos = new Vector3 ( 0, cameraPos.y, 0 );
 		var vHorz = centerPos - cameraPos;
@@ -52,10 +56,13 @@ public class BouncingBallCharacterMouseInput : MonoBehaviour {
 		var vLookMagnitude = vHorzMagnitude / lookCos;
 		var vLook = nLook * vLookMagnitude;
 		var pLookCenter = cameraPos + vLook;
-		var inputPlane = new Plane ( -nLook, 0 );
-		inputPlane.Translate ( -pLookCenter );
-		inputPlane.Raycast ( ray, out var rayDist );
-		Debug.DrawRay ( ray.origin, ray.direction * rayDist, Color.yellow );
-		return	ray.GetPoint ( rayDist );
+		var extentPos = pLookCenter + cameraTf.right * InputPlaneWidth * 0.5f;
+		var vpPos = camera.WorldToViewportPoint ( extentPos );
+		inputPlaneHorzExtentOnViewport = vpPos.x - 0.5f;
+	}
+
+	private float GetMousePositionOnInputPlane ( Camera camera ) {
+		var vpPos = camera.ScreenToViewportPoint ( Input.mousePosition );
+		return	( vpPos.x - ( 0.5f - inputPlaneHorzExtentOnViewport ) ) / ( 2 * inputPlaneHorzExtentOnViewport );
 	}
 }
