@@ -130,9 +130,17 @@ public class BouncingBallCharacter : MonoBehaviour {
 	private Vector3 lastContactPoint;
 	private Vector3 lastContactNormal;
 	private void OnControllerColliderHit ( ControllerColliderHit hit ) {
+		// Filter out false positive collision against MeshCollider.
+		float skinWidthExtension = 0.1f;
+		var otherCollider = hit.collider;
+		if ( otherCollider is MeshCollider meshCollider &&
+			 !PhysicsHelper.VerifyCharacterControllerVsMeshColliderHit ( charController, hit, skinWidthExtension )
+		) {
+			return;
+		}
+
 		lastContactPoint = hit.point;
 		lastContactNormal = hit.normal;
-
 		var gameObject = hit.gameObject;
 		var obstacle = gameObject.GetComponent <KillerObstacle> ();
 		if ( obstacle != null ) {
