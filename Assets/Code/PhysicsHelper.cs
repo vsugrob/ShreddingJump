@@ -26,4 +26,18 @@ public static class PhysicsHelper {
 		);
 		return	capsule.Contains ( hit.point );
 	}
+
+	public static void SetAllChildrenKinematic ( Transform transform, bool isKinematic = true ) {
+		var bodies = transform.GetComponentsInChildren <Rigidbody> ();
+		for ( int i = 0 ; i < bodies.Length ; i++ ) {
+			bodies [i].isKinematic = isKinematic;
+		}
+	}
+
+	public static void SetAllCollidersEnabled ( Transform transform, bool enabled = true ) {
+		var colliders = transform.GetComponentsInChildren <Collider> ();
+		for ( int i = 0 ; i < colliders.Length ; i++ ) {
+			colliders [i].enabled = enabled;
+		}
+	}
 }
