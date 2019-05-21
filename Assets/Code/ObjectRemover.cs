@@ -5,6 +5,9 @@ public class ObjectRemover : MonoBehaviour {
 	private float _animationDuration = 1;
 	public float AnimationDuration => _animationDuration;
 	[SerializeField]
+	private AnimationCurve _animationCurve = new AnimationCurve ( new Keyframe ( 0, 0 ), new Keyframe ( 1, 1 ) );
+	public AnimationCurve AnimationCurve => _animationCurve;
+	[SerializeField]
 	private bool _fadeAlpha = false;
 	public bool FadeAlpha {
 		get => _fadeAlpha;
@@ -39,6 +42,7 @@ public class ObjectRemover : MonoBehaviour {
 
 		var timeSinceStart = Time.time - startTime;
 		var t = Mathf.Clamp01 ( timeSinceStart / AnimationDuration );
+		t = AnimationCurve.Evaluate ( t );
 		if ( !Finished && t == 1 )
 			Finished = true;
 
