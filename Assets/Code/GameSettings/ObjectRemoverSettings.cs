@@ -16,6 +16,12 @@ public class ObjectRemoverSettings {
 		set => _animationCurve = value;
 	}
 	[SerializeField]
+	private bool _destroyOnAnimationEnd = true;
+	public bool DestroyOnAnimationEnd {
+		get => _destroyOnAnimationEnd;
+		set => _destroyOnAnimationEnd = value;
+	}
+	[SerializeField]
 	private bool _fadeAlpha = false;
 	public bool FadeAlpha {
 		get => _fadeAlpha;

@@ -36,8 +36,10 @@ public class ObjectRemover : MonoBehaviour {
 		var timeSinceStart = Time.time - startTime;
 		var t = Mathf.Clamp01 ( timeSinceStart / Settings.AnimationDuration );
 		t = Settings.AnimationCurve.Evaluate ( t );
-		if ( !Finished && t == 1 )
+		if ( !Finished && t == 1 ) {
 			Finished = true;
+			Destroy ( gameObject );
+		}
 
 		if ( Settings.FadeAlpha )
 			SetAlphas ( t );
