@@ -2,7 +2,7 @@
 
 public class ObjectRemover : MonoBehaviour {
 	[SerializeField]
-	private ObjectRemoverSettings _settings;
+	private ObjectRemoverSettings _settings = new ObjectRemoverSettings ();
 	public ObjectRemoverSettings Settings {
 		get => _settings;
 		set => _settings = value;
@@ -13,6 +13,8 @@ public class ObjectRemover : MonoBehaviour {
 	private Renderer [] renderers;
 	private float [] initialAlphas;
 	private Vector3 initialScale;
+	private Vector3 initialPosition;
+	private Vector3 nHorzFlyoff;
 
 	public void StartRemoval () {
 		startTime = Time.time;
@@ -22,6 +24,9 @@ public class ObjectRemover : MonoBehaviour {
 
 		if ( Settings.ShrinkScale )
 			initialScale = transform.localScale;
+
+		if ( Settings.EnableFlyoff )
+			InitFlyoff ();
 	}
 
 	private void Update () {
@@ -39,6 +44,9 @@ public class ObjectRemover : MonoBehaviour {
 
 		if ( Settings.ShrinkScale )
 			SetScale ( t );
+
+		if ( Settings.EnableFlyoff )
+			SetPosition ( t );
 	}
 
 	private void CaptureInitialAlpha () {
@@ -62,6 +70,31 @@ public class ObjectRemover : MonoBehaviour {
 
 	private void SetScale ( float t ) {
 		transform.localScale = Vector3.Lerp ( initialScale, Vector3.zero, t );
+	}
+
+	private void InitFlyoff () {
+		initialPosition = transform.position;
+		float CenterEpsilon = 0.1f;
+		if ( !RendererHelper.TryGetBBCenter ( GetComponentsInChildren <Renderer> (), out var center ) ||
+			 ToHorzVector ( center ).magnitude < CenterEpsilon
+		) {
+			nHorzFlyoff = Vector3.forward;
+			return;
+		}
+
+		center = ToHorzVector ( center );
+		nHorzFlyoff = center.normalized;
+	}
+
+	private static Vector3 ToHorzVector ( Vector3 v ) {
+		v.y = 0;
+		return	v;
+	}
+
+	private void SetPosition ( float t ) {
+		var horzOffset = nHorzFlyoff * Settings.FlyoffXCurve.Evaluate ( t );
+		var vertOffset = Vector3.up * Settings.FlyoffYCurve.Evaluate ( t );
+		transform.position = initialPosition + horzOffset + vertOffset;
 	}
 
 	public static bool StartRemoval ( Transform transform, ObjectRemoverSettings settings ) {

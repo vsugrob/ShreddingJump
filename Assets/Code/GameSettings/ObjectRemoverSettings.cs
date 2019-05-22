@@ -27,4 +27,22 @@ public class ObjectRemoverSettings {
 		get => _shrinkScale;
 		set => _shrinkScale = value;
 	}
+	[SerializeField]
+	private bool _enableFlyoff = true;
+	public bool EnableFlyoff {
+		get => _enableFlyoff;
+		set => _enableFlyoff = value;
+	}
+	[SerializeField]
+	private AnimationCurve _flyoffXCurve = new AnimationCurve ( new Keyframe ( 0, 0 ), new Keyframe ( 1, 10 ) );
+	public AnimationCurve FlyoffXCurve {
+		get => _flyoffXCurve;
+		set => _flyoffXCurve = value;
+	}
+	[SerializeField]
+	private AnimationCurve _flyoffYCurve = new AnimationCurve ( new Keyframe ( 0, 0 ), new Keyframe ( 0.3f, 1 ), new Keyframe ( 1, -10 ) );
+	public AnimationCurve FlyoffYCurve {
+		get => _flyoffYCurve;
+		set => _flyoffYCurve = value;
+	}
 }
