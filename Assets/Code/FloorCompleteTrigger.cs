@@ -20,7 +20,7 @@ public class FloorCompleteTrigger : MonoBehaviour {
 			var childTf = rootTf.GetChild ( i );
 			PhysicsHelper.SetAllChildrenKinematic ( childTf );
 			PhysicsHelper.SetAllCollidersEnabled ( childTf, enabled = false );
-			ObjectRemover.StartRemoval ( childTf );
+			ObjectRemover.StartRemoval ( childTf, GameSettings.Singleton.FloorCompletion );
 		}
 	}
 }

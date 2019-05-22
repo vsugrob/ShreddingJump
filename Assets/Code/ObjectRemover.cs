@@ -2,22 +2,10 @@
 
 public class ObjectRemover : MonoBehaviour {
 	[SerializeField]
-	private float _animationDuration = 1;
-	public float AnimationDuration => _animationDuration;
-	[SerializeField]
-	private AnimationCurve _animationCurve = new AnimationCurve ( new Keyframe ( 0, 0 ), new Keyframe ( 1, 1 ) );
-	public AnimationCurve AnimationCurve => _animationCurve;
-	[SerializeField]
-	private bool _fadeAlpha = false;
-	public bool FadeAlpha {
-		get => _fadeAlpha;
-		private set => _fadeAlpha = value;
-	}
-	[SerializeField]
-	private bool _shrinkScale = true;
-	public bool ShrinkScale {
-		get => _shrinkScale;
-		private set => _shrinkScale = value;
+	private ObjectRemoverSettings _settings;
+	public ObjectRemoverSettings Settings {
+		get => _settings;
+		set => _settings = value;
 	}
 	private float startTime = float.NaN;
 	public bool Started => !float.IsNaN ( startTime );
@@ -28,11 +16,11 @@ public class ObjectRemover : MonoBehaviour {
 
 	public void StartRemoval () {
 		startTime = Time.time;
-		renderers = GetComponentsInChildren<Renderer> ();
-		if ( FadeAlpha )
+		renderers = GetComponentsInChildren <Renderer> ();
+		if ( Settings.FadeAlpha )
 			CaptureInitialAlpha ();
 
-		if ( ShrinkScale )
+		if ( Settings.ShrinkScale )
 			initialScale = transform.localScale;
 	}
 
@@ -41,15 +29,15 @@ public class ObjectRemover : MonoBehaviour {
 			return;
 
 		var timeSinceStart = Time.time - startTime;
-		var t = Mathf.Clamp01 ( timeSinceStart / AnimationDuration );
-		t = AnimationCurve.Evaluate ( t );
+		var t = Mathf.Clamp01 ( timeSinceStart / Settings.AnimationDuration );
+		t = Settings.AnimationCurve.Evaluate ( t );
 		if ( !Finished && t == 1 )
 			Finished = true;
 
-		if ( FadeAlpha )
+		if ( Settings.FadeAlpha )
 			SetAlphas ( t );
 
-		if ( ShrinkScale )
+		if ( Settings.ShrinkScale )
 			SetScale ( t );
 	}
 
@@ -76,10 +64,9 @@ public class ObjectRemover : MonoBehaviour {
 		transform.localScale = Vector3.Lerp ( initialScale, Vector3.zero, t );
 	}
 
-	public static bool StartRemoval ( Transform transform, bool fadeAlpha = false, bool shrinkScale = true ) {
+	public static bool StartRemoval ( Transform transform, ObjectRemoverSettings settings ) {
 		var remover = transform.gameObject.AddComponent <ObjectRemover> ();
-		remover.FadeAlpha = fadeAlpha;
-		remover.ShrinkScale = shrinkScale;
+		remover.Settings = settings;
 		remover.StartRemoval ();
 		return	true;
 	}
