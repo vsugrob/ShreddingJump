@@ -10,12 +10,6 @@ public class ObjectRemoverSettings {
 		set => _animationDuration = value;
 	}
 	[SerializeField]
-	private AnimationCurve _animationCurve = new AnimationCurve ( new Keyframe ( 0, 0 ), new Keyframe ( 1, 1 ) );
-	public AnimationCurve AnimationCurve {
-		get => _animationCurve;
-		set => _animationCurve = value;
-	}
-	[SerializeField]
 	private bool _destroyOnAnimationEnd = true;
 	public bool DestroyOnAnimationEnd {
 		get => _destroyOnAnimationEnd;
@@ -28,10 +22,22 @@ public class ObjectRemoverSettings {
 		set => _fadeAlpha = value;
 	}
 	[SerializeField]
+	private AnimationCurve _alphaCurve = new AnimationCurve ( new Keyframe ( 0, 1 ), new Keyframe ( 1, 0 ) );
+	public AnimationCurve AlphaCurve {
+		get => _alphaCurve;
+		set => _alphaCurve = value;
+	}
+	[SerializeField]
 	private bool _shrinkScale = true;
 	public bool ShrinkScale {
 		get => _shrinkScale;
 		set => _shrinkScale = value;
+	}
+	[SerializeField]
+	private AnimationCurve _scaleCurve = new AnimationCurve ( new Keyframe ( 0, 1 ), new Keyframe ( 1, 0 ) );
+	public AnimationCurve ScaleCurve {
+		get => _scaleCurve;
+		set => _scaleCurve = value;
 	}
 	[SerializeField]
 	private bool _enableFlyoff = true;

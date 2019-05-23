@@ -35,12 +35,6 @@ public class ObjectRemover : MonoBehaviour {
 
 		var timeSinceStart = Time.time - startTime;
 		var t = Mathf.Clamp01 ( timeSinceStart / Settings.AnimationDuration );
-		t = Settings.AnimationCurve.Evaluate ( t );
-		if ( !Finished && t == 1 ) {
-			Finished = true;
-			Destroy ( gameObject );
-		}
-
 		if ( Settings.FadeAlpha )
 			SetAlphas ( t );
 
@@ -49,6 +43,11 @@ public class ObjectRemover : MonoBehaviour {
 
 		if ( Settings.EnableFlyoff )
 			SetPosition ( t );
+
+		if ( !Finished && t == 1 ) {
+			Finished = true;
+			Destroy ( gameObject );
+		}
 	}
 
 	private void CaptureInitialAlpha () {
@@ -60,18 +59,20 @@ public class ObjectRemover : MonoBehaviour {
 	}
 
 	private void SetAlphas ( float t ) {
+		t = Settings.AlphaCurve.Evaluate ( t );
 		for ( int i = 0 ; i < renderers.Length ; i++ ) {
 			var renderer = renderers [i];
 			var material = renderer.material;
 			var color = material.color;
-			color.a = Mathf.Lerp ( initialAlphas [i], 0, t );
+			color.a = initialAlphas [i] * t;
 			material.color = color;
 			renderer.material = material;
 		}
 	}
 
 	private void SetScale ( float t ) {
-		transform.localScale = Vector3.Lerp ( initialScale, Vector3.zero, t );
+		t = Settings.ScaleCurve.Evaluate ( t );
+		transform.localScale = initialScale * t;
 	}
 
 	private void InitFlyoff () {
