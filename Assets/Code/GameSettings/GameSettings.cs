@@ -2,6 +2,9 @@
 
 public class GameSettings : MonoBehaviour {
 	[SerializeField]
+	private int _meteorFloorStreak = 3;
+	public int MeteorFloorStreak => _meteorFloorStreak;
+	[SerializeField]
 	private ObjectRemoverSettings _floorCompletion = new ObjectRemoverSettings ();
 	public ObjectRemoverSettings FloorCompletion => _floorCompletion;
 

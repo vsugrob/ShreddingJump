@@ -59,6 +59,7 @@ public class BouncingBallCharacter : MonoBehaviour {
 	public float InputHorizontalRotationDeg { get; set; }
 	private const float MaxInputHorizontalRotationDeg = 180;
 	public int FloorStreak { get; private set; }
+	public bool IsMeteor => FloorStreak >= GameSettings.Singleton.MeteorFloorStreak;
 	private CharacterController charController;
 	private AudioSource audioSource;
 	private float initialDistFromCenter;
@@ -140,13 +141,18 @@ public class BouncingBallCharacter : MonoBehaviour {
 		lastContactPoint = hit.point;
 		lastContactNormal = hit.normal;
 		var gameObject = hit.gameObject;
-		var obstacle = gameObject.GetComponent <KillerObstacle> ();
-		if ( obstacle != null ) {
-			if ( DeathClip != null )
-				audioSource.PlayOneShot ( DeathClip );
+		if ( IsMeteor ) {
+			// Meteor crushes floor it hits.
+			FloorRoot.TryDismantleFloor ( gameObject );
+		} else {
+			var obstacle = gameObject.GetComponent <KillerObstacle> ();
+			if ( obstacle != null ) {
+				if ( DeathClip != null )
+					audioSource.PlayOneShot ( DeathClip );
 
-			KillerObstacleHit?.Invoke ( this, obstacle );
-			return;
+				KillerObstacleHit?.Invoke ( this, obstacle );
+				return;
+			}
 		}
 
 		var nDotUp = Vector3.Dot ( Vector3.up, hit.normal );
