@@ -6,6 +6,7 @@ public class FloorCompleteTrigger : MonoBehaviour {
 		if ( character == null )
 			return;
 
+		character.OnFloorComplete ( this );
 		DismantleFloor ();
 	}
 

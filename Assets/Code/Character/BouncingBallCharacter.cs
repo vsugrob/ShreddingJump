@@ -58,6 +58,7 @@ public class BouncingBallCharacter : MonoBehaviour {
 	public float LocalVerticalGravityMagnitude => PhysicsHelper.VerticalGravityMagnitude * GravityScale;
 	public float InputHorizontalRotationDeg { get; set; }
 	private const float MaxInputHorizontalRotationDeg = 180;
+	public int FloorStreak { get; private set; }
 	private CharacterController charController;
 	private AudioSource audioSource;
 	private float initialDistFromCenter;
@@ -151,8 +152,14 @@ public class BouncingBallCharacter : MonoBehaviour {
 		var nDotUp = Vector3.Dot ( Vector3.up, hit.normal );
 		var maxCos = Mathf.Cos ( JumpMaxPlatformHitAngleRad );
 		bool isJumpableSurfaceAngle = nDotUp >= maxCos;
-		if ( isJumpableSurfaceAngle )
+		if ( isJumpableSurfaceAngle ) {
+			ClearFloorStreak ();
 			Jump ();
+		}
+	}
+
+	private void ClearFloorStreak () {
+		FloorStreak = 0;
 	}
 
 	private void Jump () {
@@ -164,6 +171,10 @@ public class BouncingBallCharacter : MonoBehaviour {
 		VerticalVelocity = JumpVelocity;
 		if ( BounceClip != null )
 			audioSource.PlayOneShot ( BounceClip );
+	}
+
+	public void OnFloorComplete ( FloorCompleteTrigger floorCompleteTrigger ) {
+		FloorStreak++;
 	}
 
 	private void OnDrawGizmos () {
