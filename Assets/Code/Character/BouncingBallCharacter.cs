@@ -30,6 +30,9 @@ public class BouncingBallCharacter : MonoBehaviour {
 	[SerializeField]
 	private AudioClip _deathClip;
 	public AudioClip DeathClip => _deathClip;
+	[SerializeField]
+	private AudioClip _floorCompleteClip;
+	public AudioClip FloorCompleteClip => _floorCompleteClip;
 	public event KillerObstacleHit KillerObstacleHit;
 	public float JumpAscencionTime {
 		get {
@@ -181,6 +184,8 @@ public class BouncingBallCharacter : MonoBehaviour {
 
 	public void OnFloorComplete ( FloorCompleteTrigger floorCompleteTrigger ) {
 		FloorStreak++;
+		if ( FloorCompleteClip != null )
+			audioSource.PlayOneShot ( FloorCompleteClip );
 	}
 
 	private void OnDrawGizmos () {
