@@ -28,6 +28,9 @@ public class BouncingBallCharacter : MonoBehaviour {
 	private AudioClip _bounceSound;
 	public AudioClip BounceSound => _bounceSound;
 	[SerializeField]
+	private AudioClip _crushSound;
+	public AudioClip CrushSound => _crushSound;
+	[SerializeField]
 	private AudioClip _deathSound;
 	public AudioClip DeathSound => _deathSound;
 	[SerializeField]
@@ -160,6 +163,8 @@ public class BouncingBallCharacter : MonoBehaviour {
 		var gameObject = hit.gameObject;
 		if ( IsMeteor ) {
 			// Meteor crushes floor it hits.
+			if ( CrushSound != null )
+				audioSource.PlayOneShot ( CrushSound );
 			FloorRoot.TryDismantleFloor ( gameObject );
 		} else {
 			var obstacle = gameObject.GetComponent <KillerObstacle> ();

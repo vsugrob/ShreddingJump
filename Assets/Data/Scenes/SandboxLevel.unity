@@ -5857,6 +5857,7 @@ MonoBehaviour:
   _gravityScale: 3
   _rotationStepAngleDeg: 18
   _bounceSound: {fileID: 8300000, guid: 1b1e326456e58cc43b6e4c8efb10b60b, type: 3}
+  _crushSound: {fileID: 8300000, guid: 13aa5292631ebcd40a89fd0f9fdb24ff, type: 3}
   _deathSound: {fileID: 8300000, guid: 370128a6394fa904d83895daa8ad0cf2, type: 3}
   _floorCompleteSound: {fileID: 8300000, guid: 237cc4a8212c2b04aaf2a9a074a97a99, type: 3}
 --- !u!114 &870455657
