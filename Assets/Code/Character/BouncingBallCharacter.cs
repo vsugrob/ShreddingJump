@@ -65,8 +65,16 @@ public class BouncingBallCharacter : MonoBehaviour {
 	public bool IsMeteor => FloorStreak >= GameSettings.Singleton.MeteorFloorStreak;
 	private CharacterController charController;
 	private AudioSource audioSource;
+	private Quaternion initialRotationRelativeToCenter;
 	private float initialDistFromCenter;
 	private float lastJumpTime = float.NegativeInfinity;
+	private Quaternion RotationFromCenter {
+		get {
+			var pos = transform.position;
+			var vHorzFromCenter = new Vector3 ( pos.x, 0, pos.z );
+			return	Quaternion.LookRotation ( vHorzFromCenter );
+		}
+	}
 
 	private void Awake () {
 		charController = GetComponent <CharacterController> ();
@@ -78,11 +86,12 @@ public class BouncingBallCharacter : MonoBehaviour {
 	}
 
 	private void CaptureInitalValues () {
-		CaptureInitialAngle ();
+		CaptureInitialRotation ();
 		CaptureInitialDistFromCenter ();
 	}
 
-	private void CaptureInitialAngle () {
+	private void CaptureInitialRotation () {
+		initialRotationRelativeToCenter = RotationFromCenter * transform.rotation;
 	}
 
 	private void CaptureInitialDistFromCenter () {
@@ -94,6 +103,7 @@ public class BouncingBallCharacter : MonoBehaviour {
 	private void FixedUpdate () {
 		PerformVerticalMotion ();
 		PerformRotationMotion ();
+		SetRotation ();
 	}
 
 	private void PerformVerticalMotion () {
@@ -127,6 +137,10 @@ public class BouncingBallCharacter : MonoBehaviour {
 			pos = newPos;
 		} while ( !angleStepIsExcessive );
 		InputHorizontalRotationDeg = 0;
+	}
+
+	private void SetRotation () {
+		transform.rotation = RotationFromCenter * initialRotationRelativeToCenter;
 	}
 
 	private Vector3 lastContactPoint;
