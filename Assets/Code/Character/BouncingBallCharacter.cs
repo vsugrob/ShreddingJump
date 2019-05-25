@@ -163,15 +163,12 @@ public class BouncingBallCharacter : MonoBehaviour {
 		var gameObject = hit.gameObject;
 		if ( IsMeteor ) {
 			// Meteor crushes floor it hits.
-			if ( CrushSound != null )
-				audioSource.PlayOneShot ( CrushSound );
+			CrushSound.PlayOneShot ( audioSource );
 			FloorRoot.TryDismantleFloor ( gameObject );
 		} else {
 			var obstacle = gameObject.GetComponent <KillerObstacle> ();
 			if ( obstacle != null ) {
-				if ( DeathSound != null )
-					audioSource.PlayOneShot ( DeathSound );
-
+				DeathSound.PlayOneShot ( audioSource );
 				KillerObstacleHit?.Invoke ( this, obstacle );
 				return;
 			}
@@ -197,14 +194,12 @@ public class BouncingBallCharacter : MonoBehaviour {
 
 		lastJumpTime = Time.fixedTime;
 		VerticalVelocity = JumpVelocity;
-		if ( BounceSound != null )
-			audioSource.PlayOneShot ( BounceSound );
+		BounceSound.PlayOneShot ( audioSource );
 	}
 
 	public void OnFloorComplete ( FloorCompleteTrigger floorCompleteTrigger ) {
 		FloorStreak++;
-		if ( FloorCompleteSound != null )
-			audioSource.PlayOneShot ( FloorCompleteSound );
+		FloorCompleteSound.PlayOneShot ( audioSource );
 	}
 
 	private void OnDrawGizmos () {
