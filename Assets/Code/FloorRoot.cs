@@ -10,17 +10,25 @@ public class FloorRoot : MonoBehaviour {
 		if ( !TryGetFloorRoot ( floorChildObject, out var floorRoot ) )
 			return	false;
 
-		floorRoot.DismantleFloor ();
+		DismantleChildren ( floorRoot.transform );
 		return	true;
 	}
 
-	public void DismantleFloor () {
+	private static void DismantleChildren ( Transform transform ) {
 		var count = transform.childCount;
 		for ( int i = 0 ; i < count ; i++ ) {
 			var childTf = transform.GetChild ( i );
-			PhysicsHelper.SetAllChildrenKinematic ( childTf );
-			PhysicsHelper.SetAllCollidersEnabled ( childTf, enabled = false );
-			ObjectRemover.StartRemoval ( childTf, GameSettings.Singleton.FloorCompletion );
+			var platform = childTf.GetComponent <Platform> ();
+			if ( platform != null && platform.DismantleChildren )
+				DismantleChildren ( childTf );
+			else
+				DismantleObject ( childTf );
 		}
+	}
+
+	private static void DismantleObject ( Transform childTf ) {
+		PhysicsHelper.SetAllChildrenKinematic ( childTf );
+		PhysicsHelper.SetAllCollidersEnabled ( childTf, enabled : false );
+		ObjectRemover.StartRemoval ( childTf, GameSettings.Singleton.FloorCompletion );
 	}
 }
