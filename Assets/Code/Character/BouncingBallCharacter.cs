@@ -166,7 +166,7 @@ public class BouncingBallCharacter : MonoBehaviour {
 			CrushSound.PlayOneShot ( audioSource );
 			FloorRoot.TryDismantleFloor ( gameObject );
 		} else {
-			var obstacle = gameObject.GetComponent <KillerObstacle> ();
+			var obstacle = gameObject.GetComponentInParent <KillerObstacle> ();
 			if ( obstacle != null ) {
 				DeathSound.PlayOneShot ( audioSource );
 				KillerObstacleHit?.Invoke ( this, obstacle );
