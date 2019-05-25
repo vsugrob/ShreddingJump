@@ -10211,7 +10211,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    _shrinkScale: 0
+    _shrinkScale: 1
     _scaleCurve:
       serializedVersion: 2
       m_Curve:
