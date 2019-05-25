@@ -25,14 +25,14 @@ public class BouncingBallCharacter : MonoBehaviour {
 	private float _rotationStepAngleDeg = 18;
 	public float RotationStepAngleDeg => _rotationStepAngleDeg;
 	[SerializeField]
-	private AudioClip _bounceClip;
-	public AudioClip BounceClip => _bounceClip;
+	private AudioClip _bounceSound;
+	public AudioClip BounceSound => _bounceSound;
 	[SerializeField]
-	private AudioClip _deathClip;
-	public AudioClip DeathClip => _deathClip;
+	private AudioClip _deathSound;
+	public AudioClip DeathSound => _deathSound;
 	[SerializeField]
-	private AudioClip _floorCompleteClip;
-	public AudioClip FloorCompleteClip => _floorCompleteClip;
+	private AudioClip _floorCompleteSound;
+	public AudioClip FloorCompleteSound => _floorCompleteSound;
 	public event KillerObstacleHit KillerObstacleHit;
 	public float JumpAscencionTime {
 		get {
@@ -164,8 +164,8 @@ public class BouncingBallCharacter : MonoBehaviour {
 		} else {
 			var obstacle = gameObject.GetComponent <KillerObstacle> ();
 			if ( obstacle != null ) {
-				if ( DeathClip != null )
-					audioSource.PlayOneShot ( DeathClip );
+				if ( DeathSound != null )
+					audioSource.PlayOneShot ( DeathSound );
 
 				KillerObstacleHit?.Invoke ( this, obstacle );
 				return;
@@ -192,14 +192,14 @@ public class BouncingBallCharacter : MonoBehaviour {
 
 		lastJumpTime = Time.fixedTime;
 		VerticalVelocity = JumpVelocity;
-		if ( BounceClip != null )
-			audioSource.PlayOneShot ( BounceClip );
+		if ( BounceSound != null )
+			audioSource.PlayOneShot ( BounceSound );
 	}
 
 	public void OnFloorComplete ( FloorCompleteTrigger floorCompleteTrigger ) {
 		FloorStreak++;
-		if ( FloorCompleteClip != null )
-			audioSource.PlayOneShot ( FloorCompleteClip );
+		if ( FloorCompleteSound != null )
+			audioSource.PlayOneShot ( FloorCompleteSound );
 	}
 
 	private void OnDrawGizmos () {
