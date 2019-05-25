@@ -1150,6 +1150,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3665608123882639203}
   - component: {fileID: 7382700957546086757}
+  - component: {fileID: 6663674222264711600}
   m_Layer: 10
   m_Name: SectorObstacle45
   m_TagString: Untagged
@@ -1184,3 +1185,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfc9ae89ef87a584ba7534f9dc6878f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6663674222264711600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3665608123882639205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7251e5dcbb8e3fa49b5db32848ced09a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _startAngle: -45
+  _endAngle: 0
+  _dismantleChildren: 0
