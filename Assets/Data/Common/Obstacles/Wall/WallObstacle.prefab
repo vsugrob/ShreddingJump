@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8833656716415324400}
+  - component: {fileID: 2099258568152937670}
+  - component: {fileID: 4758036351934770772}
   m_Layer: 11
   m_Name: WallObstacle
   m_TagString: Untagged
@@ -31,6 +33,33 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2099258568152937670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8833656716415324367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfc9ae89ef87a584ba7534f9dc6878f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4758036351934770772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8833656716415324367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7251e5dcbb8e3fa49b5db32848ced09a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _startAngle: -5
+  _endAngle: 5
+  _dismantleChildren: 0
 --- !u!1 &8833656716736072308
 GameObject:
   m_ObjectHideFlags: 0
@@ -43,7 +72,6 @@ GameObject:
   - component: {fileID: 8833656716736072312}
   - component: {fileID: 8833656716736072311}
   - component: {fileID: 8833656716736072310}
-  - component: {fileID: 8833656716736072313}
   m_Layer: 11
   m_Name: Cube
   m_TagString: Untagged
@@ -59,8 +87,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8833656716736072308}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.475, y: 0.589, z: 0}
-  m_LocalScale: {x: 3.0300148, y: 1.4747033, z: 0.2}
+  m_LocalPosition: {x: 2.1816, y: 0.589, z: 0}
+  m_LocalScale: {x: 1.6177362, y: 1.4747033, z: 0.2}
   m_Children: []
   m_Father: {fileID: 8833656716415324400}
   m_RootOrder: 0
@@ -123,15 +151,3 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8833656716736072313
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8833656716736072308}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfc9ae89ef87a584ba7534f9dc6878f9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
