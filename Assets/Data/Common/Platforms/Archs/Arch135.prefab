@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2706395525713057642}
   - component: {fileID: -2735413540160076443}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Arch135
   m_TagString: Untagged
   m_Icon: {fileID: 0}
