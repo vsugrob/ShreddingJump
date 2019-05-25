@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4780646710813248312}
   - component: {fileID: 3702233638493255005}
   - component: {fileID: 3694020998334081616}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: Arch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1151,7 +1151,7 @@ GameObject:
   - component: {fileID: 3665608123882639203}
   - component: {fileID: 7382700957546086757}
   - component: {fileID: 6663674222264711600}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: SectorObstacle45
   m_TagString: Untagged
   m_Icon: {fileID: 0}
