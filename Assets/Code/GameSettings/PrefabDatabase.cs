@@ -10,6 +10,12 @@ public class PrefabDatabase : ScriptableObject {
 		set => _character = value;
 	}
 	[SerializeField]
+	private GameObject _floorCompleteTrigger;
+	public GameObject FloorCompleteTrigger {
+		get => _floorCompleteTrigger;
+		set => _floorCompleteTrigger = value;
+	}
+	[SerializeField]
 	private List <GameObject> _platforms = new List <GameObject> ();
 	public List <GameObject> Platforms {
 		get => _platforms;
@@ -26,5 +32,12 @@ public class PrefabDatabase : ScriptableObject {
 	public List <GameObject> PlatformObstacles {
 		get => _platformObstacles;
 		set => _platformObstacles = value;
+	}
+	public GameObject RandomPlatform => RandomElement ( Platforms );
+	public GameObject RandomWall => RandomElement ( Walls );
+	public GameObject RandomPlatformObstacle => RandomElement ( PlatformObstacles );
+
+	private static TElement RandomElement <TElement> ( IList <TElement> list ) {
+		return	list [Random.Range ( 0, list.Count )];
 	}
 }

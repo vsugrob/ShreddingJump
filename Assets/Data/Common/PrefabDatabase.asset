@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _character: {fileID: 5764573674861064086, guid: 3a48fa1223766494b91041b368164e2f,
     type: 3}
+  _floorCompleteTrigger: {fileID: 85218593333133323, guid: 95b465936a4c58b40b54dda9db13eecf,
+    type: 3}
   _platforms:
   - {fileID: 4694766110106596305, guid: 9c1277a81c6d1fb49975c0bc8f232326, type: 3}
   - {fileID: 1658050533971367521, guid: d1089d6ceb5fd79449098ba21bf016bd, type: 3}
