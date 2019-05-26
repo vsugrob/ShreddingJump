@@ -8,6 +8,9 @@ public class Platform : MonoBehaviour {
 	private float _endAngle = 45;
 	public float EndAngle => _endAngle;
 	[SerializeField]
+	private float _height = 0.5f;
+	public float Height => _height;
+	[SerializeField]
 	private bool _dismantleChildren = false;
 	public bool DismantleChildren => _dismantleChildren;
 }

@@ -47,6 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startAngle: -90
   _endAngle: 0
+  _height: 0.5
   _dismantleChildren: 1
 --- !u!1001 &512418369902714402
 PrefabInstance:

@@ -172,4 +172,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startAngle: -315
   _endAngle: 0
+  _height: 0.4
   _dismantleChildren: 1

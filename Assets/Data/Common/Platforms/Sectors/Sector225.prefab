@@ -46,6 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startAngle: -225
   _endAngle: 0
+  _height: 0.4
   _dismantleChildren: 1
 --- !u!1 &4069227382893941764
 GameObject:
