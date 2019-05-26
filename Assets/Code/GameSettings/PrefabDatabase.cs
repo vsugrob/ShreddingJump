@@ -4,8 +4,8 @@ using UnityEngine;
 [CreateAssetMenu]
 public class PrefabDatabase : ScriptableObject {
 	[SerializeField]
-	private GameObject _character;
-	public GameObject Character {
+	private BouncingBallCharacter _character;
+	public BouncingBallCharacter Character {
 		get => _character;
 		set => _character = value;
 	}
@@ -16,26 +16,26 @@ public class PrefabDatabase : ScriptableObject {
 		set => _floorCompleteTrigger = value;
 	}
 	[SerializeField]
-	private List <GameObject> _platforms = new List <GameObject> ();
-	public List <GameObject> Platforms {
+	private List <Platform> _platforms = new List <Platform> ();
+	public List <Platform> Platforms {
 		get => _platforms;
 		set => _platforms = value;
 	}
 	[SerializeField]
-	private List <GameObject> _walls = new List <GameObject> ();
-	public List <GameObject> Walls {
+	private List <Platform> _walls = new List <Platform> ();
+	public List <Platform> Walls {
 		get => _walls;
 		set => _walls = value;
 	}
 	[SerializeField]
-	private List <GameObject> _platformObstacles = new List <GameObject> ();
-	public List <GameObject> PlatformObstacles {
+	private List <Platform> _platformObstacles = new List <Platform> ();
+	public List <Platform> PlatformObstacles {
 		get => _platformObstacles;
 		set => _platformObstacles = value;
 	}
-	public GameObject RandomPlatform => RandomElement ( Platforms );
-	public GameObject RandomWall => RandomElement ( Walls );
-	public GameObject RandomPlatformObstacle => RandomElement ( PlatformObstacles );
+	public Platform RandomPlatform => RandomElement ( Platforms );
+	public Platform RandomWall => RandomElement ( Walls );
+	public Platform RandomPlatformObstacle => RandomElement ( PlatformObstacles );
 
 	private static TElement RandomElement <TElement> ( IList <TElement> list ) {
 		return	list [Random.Range ( 0, list.Count )];

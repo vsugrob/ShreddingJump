@@ -29,9 +29,8 @@ public class LevelGenerator : MonoBehaviour {
 			floorTf.position = Vector3.up * floorY;
 			{
 				var platformPrefab = PrefabDatabase.RandomPlatform;
-				var platformGo = Instantiate ( platformPrefab, floorTf );
-				platformGo.transform.localPosition = Vector3.zero;
-				var platform = platformGo.GetComponent <Platform> ();
+				var platform = Instantiate ( platformPrefab, floorTf );
+				platform.transform.localPosition = Vector3.zero;
 				platform.StartAngleWorld = baseAngle;
 			}
 
