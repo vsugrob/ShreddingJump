@@ -13,4 +13,8 @@ public class Platform : MonoBehaviour {
 	[SerializeField]
 	private bool _dismantleChildren = false;
 	public bool DismantleChildren => _dismantleChildren;
+	public float MinAngle => Mathf.Min ( StartAngle, EndAngle );
+	public float MaxAngle => Mathf.Max ( StartAngle, EndAngle );
+	public float MinAngleWorld => MinAngle + transform.eulerAngles.y;
+	public float MaxAngleWorld => MaxAngle + transform.eulerAngles.y;
 }
