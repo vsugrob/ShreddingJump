@@ -8,7 +8,7 @@ namespace System {
 	/// </summary>
 	/// <typeparam name="T">Type of range ends. Must implement <see cref="IComparable{T}"/>.</typeparam>
 	[Serializable]
-	public class Range <T>
+	public struct Range <T>
 		where T : IComparable <T>
 	{
 		/// <summary>
@@ -26,10 +26,19 @@ namespace System {
 		public bool IsReversed => IsValid && Start.CompareTo ( End ) > 0;
 		/// <summary>Returns true when <see cref="End"/> is equal to <see cref="Start"/>.</summary>
 		public bool IsPoint => IsValid && Start.CompareTo ( End ) == 0;
-
-		public Range () {
-			this.Start = default;
-			this.End = default;
+		public Range <T> Reversed {
+			get {
+				var r = this;
+				r.Reverse ();
+				return	r;
+			}
+		}
+		public Range <T> Ordered {
+			get {
+				var r = this;
+				r.Order ();
+				return	r;
+			}
 		}
 
 		public Range ( T soleElement ) {
@@ -48,7 +57,7 @@ namespace System {
 			End = Start;
 		}
 
-		public void MakeOrdered () {
+		public void Order () {
 			if ( IsReversed )
 				Reverse ();
 		}
@@ -95,18 +104,58 @@ namespace System {
 			return	false;
 		}
 
+		#region Operators
+		public static bool operator < ( Range <T> range, T point ) {
+			return	range.Start.CompareTo ( point ) < 0 &&
+					range.End.CompareTo ( point ) < 0;
+		}
+
+		public static bool operator > ( Range <T> range, T point ) {
+			return	range.Start.CompareTo ( point ) > 0 &&
+					range.End.CompareTo ( point ) > 0;
+		}
+
+		public static bool operator < ( T point, Range <T> range ) {
+			return	point.CompareTo ( range.Start ) < 0 &&
+					point.CompareTo ( range.End ) < 0;
+		}
+
+		public static bool operator > ( T point, Range <T> range ) {
+			return	point.CompareTo ( range.Start ) > 0 &&
+					point.CompareTo ( range.End ) > 0;
+		}
+
+		public static bool operator <= ( Range <T> range, T point ) {
+			return	range.Start.CompareTo ( point ) <= 0 &&
+					range.End.CompareTo ( point ) <= 0;
+		}
+
+		public static bool operator >= ( Range <T> range, T point ) {
+			return	range.Start.CompareTo ( point ) >= 0 &&
+					range.End.CompareTo ( point ) >= 0;
+		}
+
+		public static bool operator <= ( T point, Range <T> range ) {
+			return	point.CompareTo ( range.Start ) <= 0 &&
+					point.CompareTo ( range.End ) <= 0;
+		}
+
+		public static bool operator >= ( T point, Range <T> range ) {
+			return	point.CompareTo ( range.Start ) >= 0 &&
+					point.CompareTo ( range.End ) >= 0;
+		}
+		#endregion Operators
+
 		public override bool Equals ( object obj ) {
 			if ( ReferenceEquals ( this, obj ) )
 				return	true;
 
-			var other = obj as Range <T>;
-			if ( ReferenceEquals ( other, null ) )
+			if ( !( obj is Range <T> ) )
 				return	false;
 
-			if ( !this.IsValid || !other.IsValid )
-				return	false;
-
-			return	this.Start.Equals ( other.Start ) &&
+			var other = ( Range <T> ) obj;
+			return	this.IsValid && other.IsValid &&
+					this.Start.Equals ( other.Start ) &&
 					this.End.Equals ( other.End );
 		}
 
