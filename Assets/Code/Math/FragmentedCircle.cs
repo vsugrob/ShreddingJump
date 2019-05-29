@@ -8,6 +8,10 @@ namespace System.Collections.Generic {
 		private List <CircleFragment <TElement, TLimit>> fragments = new List <CircleFragment <TElement, TLimit>> ();
 		public int Count => fragments.Count;
 
+		public void Add ( TElement element, TLimit start, TLimit end ) {
+			Add ( element, Range.Create ( start, end ) );
+		}
+
 		public void Add ( TElement element, Range <TLimit> range ) {
 			range.Order ();
 			int index = CountFragmentsLessThanOrEqual ( range.Start );
