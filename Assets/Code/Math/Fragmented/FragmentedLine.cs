@@ -2,13 +2,14 @@
 
 namespace System.Collections.Generic {
 	[DebuggerDisplay ( "Count = {Count}" )]
-	public class FragmentedLine <TElement, TLimit>
+	public class FragmentedLine <TElement, TLimit> : IReadOnlyList <LineFragment <TElement, TLimit>>
 		where TLimit : IComparable <TLimit>
 	{
 		private List <LineFragment <TElement, TLimit>> fragments = new List <LineFragment <TElement, TLimit>> ();
 		public int Count => fragments.Count;
 		public TLimit MinLimit { get; private set; }
 		public TLimit MaxLimit { get; private set; }
+		public LineFragment <TElement, TLimit> this [int index] => fragments [index];
 
 		public FragmentedLine ( TLimit minLimit, TLimit maxLimit ) {
 			if ( ReferenceEquals ( minLimit, null ) )
@@ -72,6 +73,14 @@ namespace System.Collections.Generic {
 
 			emptyRange = default;
 			return	false;
+		}
+
+		public IEnumerator <LineFragment <TElement, TLimit>> GetEnumerator () {
+			return	fragments.GetEnumerator ();
+		}
+
+		IEnumerator IEnumerable.GetEnumerator () {
+			return	( ( IEnumerable ) fragments ).GetEnumerator ();
 		}
 	}
 }
