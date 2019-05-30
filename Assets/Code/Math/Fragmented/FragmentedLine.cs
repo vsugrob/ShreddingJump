@@ -25,11 +25,11 @@ namespace System.Collections.Generic {
 			this.MaxLimit = maxLimit;
 		}
 
-		public void Add ( TElement element, TLimit start, TLimit end ) {
+		public virtual void Add ( TElement element, TLimit start, TLimit end ) {
 			Add ( element, Range.Create ( start, end ) );
 		}
 
-		public void Add ( TElement element, Range <TLimit> range ) {
+		public virtual void Add ( TElement element, Range <TLimit> range ) {
 			range.Order ();
 			int index = CountFragmentsLessThanOrEqual ( range.Start );
 			fragments.Insert ( index, new LineFragment <TElement, TLimit> ( element, range ) );
