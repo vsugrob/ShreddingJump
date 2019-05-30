@@ -45,13 +45,33 @@ namespace System.Collections.Generic {
 			return	count;
 		}
 
-		public Range <TLimit> FindEmptyRange () {
-			var start = MinLimit;
-			var end = MinLimit;
-			for ( int i = 0 ; i < fragments.Count ; i++ ) {
-				var fragment = fragments [i];
-				// TODO: implement.
+		public bool TryFindEmptyRange ( out Range <TLimit> emptyRange ) {
+			if ( fragments.Count == 0 ) {
+				emptyRange = Range.Create ( MinLimit, MaxLimit );
+				return	true;
 			}
+
+			var prevRangeEnd = MinLimit;
+			for ( int i = 0 ; i < fragments.Count ; i++ ) {
+				var range = fragments [i].Range;
+				var rangeStart = range.Start;
+				if ( rangeStart.CompareTo ( prevRangeEnd ) > 0 ) {
+					emptyRange = Range.Create ( prevRangeEnd, rangeStart );
+					return	true;
+				}
+
+				prevRangeEnd = range.End;
+			}
+
+			var lastRange = fragments [fragments.Count - 1].Range;
+			var lastRangeEnd = lastRange.End;
+			if ( lastRangeEnd.CompareTo ( MaxLimit ) < 0 ) {
+				emptyRange = Range.Create ( lastRangeEnd, MaxLimit );
+				return	true;
+			}
+
+			emptyRange = default;
+			return	false;
 		}
 	}
 }
