@@ -2,15 +2,15 @@
 
 namespace System.Collections.Generic {
 	[DebuggerDisplay ( "Count = {Count}" )]
-	public class FragmentedCircle <TElement, TLimit>
+	public class FragmentedLine <TElement, TLimit>
 		where TLimit : IComparable <TLimit>
 	{
-		private List <CircleFragment <TElement, TLimit>> fragments = new List <CircleFragment <TElement, TLimit>> ();
+		private List <LineFragment <TElement, TLimit>> fragments = new List <LineFragment <TElement, TLimit>> ();
 		public int Count => fragments.Count;
 		public TLimit MinLimit { get; private set; }
 		public TLimit MaxLimit { get; private set; }
 
-		public FragmentedCircle ( TLimit minLimit, TLimit maxLimit ) {
+		public FragmentedLine ( TLimit minLimit, TLimit maxLimit ) {
 			if ( ReferenceEquals ( minLimit, null ) )
 				throw new ArgumentNullException ( nameof ( minLimit ) );
 
@@ -31,7 +31,7 @@ namespace System.Collections.Generic {
 		public void Add ( TElement element, Range <TLimit> range ) {
 			range.Order ();
 			int index = CountFragmentsLessThanOrEqual ( range.Start );
-			fragments.Insert ( index, new CircleFragment <TElement, TLimit> ( element, range ) );
+			fragments.Insert ( index, new LineFragment <TElement, TLimit> ( element, range ) );
 		}
 
 		private int CountFragmentsLessThanOrEqual ( TLimit margin ) {
