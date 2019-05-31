@@ -1,7 +1,7 @@
 ﻿namespace System.Collections.Generic {
 	public class FragmentedCircle <TElement> : FragmentedLine <TElement, float> {
-		public FragmentedCircle ( float minLimit, float maxLimit ):
-			base ( minLimit, maxLimit )
+		public FragmentedCircle ( float pi2 ):
+			base ( 0, pi2 )
 		{}
 
 		public override void Add ( TElement element, Range <float> range ) {
