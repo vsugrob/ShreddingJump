@@ -13,5 +13,11 @@
 			r.Order ();
 			return	r;
 		}
+
+		public static Range <T> Point <T> ( T point )
+			where T : IComparable <T>
+		{
+			return	new Range <T> ( point );
+		}
 	}
 }

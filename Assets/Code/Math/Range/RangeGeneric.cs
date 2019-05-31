@@ -41,9 +41,9 @@ namespace System {
 			}
 		}
 
-		public Range ( T soleElement ) {
-			this.Start = soleElement;
-			this.End = soleElement;
+		public Range ( T point ) {
+			this.Start = point;
+			this.End = point;
 		}
 
 		public Range ( T start, T end ) {
