@@ -59,7 +59,7 @@ namespace Tests {
 		[Test]
 		public void FragmentedCircle_AddPositiveDirRangeOutOfBoundsPositiveNoSplit () {
 			AssertAddRangeNoSplit ( 360, 361, 0, 1 );
-			AssertAddRangeNoSplit ( 360.0003f, 360.0004f, 000305175781f, 0.000396728516f );
+			AssertAddRangeNoSplit ( 360.0003f, 360.0004f, 0.000305175781f, 0.000396728516f );
 			AssertAddRangeNoSplit ( 360, 720, 0, 360 );
 			AssertAddRangeNoSplit ( 415, 699, 55, 339 );
 			AssertAddRangeNoSplit ( 720, 1080, 0, 360 );
@@ -84,11 +84,11 @@ namespace Tests {
 			AssertAddRangeNoSplit ( -1, -185, 175, 359 );
 			AssertAddRangeNoSplit ( 0, -360, 0, 360 );
 			AssertAddRangeNoSplit ( -89, -275, 85, 271 );
-			AssertAddRangeNoSplit ( -215, -360, 145, 360 );
+			AssertAddRangeNoSplit ( -215, -360, 0, 145 );
 			AssertAddRangeNoSplit ( -360, -361, 359, 360 );
 			AssertAddRangeNoSplit ( -360, -720, 0, 360 );
 			AssertAddRangeNoSplit ( -523, -698, 22, 197 );
-			AssertAddRangeNoSplit ( -478, -720, 242, 360 );
+			AssertAddRangeNoSplit ( -478, -720, 0, 242 );
 			AssertAddRangeNoSplit ( -720, -1080, 0, 360 );
 		}
 
