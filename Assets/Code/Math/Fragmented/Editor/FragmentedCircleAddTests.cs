@@ -2,7 +2,7 @@
 using NUnit.Framework;
 
 namespace Tests {
-    public class FragmentedCircleTests {
+    public class FragmentedCircleAddTests {
 		[Test]
 		public void FragmentedCircle_AddPointInBounds () {
 			AssertAddPoint ( 0 );
