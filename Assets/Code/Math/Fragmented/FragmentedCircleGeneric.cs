@@ -24,7 +24,7 @@
 				range1 = Range.Create ( 0, MaxLimit );
 				return;
 			} else if ( diff == 0 ) {
-				range1 = new Range <float> ( start );
+				range1 = new Range <float> ( CoerceAngle ( start ) );
 				return;
 			}
 
