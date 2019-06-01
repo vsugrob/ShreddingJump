@@ -5,32 +5,33 @@ namespace Tests {
     public class FragmentedCircleTests {
 		[Test]
 		public void FragmentedCircle_AddPointInBounds () {
-			AssertAddRangeNoSplit ( 0, 0 );
-			AssertAddRangeNoSplit ( 1, 1 );
-			AssertAddRangeNoSplit ( 1.0001f, 1.0001f );
-			AssertAddRangeNoSplit ( 315, 315 );
-			AssertAddRangeNoSplit ( 360, 360 );
+			AssertAddPoint ( 0 );
+			AssertAddPoint ( 1 );
+			AssertAddPoint ( 1.0001f );
+			AssertAddPoint ( 315 );
+			AssertAddPoint ( 360, 0 );
 		}
 
 		[Test]
 		public void FragmentedCircle_AddPointOutOfBoundsNegative () {
-			AssertAddRangeNoSplit ( -1, -1, 359 );
-			AssertAddRangeNoSplit ( -0.01f, -0.01f, 359.99f );
-			AssertAddRangeNoSplit ( -1.0001f, -1.0001f, 358.9999f );
-			AssertAddRangeNoSplit ( -315, -315, 45 );
-			AssertAddRangeNoSplit ( -360, -360, 0 );
-			AssertAddRangeNoSplit ( -361, -361, 359 );
-			AssertAddRangeNoSplit ( -450, -450, 270 );
-			AssertAddRangeNoSplit ( -720, -720, 0 );
-			AssertAddRangeNoSplit ( -719.99f, -719.99f, 0.0100097656f );
+			AssertAddPoint ( -1, 359 );
+			AssertAddPoint ( -0.01f, 359.99f );
+			AssertAddPoint ( -1.0001f, 358.9999f );
+			AssertAddPoint ( -315, 45 );
+			AssertAddPoint ( -360, 0 );
+			AssertAddPoint ( -361, 359 );
+			AssertAddPoint ( -450, 270 );
+			AssertAddPoint ( -720, 0 );
+			AssertAddPoint ( -719.99f, 0.0100097656f );
 		}
 
 		[Test]
 		public void FragmentedCircle_AddPointOutOfBoundsPositive () {
-			AssertAddRangeNoSplit ( 360.0345f, 360.0345f, 0.0344848633f );
-			AssertAddRangeNoSplit ( 362, 362, 2 );
-			AssertAddRangeNoSplit ( 719, 719, 359 );
-			AssertAddRangeNoSplit ( 3620, 3620, 20 );
+			AssertAddPoint ( 360.0345f, 0.0344848633f );
+			AssertAddPoint ( 362, 2 );
+			AssertAddPoint ( 719, 359 );
+			AssertAddPoint ( 720, 0 );
+			AssertAddPoint ( 3620, 20 );
 		}
 
 		[Test]
@@ -101,6 +102,10 @@ namespace Tests {
 			AssertAddRangeNoSplit ( -720, -431, 0, 289 );
 			AssertAddRangeNoSplit ( -1000, -800, 80, 280 );
 			AssertAddRangeNoSplit ( -1080, -720, 0, 360 );
+		}
+
+		private void AssertAddPoint ( float point, float? expectedPoint = null ) {
+			AssertAddRangeNoSplit ( point, point, expectedPoint );
 		}
 
 		private void AssertAddRangeNoSplit ( float start, float end, float? expectedStart = null, float? expectedEnd = null ) {
