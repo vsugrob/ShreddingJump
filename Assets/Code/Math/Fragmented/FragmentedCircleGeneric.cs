@@ -4,11 +4,15 @@
 			base ( 0, pi2 )
 		{}
 
+		public override void Add ( TElement element, float start, float end ) {
+			Add ( element, Range.Create ( start, end ) );
+		}
+
 		public override void Add ( TElement element, Range <float> range ) {
 			CoerceRange ( range, out var range1, out var range2 );
-			base.Add ( element, range1 );
+			AddOrdered ( element, range1 );
 			if ( range2.HasValue )
-				base.Add ( element, range2.Value );
+				AddOrdered ( element, range2.Value );
 		}
 
 		private void CoerceRange ( Range <float> range, out Range <float> range1, out Range <float>? range2 ) {

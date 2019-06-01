@@ -31,6 +31,10 @@ namespace System.Collections.Generic {
 
 		public virtual void Add ( TElement element, Range <TLimit> range ) {
 			range.Order ();
+			AddOrdered ( element, range );
+		}
+
+		protected void AddOrdered ( TElement element, Range <TLimit> range ) {
 			int index = CountFragmentsLessThanOrEqual ( range.Start );
 			fragments.Insert ( index, new LineFragment <TElement, TLimit> ( element, range ) );
 		}
