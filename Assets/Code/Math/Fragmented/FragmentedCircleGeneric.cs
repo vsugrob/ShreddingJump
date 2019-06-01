@@ -28,36 +28,35 @@
 				return;
 			}
 
-			var dirPositive = diff > 0;
-			start = CoerceAngle ( start );
-			end = CoerceAngle ( end );
-			var diff2 = end - start;
-			// diff2 cannot be 0, it's been already checked that original diff less than full round.
-			var dirPositive2 = diff2 > 0;
-			if ( dirPositive != dirPositive2 ) {
-				if ( dirPositive ) {
-					range1 = Range.Create ( 0, end );
-					range2 = Range.Create ( start, MaxLimit );
-					return;
-				} else {
-					range1 = Range.Create ( 0, start );
-					range2 = Range.Create ( end, MaxLimit );
-					return;
-				}
+			MathHelper.SortMinMax ( ref start, ref end );
+			var baseAngle = FindClosestCircleBase ( start );
+			start -= baseAngle;
+			end -= baseAngle;
+			if ( end <= MaxLimit ) {
+				range1 = Range.Create ( start, end );
+			} else {
+				range1 = Range.Create ( 0, end - MaxLimit );
+				range2 = Range.Create ( start, MaxLimit );
 			}
-
-			range1 = Range.Ordered ( start, end );
 		}
 
 		private float CoerceAngle ( float angle ) {
-			if ( angle == MaxLimit )
-				return	angle;
-
 			angle = angle % MaxLimit;
 			if ( angle < 0 )
 				angle += MaxLimit;
 
 			return	angle;
+		}
+
+		private float FindClosestCircleBase ( float angle ) {
+			var divInt = ( int ) ( angle / MaxLimit );
+			var b = divInt * MaxLimit;
+			if ( b > angle ) {
+				// It's possible when angle is negative. Calculate base value, that is less than angle.
+				b -= MaxLimit;
+			}
+
+			return	b;
 		}
 	}
 }
