@@ -35,6 +35,26 @@ namespace Tests {
 		}
 
 		[Test]
+		public void FragmentedCircle_AddFullCircle () {
+			AssertAddFullCircle ( 0, 360 );
+			AssertAddFullCircle ( 360, 720 );
+			AssertAddFullCircle ( 6840, 7200 );
+			AssertAddFullCircle ( 0, 7200 );
+			AssertAddFullCircle ( 360, 0 );
+			AssertAddFullCircle ( 720, 360 );
+			AssertAddFullCircle ( 7200, 6840 );
+			AssertAddFullCircle ( 7200, 0 );
+			AssertAddFullCircle ( 0, -360 );
+			AssertAddFullCircle ( -360, -720 );
+			AssertAddFullCircle ( -6840, -7200 );
+			AssertAddFullCircle ( -0, -7200 );
+			AssertAddFullCircle ( -360, 0 );
+			AssertAddFullCircle ( -720, -360 );
+			AssertAddFullCircle ( -7200, -6840 );
+			AssertAddFullCircle ( -7200, 0 );
+		}
+
+		[Test]
 		public void FragmentedCircle_AddPositiveDirRangeInBoundsNoSplit () {
 			AssertAddRangeNoSplit ( 0, 0.01f );
 			AssertAddRangeNoSplit ( 0, 45 );
@@ -127,6 +147,18 @@ namespace Tests {
 
 			Assert.AreEqual ( expectedStart.Value, r0.Start );
 			Assert.AreEqual ( expectedEnd.Value, r0.End );
+		}
+
+		private void AssertAddFullCircle ( float start, float end ) {
+			var circle = FragmentedCircle.CreateDegrees <string> ();
+			const string E0 = "r0";
+			circle.Add ( E0, start, end );
+			Assert.AreEqual ( 1, circle.Count );
+			var f0 = circle [0];
+			Assert.AreEqual ( E0, f0.Element );
+			var r0 = f0.Range;
+			Assert.AreEqual ( 0, r0.Start );
+			Assert.AreEqual ( 360, r0.End );
 		}
     }
 }
