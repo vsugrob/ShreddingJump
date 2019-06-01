@@ -27,7 +27,7 @@ namespace Tests {
 
 		[Test]
 		public void FragmentedCircle_AddPointOutOfBoundsPositive () {
-			AssertAddRangeNoSplit ( 360.0345f, 360.0345f, 0.0345f );
+			AssertAddRangeNoSplit ( 360.0345f, 360.0345f, 0.0344848633f );
 			AssertAddRangeNoSplit ( 362, 362, 2 );
 			AssertAddRangeNoSplit ( 719, 719, 359 );
 			AssertAddRangeNoSplit ( 3620, 3620, 20 );
