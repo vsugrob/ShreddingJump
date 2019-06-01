@@ -124,6 +124,44 @@ namespace Tests {
 			AssertAddRangeNoSplit ( -1080, -720, 0, 360 );
 		}
 
+		[Test]
+		public void FragmentedCircle_AddPositiveDirRangePositiveWithSplit () {
+			AssertAddRangeWithSplit ( 270, 361, 0, 1, 270, 360 );
+			AssertAddRangeWithSplit ( 270, 450, 0, 90, 270, 360 );
+			AssertAddRangeWithSplit ( 700, 740, 0, 20, 340, 360 );
+			AssertAddRangeWithSplit ( 900, 1100, 0, 20, 180, 360 );
+		}
+
+		[Test]
+		public void FragmentedCircle_AddNegativeDirRangePositiveWithSplit () {
+			AssertAddRangeWithSplit ( 361, 359, 0, 1, 359, 360 );
+			AssertAddRangeWithSplit ( 400, 359, 0, 40, 359, 360 );
+			AssertAddRangeWithSplit ( 800, 500, 0, 80, 140, 360 );
+			AssertAddRangeWithSplit ( 1111, 1011, 0, 31, 291, 360 );
+		}
+
+		[Test]
+		public void FragmentedCircle_AddPositiveDirRangeNegativeWithSplit () {
+			AssertAddRangeWithSplit ( -361, -359, 0, 1, 359, 360 );
+			AssertAddRangeWithSplit ( -390, -250, 0, 110, 330, 360 );
+			AssertAddRangeWithSplit ( -820, -690, 0, 30, 260, 360 );
+		}
+
+		[Test]
+		public void FragmentedCircle_AddNegativeDirRangeNegativeWithSplit () {
+			AssertAddRangeWithSplit ( -359, -361, 0, 1, 359, 360 );
+			AssertAddRangeWithSplit ( -685, -770, 0, 35, 310, 360 );
+		}
+
+		[Test]
+		public void FragmentedCircle_AddRangeWithSplitAroundZero () {
+			AssertAddRangeWithSplit ( -1, 1, 0, 1, 359, 360 );
+			AssertAddRangeWithSplit ( 1, -1, 0, 1, 359, 360 );
+			AssertAddRangeWithSplit ( -30, 30, 0, 30, 330, 360 );
+			AssertAddRangeWithSplit ( 30, -30, 0, 30, 330, 360 );
+			AssertAddRangeWithSplit ( -179, 180, 0, 180, 181, 360 );
+		}
+
 		private void AssertAddPoint ( float point, float? expectedPoint = null ) {
 			AssertAddRangeNoSplit ( point, point, expectedPoint );
 		}
@@ -159,6 +197,23 @@ namespace Tests {
 			var r0 = f0.Range;
 			Assert.AreEqual ( 0, r0.Start );
 			Assert.AreEqual ( 360, r0.End );
+		}
+
+		private void AssertAddRangeWithSplit ( float start, float end, float s1, float e1, float s2, float e2 ) {
+			var circle = FragmentedCircle.CreateDegrees <string> ();
+			const string E0 = "r0";
+			circle.Add ( E0, start, end );
+			Assert.AreEqual ( 2, circle.Count );
+			var f0 = circle [0];
+			var f1 = circle [1];
+			Assert.AreEqual ( E0, f0.Element );
+			Assert.AreEqual ( E0, f1.Element );
+			var r0 = f0.Range;
+			var r1 = f1.Range;
+			Assert.AreEqual ( s1, r0.Start );
+			Assert.AreEqual ( e1, r0.End );
+			Assert.AreEqual ( s2, r1.Start );
+			Assert.AreEqual ( e2, r1.End );
 		}
     }
 }
