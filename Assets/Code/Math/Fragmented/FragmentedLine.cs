@@ -5,11 +5,11 @@ namespace System.Collections.Generic {
 	public class FragmentedLine <TElement, TLimit> : IReadOnlyList <LineFragment <TElement, TLimit>>
 		where TLimit : IComparable <TLimit>
 	{
-		private List <LineFragment <TElement, TLimit>> fragments = new List <LineFragment <TElement, TLimit>> ();
-		public int Count => fragments.Count;
+		private SortedList <TLimit, LineFragment <TElement, TLimit>> fragmentsByStart = new SortedList <TLimit, LineFragment <TElement, TLimit>> ();
+		public int Count => fragmentsByStart.Count;
 		public TLimit MinLimit { get; private set; }
 		public TLimit MaxLimit { get; private set; }
-		public LineFragment <TElement, TLimit> this [int index] => fragments [index];
+		public LineFragment <TElement, TLimit> this [int index] => fragmentsByStart.Values [index];
 
 		public FragmentedLine ( TLimit minLimit, TLimit maxLimit ) {
 			if ( ReferenceEquals ( minLimit, null ) )
@@ -35,28 +35,17 @@ namespace System.Collections.Generic {
 		}
 
 		protected void AddOrdered ( TElement element, Range <TLimit> range ) {
-			int index = CountFragmentsLessThanOrEqual ( range.Start );
-			fragments.Insert ( index, new LineFragment <TElement, TLimit> ( element, range ) );
-		}
-
-		private int CountFragmentsLessThanOrEqual ( TLimit margin ) {
-			int count = 0;
-			// TODO: optimize for orderd list of fragments. It MUST be better than O(n).
-			for ( int i = 0 ; i < fragments.Count ; i++ ) {
-				if ( fragments [i].Range <= margin )
-					count++;
-			}
-
-			return	count;
+			fragmentsByStart.Add ( range.Start, new LineFragment <TElement, TLimit> ( element, range ) );
 		}
 
 		public bool TryFindEmptyRange ( out Range <TLimit> emptyRange ) {
-			if ( fragments.Count == 0 ) {
+			if ( fragmentsByStart.Count == 0 ) {
 				emptyRange = Range.Create ( MinLimit, MaxLimit );
 				return	true;
 			}
 
 			var prevRangeEnd = MinLimit;
+			var fragments = fragmentsByStart.Values;
 			for ( int i = 0 ; i < fragments.Count ; i++ ) {
 				var range = fragments [i].Range;
 				var rangeStart = range.Start;
@@ -80,11 +69,11 @@ namespace System.Collections.Generic {
 		}
 
 		public IEnumerator <LineFragment <TElement, TLimit>> GetEnumerator () {
-			return	fragments.GetEnumerator ();
+			return	fragmentsByStart.Values.GetEnumerator ();
 		}
 
 		IEnumerator IEnumerable.GetEnumerator () {
-			return	( ( IEnumerable ) fragments ).GetEnumerator ();
+			return	( ( IEnumerable ) fragmentsByStart.Values ).GetEnumerator ();
 		}
 	}
 }
