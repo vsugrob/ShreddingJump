@@ -10,7 +10,12 @@ public class LevelController : MonoBehaviour {
 	private void Start () {
 		Character = FindObjectOfType <BouncingBallCharacter> ();
 		Character.KillerObstacleHit += Character_KillerObstacleHit;
-		Random.InitState ( 14 );
+		var seed = Random.Range ( int.MinValue, int.MaxValue );
+		seed = 1840302397;
+		Random.InitState ( seed );
+#pragma warning disable CS0618 // Type or member is obsolete
+		Debug.Log ( $"Random seed: {Random.seed}" );
+#pragma warning restore CS0618 // Type or member is obsolete
 		GenerateLevel ();
 	}
 
