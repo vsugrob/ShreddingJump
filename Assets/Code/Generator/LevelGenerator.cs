@@ -40,7 +40,7 @@ public class LevelGenerator : MonoBehaviour {
 				var holesLeft = holeCount;
 				while ( --holesLeft > 0 ) {
 					// Reserve some width for the rest of the holes.
-					var minTotalWidthForOtherHoles = ( holesLeft - 1 ) * Settings.SecondaryHoleAngleWidthMin;
+					var minTotalWidthForOtherHoles = holesLeft * Settings.SecondaryHoleAngleWidthMin;
 					var maxWidth = totalWidth - minTotalWidthForOtherHoles;
 					if ( maxWidth < Settings.SecondaryHoleAngleWidthMin )
 						break;
