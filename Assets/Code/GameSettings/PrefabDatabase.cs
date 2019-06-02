@@ -65,4 +65,22 @@ public class PrefabDatabase : ScriptableObject {
 	public IEnumerable <Platform> Filter ( PlatformKindFlags kindMask ) {
 		return	Filter ( p => ( p.Kind & kindMask ) != PlatformKindFlags.None );
 	}
+
+	public IEnumerable <Platform> Filter ( PlatformKindFlags kindMask, float minAngleWidth, float maxAngleWidth ) {
+		return	Filter ( kindMask )
+			.Where ( p => CheckValueFits ( p.AngleWidth, minAngleWidth, maxAngleWidth ) );
+	}
+
+	public IEnumerable <Platform> Filter (
+		PlatformKindFlags kindMask,
+		float minAngleWidth, float maxAngleWidth,
+		float minHeight, float maxHeight
+	) {
+		return	Filter ( kindMask, minAngleWidth, maxAngleWidth )
+			.Where ( p => CheckValueFits ( p.Height, minHeight, maxHeight ) );
+	}
+
+	bool CheckValueFits ( float value, float min, float max ) {
+		return	min <= value && value <= max;
+	}
 }
