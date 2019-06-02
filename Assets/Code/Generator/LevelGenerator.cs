@@ -28,70 +28,67 @@ public class LevelGenerator : MonoBehaviour {
 			var floorTf = floorGo.transform;
 			floorTf.SetParent ( floorContainer );
 			floorTf.position = Vector3.up * floorY;
-			// Generate holes.
-			var platformCircle = new PlatformCircle ();
-			var holeCount = Random.Range ( Settings.HoleCountMin, Settings.HoleCountMax );
-			if ( holeCount > 0 ) {
-				var totalWidth = Settings.TotalHoleAngleWidthMax;
-				// Add main hole.
-				var holeBaseAngle = 0f;
-				AddHole ( platformCircle, ref holeBaseAngle, ref totalWidth, Settings.MainHoleAngleWidthMin, Settings.MainHoleAngleWidthMax );
-				// Add secondary holes.
-				var holesLeft = holeCount;
-				while ( --holesLeft > 0 ) {
-					// Reserve some width for the rest of the holes.
-					var minTotalWidthForOtherHoles = holesLeft * Settings.SecondaryHoleAngleWidthMin;
-					var maxWidth = totalWidth - minTotalWidthForOtherHoles;
-					if ( maxWidth < Settings.SecondaryHoleAngleWidthMin )
-						break;
-
-					AddHole ( platformCircle, ref holeBaseAngle, ref totalWidth, Settings.SecondaryHoleAngleWidthMin, maxWidth );
-				}
-				// Randomly "shake" hole positions.
-				var nextStart = 360f;
-				var holeFragments = platformCircle.ToArray ();
-				for ( int j = holeCount - 1 ; j >= 0 ; j-- ) {
-					var fragment = holeFragments [j];
-					var range = fragment.Range;
-					var start = range.Start;
-					var width = range.End - start;
-					var maxStart = Mathf.FloorToInt ( ( nextStart - width ) / Settings.SecondaryHoleAngleWidthMin ) * Settings.SecondaryHoleAngleWidthMin;
-					var newStart = RandomHelper.Range ( start, maxStart, Settings.SecondaryHoleAngleWidthMin );
-					platformCircle.Remove ( start );
-					var offset = newStart - start;
-					range.Start += offset;
-					range.End += offset;
-					platformCircle.Add ( fragment.Element, range );
-					nextStart = range.Start;
-				}
-			}
-
-			while ( platformCircle.TryFindEmptyRange ( out var emptyRange ) ) {
-				var start = emptyRange.Start;
-				var width = emptyRange.End - start;
-				var platformPrefab = PrefabDatabase
-					.Filter ( PlatformKindFlags.Platform, Settings.PlatformAngleWidthMin, width )
-					.OrderByDescending ( p => p.AngleWidth )
-					.FirstOrDefault ();
-				if ( platformPrefab == null ) {
-					Debug.LogWarning ( $"No suitable platform was found for the range {emptyRange} at {floorGo.name}." );
-					// Fill whole range to not revisit it in the next iteration.
-					platformCircle.Add ( null, emptyRange );
-					continue;
-				}
-
-				var platform = Instantiate ( platformPrefab, floorTf );
-				platform.transform.localPosition = Vector3.zero;
-				platform.StartAngleWorld = start;
-				platformCircle.Add ( platform, start, start + platform.AngleWidth );
-			}
-
+			GenerateFloor ( floorTf );
 			var floorCompleteTriggerGo = Instantiate ( PrefabDatabase.FloorCompleteTrigger, floorTf );
 			floorCompleteTriggerGo.transform.localPosition = Vector3.zero;
 			floorY -= floorHeight;
 			i++;
 			nextFloorIndex++;
-			yield return	null;
+			yield return floorGo;
+		}
+	}
+
+	private void GenerateFloor ( Transform floorTf ) {
+		var platformCircle = new PlatformCircle ();
+		GenerateHoles ( platformCircle );
+		GeneratePlatforms ( floorTf, platformCircle );
+	}
+
+	private void GeneratePlatforms ( Transform floorTf, PlatformCircle platformCircle ) {
+		while ( platformCircle.TryFindEmptyRange ( out var emptyRange ) ) {
+			var start = emptyRange.Start;
+			var width = emptyRange.End - start;
+			var platformPrefab = PrefabDatabase
+				.Filter ( PlatformKindFlags.Platform, Settings.PlatformAngleWidthMin, width )
+				.OrderByDescending ( p => p.AngleWidth )
+				.FirstOrDefault ();
+			if ( platformPrefab == null ) {
+				Debug.LogWarning ( $"No suitable platform was found for the range {emptyRange} at {floorTf.name}." );
+				// Fill whole range to not revisit it in the next iteration.
+				platformCircle.Add ( null, emptyRange );
+				continue;
+			}
+
+			var platform = Instantiate ( platformPrefab, floorTf );
+			platform.transform.localPosition = Vector3.zero;
+			platform.StartAngleWorld = start;
+			platformCircle.Add ( platform, start, start + platform.AngleWidth );
+		}
+	}
+
+	private void GenerateHoles ( PlatformCircle platformCircle ) {
+		var holeCount = Random.Range ( Settings.HoleCountMin, Settings.HoleCountMax );
+		if ( holeCount > 0 ) {
+			AddHoles ( platformCircle, holeCount );
+			ShakeHoles ( platformCircle );
+		}
+	}
+
+	private void AddHoles ( PlatformCircle platformCircle, int holeCount ) {
+		var totalWidth = Settings.TotalHoleAngleWidthMax;
+		// Add main hole.
+		var holeBaseAngle = 0f;
+		AddHole ( platformCircle, ref holeBaseAngle, ref totalWidth, Settings.MainHoleAngleWidthMin, Settings.MainHoleAngleWidthMax );
+		// Add secondary holes.
+		var holesLeft = holeCount;
+		while ( --holesLeft > 0 ) {
+			// Reserve some width for the rest of the holes.
+			var minTotalWidthForOtherHoles = holesLeft * Settings.SecondaryHoleAngleWidthMin;
+			var maxWidth = totalWidth - minTotalWidthForOtherHoles;
+			if ( maxWidth < Settings.SecondaryHoleAngleWidthMin )
+				break;
+
+			AddHole ( platformCircle, ref holeBaseAngle, ref totalWidth, Settings.SecondaryHoleAngleWidthMin, maxWidth );
 		}
 	}
 
@@ -108,5 +105,25 @@ public class LevelGenerator : MonoBehaviour {
 		baseAngle += hole.AngleWidth;
 		totalWidth -= width;
 		return	true;
+	}
+
+	private void ShakeHoles ( PlatformCircle platformCircle ) {
+		// Randomly "shake" hole positions.
+		var nextStart = 360f;
+		var holeFragments = platformCircle.ToArray ();
+		for ( int i = holeFragments.Length - 1 ; i >= 0 ; i-- ) {
+			var fragment = holeFragments [i];
+			var range = fragment.Range;
+			var start = range.Start;
+			var width = range.End - start;
+			var maxStart = Mathf.FloorToInt ( ( nextStart - width ) / Settings.SecondaryHoleAngleWidthMin ) * Settings.SecondaryHoleAngleWidthMin;
+			var newStart = RandomHelper.Range ( start, maxStart, Settings.SecondaryHoleAngleWidthMin );
+			platformCircle.Remove ( start );
+			var offset = newStart - start;
+			range.Start += offset;
+			range.End += offset;
+			platformCircle.Add ( fragment.Element, range );
+			nextStart = range.Start;
+		}
 	}
 }
