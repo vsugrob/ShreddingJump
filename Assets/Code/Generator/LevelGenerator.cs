@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour {
@@ -16,7 +17,7 @@ public class LevelGenerator : MonoBehaviour {
 	}
 
 	public IEnumerable <GameObject> Generate ( GameObject prevFloor, int nextFloorIndex = 0 ) {
-		var floorHeight = Random.Range ( Settings.MinFloorHeight, Settings.MaxFloorHeight );
+		var floorHeight = Random.Range ( Settings.FloorHeightMin, Settings.FloorHeightMax );
 		var prevFloorTf = prevFloor.transform;
 		var floorY = prevFloorTf.position.y - floorHeight;
 		var floorContainer = prevFloorTf.parent;
@@ -27,11 +28,31 @@ public class LevelGenerator : MonoBehaviour {
 			var floorTf = floorGo.transform;
 			floorTf.SetParent ( floorContainer );
 			floorTf.position = Vector3.up * floorY;
+			// Generate holes.
+			var platformCircle = new PlatformCircle ();
+			var holeCount = Random.Range ( Settings.HoleCountMin, Settings.HoleCountMax );
+			if ( holeCount > 0 ) {
+				var totalWidth = Settings.TotalHoleAngleWidthMax;
+				// Add main hole.
+				var holeBaseAngle = 0f;
+				AddHole ( platformCircle, ref holeBaseAngle, ref totalWidth, Settings.MainHoleAngleWidthMin, Settings.MainHoleAngleWidthMax );
+				// Add secondary holes.
+				while ( --holeCount > 0 ) {
+					// Reserve some width for the rest of the holes.
+					var minTotalWidthForOtherHoles = ( holeCount - 1 ) * Settings.SecondaryHoleAngleWidthMin;
+					var maxWidth = totalWidth - minTotalWidthForOtherHoles;
+					if ( maxWidth < Settings.SecondaryHoleAngleWidthMin )
+						break;
+
+					AddHole ( platformCircle, ref holeBaseAngle, ref totalWidth, Settings.SecondaryHoleAngleWidthMin, maxWidth );
+				}
+			}
+
 			{
-				var platformPrefab = PrefabDatabase.RandomPlatform;
-				var platform = Instantiate ( platformPrefab, floorTf );
-				platform.transform.localPosition = Vector3.zero;
-				platform.StartAngleWorld = baseAngle;
+				//var platformPrefab = PrefabDatabase.RandomPlatform;
+				//var platform = Instantiate ( platformPrefab, floorTf );
+				//platform.transform.localPosition = Vector3.zero;
+				//platform.StartAngleWorld = baseAngle;
 			}
 
 			var floorCompleteTriggerGo = Instantiate ( PrefabDatabase.FloorCompleteTrigger, floorTf );
@@ -41,5 +62,20 @@ public class LevelGenerator : MonoBehaviour {
 			nextFloorIndex++;
 			yield return	null;
 		}
+	}
+
+	private bool AddHole ( PlatformCircle platformCircle, ref float baseAngle, ref float totalWidth, float minWidth, float maxWidth ) {
+		var width = RandomHelper.Range ( minWidth, maxWidth, Settings.HoleAngleWidthStep );
+		if ( width > totalWidth )
+			width = totalWidth;
+
+		var hole = PrefabDatabase.Filter ( PlatformKindFlags.Hole, width, width ).FirstOrDefault ();
+		if ( hole == null )
+			return	false;
+
+		platformCircle.Add ( hole, baseAngle, baseAngle + hole.AngleWidth );
+		baseAngle += hole.AngleWidth;
+		totalWidth -= width;
+		return	true;
 	}
 }
