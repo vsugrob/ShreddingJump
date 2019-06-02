@@ -25,7 +25,7 @@ public class PrefabDatabase : ScriptableObject {
 		set => _holeStartAngleWidth = value;
 	}
 	[SerializeField]
-	private float _holeEndAngleWidth = 90;
+	private float _holeEndAngleWidth = 360;
 	public float HoleEndAngleWidth {
 		get => _holeEndAngleWidth;
 		set => _holeEndAngleWidth = value;

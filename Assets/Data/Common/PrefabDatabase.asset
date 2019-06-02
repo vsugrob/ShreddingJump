@@ -17,7 +17,7 @@ MonoBehaviour:
   _floorCompleteTrigger: {fileID: 85218593333133323, guid: 95b465936a4c58b40b54dda9db13eecf,
     type: 3}
   _holeStartAngleWidth: 22.5
-  _holeEndAngleWidth: 90
+  _holeEndAngleWidth: 360
   _holeAngleWidthStep: 22.5
   _predefinedPlatforms:
   - {fileID: -7572012969867061938, guid: 9c1277a81c6d1fb49975c0bc8f232326, type: 3}
