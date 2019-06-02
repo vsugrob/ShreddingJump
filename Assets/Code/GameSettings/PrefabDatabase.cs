@@ -47,7 +47,7 @@ public class PrefabDatabase : ScriptableObject {
 	public ReadOnlyCollection <Platform> AllPlatforms {
 		get {
 			if ( allPlatformsVersion < 0 )
-				InitHoles ( HoleStartAngleWidth, HoleEndAngleWidth, HoleAngleWidthStep );
+				InitHoles ();
 
 			if ( allPlatformsVersion != version ) {
 				allPlatforms.Clear ();
@@ -74,8 +74,12 @@ public class PrefabDatabase : ScriptableObject {
 		}
 	}
 
-	public void InitHoles ( params float [] angleWidths ) {
-		InitHoles ( ( IEnumerable <float> ) angleWidths );
+	public void Init () {
+		InitHoles ();
+	}
+
+	public void InitHoles () {
+		InitHoles ( HoleStartAngleWidth, HoleEndAngleWidth, HoleAngleWidthStep );
 	}
 
 	public void InitHoles ( float startAngleWidth, float endAngleWidth, float step ) {
@@ -84,6 +88,7 @@ public class PrefabDatabase : ScriptableObject {
 		else if ( step <= float.Epsilon )
 			throw new ArgumentException ( $"{nameof ( step )} must be greater than 0.", nameof ( step ) );
 
+		holesByWidth.Clear ();
 		for ( float width = startAngleWidth ; width < endAngleWidth ; width += step ) {
 			AddHole ( width );
 		}
@@ -91,7 +96,12 @@ public class PrefabDatabase : ScriptableObject {
 		AddHole ( endAngleWidth );
 	}
 
+	public void InitHoles ( params float [] angleWidths ) {
+		InitHoles ( ( IEnumerable <float> ) angleWidths );
+	}
+
 	public void InitHoles ( IEnumerable <float> angleWidths ) {
+		holesByWidth.Clear ();
 		foreach ( var angleWidth in angleWidths ) {
 			if ( holesByWidth.TryGetValue ( angleWidth, out var platform ) )
 				continue;
