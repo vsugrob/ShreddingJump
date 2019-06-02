@@ -62,21 +62,21 @@ public class PrefabDatabase : ScriptableObject {
 			.Concat ( holesByWidth.Values.Where ( predicate ) );
 	}
 
-	public IEnumerable <Platform> Filter ( PlatformKindFlags kindMask ) {
-		return	Filter ( p => ( p.Kind & kindMask ) != PlatformKindFlags.None );
+	public IEnumerable <Platform> Filter ( PlatformKindFlags requiredFlags ) {
+		return	Filter ( p => ( p.Kind & requiredFlags ) == requiredFlags );
 	}
 
-	public IEnumerable <Platform> Filter ( PlatformKindFlags kindMask, float minAngleWidth, float maxAngleWidth ) {
-		return	Filter ( kindMask )
+	public IEnumerable <Platform> Filter ( PlatformKindFlags requiredFlags, float minAngleWidth, float maxAngleWidth ) {
+		return	Filter ( requiredFlags )
 			.Where ( p => CheckValueFits ( p.AngleWidth, minAngleWidth, maxAngleWidth ) );
 	}
 
 	public IEnumerable <Platform> Filter (
-		PlatformKindFlags kindMask,
+		PlatformKindFlags requiredFlags,
 		float minAngleWidth, float maxAngleWidth,
 		float minHeight, float maxHeight
 	) {
-		return	Filter ( kindMask, minAngleWidth, maxAngleWidth )
+		return	Filter ( requiredFlags, minAngleWidth, maxAngleWidth )
 			.Where ( p => CheckValueFits ( p.Height, minHeight, maxHeight ) );
 	}
 
