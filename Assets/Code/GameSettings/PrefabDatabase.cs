@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using UnityEngine;
 
@@ -23,9 +24,42 @@ public class PrefabDatabase : ScriptableObject {
 		get => _allPlatforms;
 		set => _allPlatforms = value;
 	}
+	private Dictionary <float, Platform> holesByWidth = new Dictionary <float, Platform> ();
+	private ReadOnlyDictionary <float, Platform> holesByWidthRo;
+	public ReadOnlyDictionary <float, Platform> HolesByWidth {
+		get {
+			if ( holesByWidthRo == null )
+				holesByWidthRo = new ReadOnlyDictionary <float, Platform> ( holesByWidth );
+
+			return	holesByWidthRo;
+		}
+	}
+
+	public void InitHoles ( params Range <float> [] ranges ) {
+		InitHoles ( ( IEnumerable <Range <float>> ) ranges );
+	}
+
+	public void InitHoles ( IEnumerable <Range <float>> ranges ) {
+		foreach ( var range in ranges ) {
+			range.Order ();
+			var width = range.End - range.Start;
+			if ( holesByWidth.TryGetValue ( width, out var platform ) )
+				continue;
+
+			var platformGo = new GameObject ( $"Hole{width}", typeof ( Platform ) );
+			platform.transform.position = Vector3.right * 1e4f;		// Move it out of sight.
+			platform = platformGo.GetComponent <Platform> ();
+			platform.Kind = PlatformKindFlags.Hole;
+			platform.StartAngle = range.Start;
+			platform.EndAngle = range.End;
+			holesByWidth.Add ( width, platform );
+		}
+	}
 
 	public IEnumerable <Platform> Filter ( Func <Platform, bool> predicate ) {
-		return	AllPlatforms.Where ( p => p != null && predicate ( p ) );
+		return	AllPlatforms
+			.Where ( p => p != null && predicate ( p ) )
+			.Concat ( holesByWidth.Values.Where ( predicate ) );
 	}
 
 	public IEnumerable <Platform> Filter ( PlatformKindFlags kindMask ) {
