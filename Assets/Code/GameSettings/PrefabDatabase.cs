@@ -35,24 +35,22 @@ public class PrefabDatabase : ScriptableObject {
 		}
 	}
 
-	public void InitHoles ( params Range <float> [] ranges ) {
-		InitHoles ( ( IEnumerable <Range <float>> ) ranges );
+	public void InitHoles ( params float [] angleWidths ) {
+		InitHoles ( ( IEnumerable <float> ) angleWidths );
 	}
 
-	public void InitHoles ( IEnumerable <Range <float>> ranges ) {
-		foreach ( var range in ranges ) {
-			range.Order ();
-			var width = range.End - range.Start;
-			if ( holesByWidth.TryGetValue ( width, out var platform ) )
+	public void InitHoles ( IEnumerable <float> angleWidths ) {
+		foreach ( var angleWidth in angleWidths ) {
+			if ( holesByWidth.TryGetValue ( angleWidth, out var platform ) )
 				continue;
 
-			var platformGo = new GameObject ( $"Hole{width}", typeof ( Platform ) );
+			var platformGo = new GameObject ( $"Hole{angleWidth}", typeof ( Platform ) );
 			platform.transform.position = Vector3.right * 1e4f;		// Move it out of sight.
 			platform = platformGo.GetComponent <Platform> ();
 			platform.Kind = PlatformKindFlags.Hole;
-			platform.StartAngle = range.Start;
-			platform.EndAngle = range.End;
-			holesByWidth.Add ( width, platform );
+			platform.StartAngle = 0;
+			platform.EndAngle = angleWidth;
+			holesByWidth.Add ( angleWidth, platform );
 		}
 	}
 
