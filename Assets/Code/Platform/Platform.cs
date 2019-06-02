@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 public class Platform : MonoBehaviour {
-	[SerializeField]
+	[SerializeField, EnumFlags]
 	private PlatformKindFlags _kind = PlatformKindFlags.Platform;
 	public PlatformKindFlags Kind => _kind;
 	[SerializeField]
