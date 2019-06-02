@@ -9,6 +9,9 @@ public class LevelGeneratorSettings : ScriptableObject {
 	private float _floorHeightMax = 4.5f;
 	public float FloorHeightMax => _floorHeightMax;
 	[SerializeField]
+	private float _platformAngleWidthMin = 22.5f;
+	public float PlatformAngleWidthMin => _platformAngleWidthMin;
+	[SerializeField]
 	private float _mainHoleAngleWidthMin = 45;
 	public float MainHoleAngleWidthMin => _mainHoleAngleWidthMin;
 	[SerializeField]

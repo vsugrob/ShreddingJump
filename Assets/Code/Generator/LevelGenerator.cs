@@ -65,11 +65,24 @@ public class LevelGenerator : MonoBehaviour {
 				}
 			}
 
-			{
-				//var platformPrefab = PrefabDatabase.RandomPlatform;
-				//var platform = Instantiate ( platformPrefab, floorTf );
-				//platform.transform.localPosition = Vector3.zero;
-				//platform.StartAngleWorld = baseAngle;
+			while ( platformCircle.TryFindEmptyRange ( out var emptyRange ) ) {
+				var start = emptyRange.Start;
+				var width = emptyRange.End - start;
+				var platformPrefab = PrefabDatabase
+					.Filter ( PlatformKindFlags.Platform, Settings.PlatformAngleWidthMin, width )
+					.OrderByDescending ( p => p.AngleWidth )
+					.FirstOrDefault ();
+				if ( platformPrefab == null ) {
+					Debug.LogWarning ( $"No suitable platform was found for the range {emptyRange} at {floorGo.name}." );
+					// Fill whole range to not revisit it in the next iteration.
+					platformCircle.Add ( null, emptyRange );
+					continue;
+				}
+
+				var platform = Instantiate ( platformPrefab, floorTf );
+				platform.transform.localPosition = Vector3.zero;
+				platform.StartAngleWorld = start;
+				platformCircle.Add ( platform, start, start + platform.AngleWidth );
 			}
 
 			var floorCompleteTriggerGo = Instantiate ( PrefabDatabase.FloorCompleteTrigger, floorTf );
