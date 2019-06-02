@@ -2,6 +2,9 @@
 
 public class Platform : MonoBehaviour {
 	[SerializeField]
+	private PlatformKindFlags _kind = PlatformKindFlags.Platform;
+	public PlatformKindFlags Kind => _kind;
+	[SerializeField]
 	private float _startAngle = 0;
 	public float StartAngle => _startAngle;
 	[SerializeField]
