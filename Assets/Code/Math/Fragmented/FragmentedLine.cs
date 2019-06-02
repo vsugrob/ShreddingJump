@@ -38,6 +38,39 @@ namespace System.Collections.Generic {
 			fragmentsByStart.Add ( range.Start, new LineFragment <TElement, TLimit> ( element, range ) );
 		}
 
+		public bool Remove ( LineFragment <TElement, TLimit> fragment ) {
+			return	fragmentsByStart.Remove ( fragment.Range.Start );
+		}
+
+		public bool Remove ( TLimit start ) {
+			return	fragmentsByStart.Remove ( start );
+		}
+
+		public void RemoveAt ( int index ) {
+			fragmentsByStart.RemoveAt ( index );
+		}
+
+		public bool RemoveElement ( TElement element ) {
+			var index = IndexOfElement ( element );
+			if ( index < 0 )
+				return	false;
+
+			RemoveAt ( index );
+			return	true;
+		}
+
+		public int IndexOfElement ( TElement element ) {
+			int i = 0;
+			foreach ( var fragment in fragmentsByStart.Values ) {
+				if ( Equals ( fragment, element ) )
+					return	i;
+
+				i++;
+			}
+
+			return	-1;
+		}
+
 		public bool TryFindEmptyRange ( out Range <TLimit> emptyRange ) {
 			if ( fragmentsByStart.Count == 0 ) {
 				emptyRange = Range.Create ( MinLimit, MaxLimit );
