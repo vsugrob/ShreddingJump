@@ -45,8 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _kind: 1
-  _startAngle: 0
-  _endAngle: 22.5
+  _startAngle: -22.5
+  _endAngle: 0
   _height: 0.5
   _dismantleChildren: 0
 --- !u!1 &4437237945898304863
