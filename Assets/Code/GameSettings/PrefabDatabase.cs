@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu]
@@ -16,28 +18,17 @@ public class PrefabDatabase : ScriptableObject {
 		set => _floorCompleteTrigger = value;
 	}
 	[SerializeField]
-	private List <Platform> _platforms = new List <Platform> ();
-	public List <Platform> Platforms {
-		get => _platforms;
-		set => _platforms = value;
+	private List <Platform> _allPlatforms = new List <Platform> ();
+	public List <Platform> AllPlatforms {
+		get => _allPlatforms;
+		set => _allPlatforms = value;
 	}
-	[SerializeField]
-	private List <Platform> _walls = new List <Platform> ();
-	public List <Platform> Walls {
-		get => _walls;
-		set => _walls = value;
-	}
-	[SerializeField]
-	private List <Platform> _platformObstacles = new List <Platform> ();
-	public List <Platform> PlatformObstacles {
-		get => _platformObstacles;
-		set => _platformObstacles = value;
-	}
-	public Platform RandomPlatform => RandomElement ( Platforms );
-	public Platform RandomWall => RandomElement ( Walls );
-	public Platform RandomPlatformObstacle => RandomElement ( PlatformObstacles );
 
-	private static TElement RandomElement <TElement> ( IList <TElement> list ) {
-		return	list [Random.Range ( 0, list.Count )];
+	public IEnumerable <Platform> Filter ( Func <Platform, bool> predicate ) {
+		return	AllPlatforms.Where ( p => p != null && predicate ( p ) );
+	}
+
+	public IEnumerable <Platform> Filter ( PlatformKindFlags kindMask ) {
+		return	Filter ( p => ( p.Kind & kindMask ) != PlatformKindFlags.None );
 	}
 }
