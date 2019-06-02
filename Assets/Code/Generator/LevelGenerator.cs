@@ -55,9 +55,10 @@ public class LevelGenerator : MonoBehaviour {
 					var range = fragment.Range;
 					var start = range.Start;
 					var width = range.End - start;
-					var maxOffset = Mathf.FloorToInt ( ( nextStart - width ) / Settings.SecondaryHoleAngleWidthMin ) * Settings.SecondaryHoleAngleWidthMin;
-					var offset = RandomHelper.Range ( 0, maxOffset, Settings.SecondaryHoleAngleWidthMin );
+					var maxStart = Mathf.FloorToInt ( ( nextStart - width ) / Settings.SecondaryHoleAngleWidthMin ) * Settings.SecondaryHoleAngleWidthMin;
+					var newStart = RandomHelper.Range ( start, maxStart, Settings.SecondaryHoleAngleWidthMin );
 					platformCircle.Remove ( start );
+					var offset = newStart - start;
 					range.Start += offset;
 					range.End += offset;
 					platformCircle.Add ( fragment.Element, range );
