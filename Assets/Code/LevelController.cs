@@ -10,6 +10,7 @@ public class LevelController : MonoBehaviour {
 	private void Start () {
 		Character = FindObjectOfType <BouncingBallCharacter> ();
 		Character.KillerObstacleHit += Character_KillerObstacleHit;
+		Random.InitState ( 14 );
 		GenerateLevel ();
 	}
 
