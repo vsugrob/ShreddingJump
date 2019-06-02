@@ -37,14 +37,31 @@ public class LevelGenerator : MonoBehaviour {
 				var holeBaseAngle = 0f;
 				AddHole ( platformCircle, ref holeBaseAngle, ref totalWidth, Settings.MainHoleAngleWidthMin, Settings.MainHoleAngleWidthMax );
 				// Add secondary holes.
-				while ( --holeCount > 0 ) {
+				var holesLeft = holeCount;
+				while ( --holesLeft > 0 ) {
 					// Reserve some width for the rest of the holes.
-					var minTotalWidthForOtherHoles = ( holeCount - 1 ) * Settings.SecondaryHoleAngleWidthMin;
+					var minTotalWidthForOtherHoles = ( holesLeft - 1 ) * Settings.SecondaryHoleAngleWidthMin;
 					var maxWidth = totalWidth - minTotalWidthForOtherHoles;
 					if ( maxWidth < Settings.SecondaryHoleAngleWidthMin )
 						break;
 
 					AddHole ( platformCircle, ref holeBaseAngle, ref totalWidth, Settings.SecondaryHoleAngleWidthMin, maxWidth );
+				}
+				// Randomly "shake" hole positions.
+				var nextStart = 360f;
+				var holeFragments = platformCircle.ToArray ();
+				for ( int j = holeCount - 1 ; j >= 0 ; j-- ) {
+					var fragment = holeFragments [j];
+					var range = fragment.Range;
+					var start = range.Start;
+					var width = range.End - start;
+					var maxOffset = Mathf.FloorToInt ( ( nextStart - width ) / Settings.SecondaryHoleAngleWidthMin ) * Settings.SecondaryHoleAngleWidthMin;
+					var offset = RandomHelper.Range ( 0, maxOffset, Settings.SecondaryHoleAngleWidthMin );
+					platformCircle.Remove ( start );
+					range.Start += offset;
+					range.End += offset;
+					platformCircle.Add ( fragment.Element, range );
+					nextStart = range.Start;
 				}
 			}
 
