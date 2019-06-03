@@ -34,8 +34,18 @@ namespace System.Collections.Generic {
 			AddOrdered ( element, range );
 		}
 
+		public virtual void Add ( LineFragment <TElement, TLimit> fragment ) {
+			Add ( fragment.Element, fragment.Range );
+		}
+
 		protected void AddOrdered ( TElement element, Range <TLimit> range ) {
 			fragmentsByStart.Add ( range.Start, new LineFragment <TElement, TLimit> ( element, range ) );
+		}
+
+		public virtual void AddRange ( IEnumerable <LineFragment <TElement, TLimit>> fragments ) {
+			foreach ( var fragment in fragments ) {
+				Add ( fragment );
+			}
 		}
 
 		public bool Remove ( LineFragment <TElement, TLimit> fragment ) {
