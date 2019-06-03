@@ -46,7 +46,7 @@ public class LevelGenerator : MonoBehaviour {
 	}
 
 	private void GenerateHoles ( Transform floorTf, PlatformCircle platformCircle ) {
-		var holeCount = UnityEngine.Random.Range ( Settings.HoleCountMin, Settings.HoleCountMax );
+		var holeCount = UnityEngine.Random.Range ( Settings.HoleCountMin, Settings.HoleCountMax + 1 );
 		if ( holeCount > 0 ) {
 			AddHoles ( platformCircle, holeCount );
 			SeparateHoles ( platformCircle );
