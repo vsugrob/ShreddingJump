@@ -44,28 +44,6 @@ public class LevelGenerator : MonoBehaviour {
 		GeneratePlatforms ( floorTf, platformCircle );
 	}
 
-	private void GeneratePlatforms ( Transform floorTf, PlatformCircle platformCircle ) {
-		while ( platformCircle.TryFindEmptyRange ( out var emptyRange ) ) {
-			var start = emptyRange.Start;
-			var width = emptyRange.End - start;
-			var platformPrefab = PrefabDatabase
-				.Filter ( PlatformKindFlags.Platform, Settings.PlatformAngleWidthMin, width )
-				.OrderByDescending ( p => p.AngleWidth )
-				.FirstOrDefault ();
-			if ( platformPrefab == null ) {
-				Debug.LogWarning ( $"No suitable platform was found for the range {emptyRange} at {floorTf.name}." );
-				// Fill whole range to not revisit it in the next iteration.
-				platformCircle.Add ( null, emptyRange );
-				continue;
-			}
-
-			var platform = Instantiate ( platformPrefab, floorTf );
-			platform.transform.localPosition = Vector3.zero;
-			platform.StartAngleWorld = start;
-			platformCircle.Add ( platform, start, start + platform.AngleWidth );
-		}
-	}
-
 	private void GenerateHoles ( PlatformCircle platformCircle ) {
 		var holeCount = Random.Range ( Settings.HoleCountMin, Settings.HoleCountMax );
 		if ( holeCount > 0 ) {
@@ -124,6 +102,28 @@ public class LevelGenerator : MonoBehaviour {
 			range.End += offset;
 			platformCircle.Add ( fragment.Element, range );
 			nextStart = range.Start;
+		}
+	}
+
+	private void GeneratePlatforms ( Transform floorTf, PlatformCircle platformCircle ) {
+		while ( platformCircle.TryFindEmptyRange ( out var emptyRange ) ) {
+			var start = emptyRange.Start;
+			var width = emptyRange.End - start;
+			var platformPrefab = PrefabDatabase
+				.Filter ( PlatformKindFlags.Platform, Settings.PlatformAngleWidthMin, width )
+				.OrderByDescending ( p => p.AngleWidth )
+				.FirstOrDefault ();
+			if ( platformPrefab == null ) {
+				Debug.LogWarning ( $"No suitable platform was found for the range {emptyRange} at {floorTf.name}." );
+				// Fill whole range to not revisit it in the next iteration.
+				platformCircle.Add ( null, emptyRange );
+				continue;
+			}
+
+			var platform = Instantiate ( platformPrefab, floorTf );
+			platform.transform.localPosition = Vector3.zero;
+			platform.StartAngleWorld = start;
+			platformCircle.Add ( platform, start, start + platform.AngleWidth );
 		}
 	}
 }
