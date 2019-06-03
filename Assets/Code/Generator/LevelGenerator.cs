@@ -41,24 +41,24 @@ public class LevelGenerator : MonoBehaviour {
 
 	private void GenerateFloor ( Transform floorTf ) {
 		var platformCircle = new PlatformCircle ();
-		GenerateHoles ( platformCircle );
+		GenerateHoles ( floorTf, platformCircle );
 		GeneratePlatforms ( floorTf, platformCircle );
 	}
 
-	private void GenerateHoles ( PlatformCircle platformCircle ) {
+	private void GenerateHoles ( Transform floorTf, PlatformCircle platformCircle ) {
 		var holeCount = UnityEngine.Random.Range ( Settings.HoleCountMin, Settings.HoleCountMax );
 		if ( holeCount > 0 ) {
-			AddHoles ( platformCircle, holeCount );
+			AddHoles ( floorTf, platformCircle, holeCount );
 			SeparateHoles ( platformCircle );
 			ShakeHoles ( platformCircle );
 		}
 	}
 
-	private void AddHoles ( PlatformCircle platformCircle, int holeCount ) {
+	private void AddHoles ( Transform floorTf, PlatformCircle platformCircle, int holeCount ) {
 		var totalWidth = Settings.TotalHoleAngleWidthMax;
 		// Add main hole.
 		var holeBaseAngle = 0f;
-		AddHole ( platformCircle, ref holeBaseAngle, ref totalWidth, Settings.MainHoleAngleWidthMin, Settings.MainHoleAngleWidthMax );
+		AddHole ( floorTf, platformCircle, ref holeBaseAngle, ref totalWidth, Settings.MainHoleAngleWidthMin, Settings.MainHoleAngleWidthMax );
 		// Add secondary holes.
 		var holesLeft = holeCount;
 		while ( --holesLeft > 0 ) {
@@ -68,21 +68,23 @@ public class LevelGenerator : MonoBehaviour {
 			if ( maxWidth < Settings.SecondaryHoleAngleWidthMin )
 				break;
 
-			AddHole ( platformCircle, ref holeBaseAngle, ref totalWidth, Settings.SecondaryHoleAngleWidthMin, maxWidth );
+			AddHole ( floorTf, platformCircle, ref holeBaseAngle, ref totalWidth, Settings.SecondaryHoleAngleWidthMin, maxWidth );
 		}
 	}
 
-	private bool AddHole ( PlatformCircle platformCircle, ref float baseAngle, ref float totalWidth, float minWidth, float maxWidth ) {
+	private bool AddHole ( Transform floorTf, PlatformCircle platformCircle, ref float baseAngle, ref float totalWidth, float minWidth, float maxWidth ) {
 		var width = RandomHelper.Range ( minWidth, maxWidth, Settings.HoleAngleWidthStep );
 		if ( width > totalWidth )
 			width = totalWidth;
 
-		var hole = PrefabDatabase.Filter ( PlatformKindFlags.Hole, width, width ).FirstOrDefault ();
-		if ( hole == null )
+		var holePrefab = PrefabDatabase.Filter ( PlatformKindFlags.Hole, width, width ).FirstOrDefault ();
+		if ( holePrefab == null )
 			return	false;
 
-		platformCircle.Add ( hole, baseAngle, baseAngle + hole.AngleWidth );
-		baseAngle += hole.AngleWidth;
+		var hole = InstantiatePlatform ( holePrefab, baseAngle, floorTf );
+		var holeWidth = hole.AngleWidth;
+		platformCircle.Add ( holePrefab, baseAngle, baseAngle + holeWidth );
+		baseAngle += holeWidth;
 		totalWidth -= width;
 		return	true;
 	}
@@ -147,10 +149,15 @@ public class LevelGenerator : MonoBehaviour {
 				continue;
 			}
 
-			var platform = Instantiate ( platformPrefab, floorTf );
-			platform.transform.localPosition = Vector3.zero;
-			platform.StartAngleWorld = start;
+			var platform = InstantiatePlatform ( platformPrefab, start, floorTf );
 			platformCircle.Add ( platform, start, start + platform.AngleWidth );
 		}
+	}
+
+	private static Platform InstantiatePlatform ( Platform prefab, float startAngle, Transform parent ) {
+		var platform = Instantiate ( prefab, parent );
+		platform.transform.localPosition = Vector3.zero;
+		platform.StartAngleWorld = startAngle;
+		return	platform;
 	}
 }

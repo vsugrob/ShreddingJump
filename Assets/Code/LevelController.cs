@@ -11,7 +11,7 @@ public class LevelController : MonoBehaviour {
 		Character = FindObjectOfType <BouncingBallCharacter> ();
 		Character.KillerObstacleHit += Character_KillerObstacleHit;
 		var seed = Random.Range ( int.MinValue, int.MaxValue );
-		seed = 1840302397;
+		seed = -799463940;
 		Random.InitState ( seed );
 #pragma warning disable CS0618 // Type or member is obsolete
 		Debug.Log ( $"Random seed: {Random.seed}" );
@@ -33,7 +33,7 @@ public class LevelController : MonoBehaviour {
 		var dummyFloorGo = CreateDummyFloor ();
 		var generatorEn = generator
 			.Generate ( dummyFloorGo )
-			.Take ( 10 );
+			.Take ( 100 );
 		foreach ( var floor in generatorEn ) {}
 	}
 	// TODO: move to HierarchyHelper or smth alike.
