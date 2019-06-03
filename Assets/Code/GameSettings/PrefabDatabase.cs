@@ -110,7 +110,12 @@ public class PrefabDatabase : ScriptableObject {
 		}
 	}
 
-	public void AddHole ( float angleWidth ) {
+	public bool AddHole ( float angleWidth ) {
+		var existingHole = PredefinedPlatforms.FirstOrDefault ( p => p.Kind == PlatformKindFlags.Hole && p.AngleWidth == angleWidth );
+		if ( existingHole != null )
+			return	false;
+
+		// TODO: group holes under RuntimeObjects root.
 		var platformGo = new GameObject ( $"Hole{angleWidth}", typeof ( Platform ) );
 		platformGo.transform.position = Vector3.right * 1e4f;		// Move it out of sight.
 		var platform = platformGo.GetComponent <Platform> ();
@@ -119,6 +124,7 @@ public class PrefabDatabase : ScriptableObject {
 		platform.EndAngle = angleWidth;
 		holesByWidth.Add ( angleWidth, platform );
 		version++;
+		return	true;
 	}
 
 	public IEnumerable <Platform> Filter ( Func <Platform, bool> predicate ) {
