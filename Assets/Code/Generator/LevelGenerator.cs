@@ -115,10 +115,16 @@ public class LevelGenerator : MonoBehaviour {
 		var nextStart = 360f;
 		var holeFragments = platformCircle.ToArray ();
 		for ( int i = holeFragments.Length - 1 ; i >= 0 ; i-- ) {
+			nextStart -= Settings.SpaceBetweenHolesMin;
 			var fragment = holeFragments [i];
 			var range = fragment.Range;
 			var start = range.Start;
 			var maxStart = Mathf.FloorToInt ( ( nextStart - range.Width () ) / Settings.SecondaryHoleAngleWidthMin ) * Settings.SecondaryHoleAngleWidthMin;
+			if ( maxStart < start ) {
+				nextStart = range.Start;
+				continue;
+			}
+
 			var newStart = RandomHelper.Range ( start, maxStart, Settings.SecondaryHoleAngleWidthMin );
 			platformCircle.Remove ( start );
 			range = range.Add ( newStart - start );
