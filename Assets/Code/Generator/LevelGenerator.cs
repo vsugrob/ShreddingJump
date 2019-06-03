@@ -49,6 +49,7 @@ public class LevelGenerator : MonoBehaviour {
 		var holeCount = UnityEngine.Random.Range ( Settings.HoleCountMin, Settings.HoleCountMax );
 		if ( holeCount > 0 ) {
 			AddHoles ( platformCircle, holeCount );
+			SeparateHoles ( platformCircle );
 			ShakeHoles ( platformCircle );
 		}
 	}
@@ -84,6 +85,29 @@ public class LevelGenerator : MonoBehaviour {
 		baseAngle += hole.AngleWidth;
 		totalWidth -= width;
 		return	true;
+	}
+
+	private void SeparateHoles ( PlatformCircle platformCircle ) {
+		if ( platformCircle.Count < 2 )
+			return;
+
+		var holeFragments = platformCircle.ToArray ();
+		platformCircle.Clear ();
+		var lastFragment = holeFragments [holeFragments.Length - 1];
+		var spaceLeft = 360 - lastFragment.Range.End;
+		var offset = 0f;
+		for ( int i = 1 ; i < holeFragments.Length ; i++ ) {
+			var nextOffset = offset + Settings.SpaceBetweenHolesMin;
+			if ( nextOffset <= spaceLeft )
+				offset = nextOffset;
+
+			var fragment = holeFragments [i];
+			var range = fragment.Range;
+			range = range.Add ( offset );
+			holeFragments [i] = new LineFragment <Platform, float> ( fragment.Element, range );
+		}
+
+		platformCircle.AddRange ( holeFragments );
 	}
 
 	private void ShakeHoles ( PlatformCircle platformCircle ) {

@@ -21,6 +21,9 @@ public class LevelGeneratorSettings : ScriptableObject {
 	private float _secondaryHoleAngleWidthMin = 22.5f;
 	public float SecondaryHoleAngleWidthMin => _secondaryHoleAngleWidthMin;
 	[SerializeField]
+	private float _spaceBetweenHolesMin = 22.5f;
+	public float SpaceBetweenHolesMin => _spaceBetweenHolesMin;
+	[SerializeField]
 	private float _totalHoleAngleWidthMax = 180;
 	public float TotalHoleAngleWidthMax => _totalHoleAngleWidthMax;
 	[SerializeField]
