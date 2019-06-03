@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -17,7 +18,7 @@ public class LevelGenerator : MonoBehaviour {
 	}
 
 	public IEnumerable <GameObject> Generate ( GameObject prevFloor, int nextFloorIndex = 0 ) {
-		var floorHeight = Random.Range ( Settings.FloorHeightMin, Settings.FloorHeightMax );
+		var floorHeight = UnityEngine.Random.Range ( Settings.FloorHeightMin, Settings.FloorHeightMax );
 		var prevFloorTf = prevFloor.transform;
 		var floorY = prevFloorTf.position.y - floorHeight;
 		var floorContainer = prevFloorTf.parent;
@@ -45,7 +46,7 @@ public class LevelGenerator : MonoBehaviour {
 	}
 
 	private void GenerateHoles ( PlatformCircle platformCircle ) {
-		var holeCount = Random.Range ( Settings.HoleCountMin, Settings.HoleCountMax );
+		var holeCount = UnityEngine.Random.Range ( Settings.HoleCountMin, Settings.HoleCountMax );
 		if ( holeCount > 0 ) {
 			AddHoles ( platformCircle, holeCount );
 			ShakeHoles ( platformCircle );
@@ -93,13 +94,10 @@ public class LevelGenerator : MonoBehaviour {
 			var fragment = holeFragments [i];
 			var range = fragment.Range;
 			var start = range.Start;
-			var width = range.End - start;
-			var maxStart = Mathf.FloorToInt ( ( nextStart - width ) / Settings.SecondaryHoleAngleWidthMin ) * Settings.SecondaryHoleAngleWidthMin;
+			var maxStart = Mathf.FloorToInt ( ( nextStart - range.Width () ) / Settings.SecondaryHoleAngleWidthMin ) * Settings.SecondaryHoleAngleWidthMin;
 			var newStart = RandomHelper.Range ( start, maxStart, Settings.SecondaryHoleAngleWidthMin );
 			platformCircle.Remove ( start );
-			var offset = newStart - start;
-			range.Start += offset;
-			range.End += offset;
+			range = range.Add ( newStart - start );
 			platformCircle.Add ( fragment.Element, range );
 			nextStart = range.Start;
 		}
@@ -108,9 +106,8 @@ public class LevelGenerator : MonoBehaviour {
 	private void GeneratePlatforms ( Transform floorTf, PlatformCircle platformCircle ) {
 		while ( platformCircle.TryFindEmptyRange ( out var emptyRange ) ) {
 			var start = emptyRange.Start;
-			var width = emptyRange.End - start;
 			var platformPrefab = PrefabDatabase
-				.Filter ( PlatformKindFlags.Platform, Settings.PlatformAngleWidthMin, width )
+				.Filter ( PlatformKindFlags.Platform, Settings.PlatformAngleWidthMin, emptyRange.Width () )
 				.OrderByDescending ( p => p.AngleWidth )
 				.FirstOrDefault ();
 			if ( platformPrefab == null ) {

@@ -71,6 +71,10 @@ namespace System.Collections.Generic {
 			return	-1;
 		}
 
+		public void Clear () {
+			fragmentsByStart.Clear ();
+		}
+
 		public bool TryFindEmptyRange ( out Range <TLimit> emptyRange ) {
 			if ( fragmentsByStart.Count == 0 ) {
 				emptyRange = Range.Create ( MinLimit, MaxLimit );
