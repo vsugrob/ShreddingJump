@@ -114,7 +114,7 @@ public class LevelGenerator : MonoBehaviour {
 		// Randomly "shake" hole positions.
 		var nextStart = 360f;
 		var holeFragments = platformCircle.ToArray ();
-		for ( int i = holeFragments.Length - 1 ; i >= 0 ; i-- ) {
+		for ( int i = holeFragments.Length - 1 ; i >= 1 ; i-- ) {
 			nextStart -= Settings.SpaceBetweenHolesMin;
 			var fragment = holeFragments [i];
 			var range = fragment.Range;
