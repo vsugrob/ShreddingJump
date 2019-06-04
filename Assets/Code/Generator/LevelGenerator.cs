@@ -132,9 +132,12 @@ public class LevelGenerator : MonoBehaviour {
 			}
 
 			var newStart = RandomHelper.Range ( start, maxStart, Settings.SecondaryHoleAngleWidthMin );
-			platformCircle.Remove ( start );
-			range = range.Add ( newStart - start );
-			platformCircle.Add ( fragment.Element, range );
+			if ( newStart != start ) {
+				platformCircle.Remove ( start );
+				range = range.Add ( newStart - start );
+				platformCircle.Add ( fragment.Element, range );
+			}
+
 			nextStart = range.Start;
 		}
 	}
