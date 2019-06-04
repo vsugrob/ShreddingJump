@@ -177,12 +177,13 @@ public class LevelGenerator : MonoBehaviour {
 	}
 
 	private Column GenerateColumn ( Transform floorTf, float floorHeight ) {
-		var prefab = PrefabDatabase.PredefinedColumns.FirstOrDefault ();
-		if ( prefab == null ) {
+		var columns = PrefabDatabase.PredefinedColumns;
+		if ( columns.Count == 0 ) {
 			Debug.LogWarning ( $"No suitable column was found at {floorTf.name}." );
 			return	null;
 		}
 
+		var prefab = columns [UnityEngine.Random.Range ( 0, columns.Count )];
 		var column = Instantiate ( prefab, floorTf );
 		var columnTf = column.transform;
 		columnTf.localPosition = Vector3.zero;
