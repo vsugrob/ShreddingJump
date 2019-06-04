@@ -9,26 +9,26 @@ public class LevelGeneratorSettings : ScriptableObject {
 	private float _floorHeightMax = 4.5f;
 	public float FloorHeightMax => _floorHeightMax;
 	[SerializeField]
-	private float _platformAngleWidthMin = 22.5f;
-	public float PlatformAngleWidthMin => _platformAngleWidthMin;
+	private float _platformWidthMin = 22.5f;
+	public float PlatformWidthMin => _platformWidthMin;
 	[SerializeField]
-	private float _mainHoleAngleWidthMin = 45;
-	public float MainHoleAngleWidthMin => _mainHoleAngleWidthMin;
+	private float _mainHoleWidthMin = 45;
+	public float MainHoleWidthMin => _mainHoleWidthMin;
 	[SerializeField]
-	private float _mainHoleAngleWidthMax = 90;
-	public float MainHoleAngleWidthMax => _mainHoleAngleWidthMax;
+	private float _mainHoleWidthMax = 90;
+	public float MainHoleWidthMax => _mainHoleWidthMax;
 	[SerializeField]
-	private float _secondaryHoleAngleWidthMin = 22.5f;
-	public float SecondaryHoleAngleWidthMin => _secondaryHoleAngleWidthMin;
+	private float _secondaryHoleWidthMin = 22.5f;
+	public float SecondaryHoleWidthMin => _secondaryHoleWidthMin;
 	[SerializeField]
 	private float _spaceBetweenHolesMin = 22.5f;
 	public float SpaceBetweenHolesMin => _spaceBetweenHolesMin;
 	[SerializeField]
-	private float _totalHoleAngleWidthMax = 180;
-	public float TotalHoleAngleWidthMax => _totalHoleAngleWidthMax;
+	private float _totalHoleWidthMax = 180;
+	public float TotalHoleWidthMax => _totalHoleWidthMax;
 	[SerializeField]
-	private float _holeAngleWidthStep = 22.5f;
-	public float HoleAngleWidthStep => _holeAngleWidthStep;
+	private float _holeWidthStep = 22.5f;
+	public float HoleWidthStep => _holeWidthStep;
 	[SerializeField]
 	private int _holeCountMin = 1;
 	public int HoleCountMin => _holeCountMin;
