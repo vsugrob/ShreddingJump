@@ -27,6 +27,9 @@ public class FloorRoot : MonoBehaviour {
 	}
 
 	private static void DismantleObject ( Transform childTf ) {
+		if ( childTf.GetComponent <Column> () != null || childTf.GetComponent <NotDismantlable> () != null )
+			return;
+
 		PhysicsHelper.SetAllChildrenKinematic ( childTf );
 		PhysicsHelper.SetAllCollidersEnabled ( childTf, enabled : false );
 		ObjectRemover.StartRemoval ( childTf, GameSettings.Singleton.FloorCompletion );
