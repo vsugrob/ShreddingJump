@@ -89,7 +89,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inputPlaneWidth: 7
-  _fullSwipeRotationDeg: 180
+  _fullSwipeRotationDeg: 360
 --- !u!1 &5764573675329494205
 GameObject:
   m_ObjectHideFlags: 0
