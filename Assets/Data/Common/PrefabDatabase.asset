@@ -46,3 +46,5 @@ MonoBehaviour:
   - {fileID: 93195961, guid: cb6ff8ea59ad95e4eb690e51b25ec517, type: 3}
   - {fileID: 1519442403, guid: 0296e7def2e86ac42b86f56fc5ffd2b7, type: 3}
   - {fileID: 1759789645, guid: 437b0e0186bf9444ca010ce2e815f97b, type: 3}
+  _predefinedColumns:
+  - {fileID: 6842570489401208665, guid: a338e1e5f3ae40b4bbe75815d0139bdd, type: 3}

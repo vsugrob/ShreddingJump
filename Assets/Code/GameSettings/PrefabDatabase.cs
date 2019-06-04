@@ -73,6 +73,12 @@ public class PrefabDatabase : ScriptableObject {
 			return	holesByWidthRo;
 		}
 	}
+	[SerializeField]
+	private List <Column> _predefinedColumns = new List <Column> ();
+	public List <Column> PredefinedColumns {
+		get => _predefinedColumns;
+		set => _predefinedColumns = value;
+	}
 
 	public void Init () {
 		InitHoles ();

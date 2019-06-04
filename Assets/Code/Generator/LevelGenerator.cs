@@ -29,7 +29,7 @@ public class LevelGenerator : MonoBehaviour {
 			var floorTf = floorGo.transform;
 			floorTf.SetParent ( floorContainer );
 			floorTf.position = Vector3.up * floorY;
-			GenerateFloor ( floorTf );
+			GenerateFloor ( floorTf, floorHeight );
 			var floorCompleteTriggerGo = Instantiate ( PrefabDatabase.FloorCompleteTrigger, floorTf );
 			floorCompleteTriggerGo.transform.localPosition = Vector3.zero;
 			floorY -= floorHeight;
@@ -39,10 +39,11 @@ public class LevelGenerator : MonoBehaviour {
 		}
 	}
 
-	private void GenerateFloor ( Transform floorTf ) {
+	private void GenerateFloor ( Transform floorTf, float floorHeight ) {
 		var platformCircle = new PlatformCircle ();
 		GenerateHoles ( floorTf, platformCircle );
 		GeneratePlatforms ( floorTf, platformCircle );
+		GenerateColumn ( floorTf, floorHeight );
 	}
 
 	private void GenerateHoles ( Transform floorTf, PlatformCircle platformCircle ) {
@@ -173,5 +174,21 @@ public class LevelGenerator : MonoBehaviour {
 		platform.transform.localPosition = Vector3.zero;
 		platform.StartAngleWorld = startAngle;
 		return	platform;
+	}
+
+	private Column GenerateColumn ( Transform floorTf, float floorHeight ) {
+		var prefab = PrefabDatabase.PredefinedColumns.FirstOrDefault ();
+		if ( prefab == null ) {
+			Debug.LogWarning ( $"No suitable column was found at {floorTf.name}." );
+			return	null;
+		}
+
+		var column = Instantiate ( prefab, floorTf );
+		var columnTf = column.transform;
+		columnTf.localPosition = Vector3.zero;
+		var scale = columnTf.localScale;
+		scale.y = floorHeight / column.InitialHeight;
+		columnTf.localScale = scale;
+		return	column;
 	}
 }
