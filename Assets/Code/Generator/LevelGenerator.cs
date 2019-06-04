@@ -55,22 +55,26 @@ public class LevelGenerator : MonoBehaviour {
 		}
 	}
 
-	private void AddHoles ( PlatformCircle platformCircle, int holeCount ) {
+	private int AddHoles ( PlatformCircle platformCircle, int holeCount ) {
 		var totalWidth = Settings.TotalHoleAngleWidthMax;
 		// Add main hole.
 		var holeBaseAngle = 0f;
 		AddHole ( platformCircle, ref holeBaseAngle, ref totalWidth, Settings.MainHoleAngleWidthMin, Settings.MainHoleAngleWidthMax );
 		// Add secondary holes.
+		int actualCount = 1;
 		var holesLeft = holeCount;
 		while ( --holesLeft > 0 ) {
 			// Reserve some width for the rest of the holes.
 			var minTotalWidthForOtherHoles = holesLeft * Settings.SecondaryHoleAngleWidthMin;
 			var maxWidth = totalWidth - minTotalWidthForOtherHoles;
 			if ( maxWidth < Settings.SecondaryHoleAngleWidthMin )
-				break;
+				continue;	// Too many holes, it's not possible to fit them all.
 
 			AddHole ( platformCircle, ref holeBaseAngle, ref totalWidth, Settings.SecondaryHoleAngleWidthMin, maxWidth );
+			actualCount++;
 		}
+
+		return	actualCount;
 	}
 
 	private bool AddHole ( PlatformCircle platformCircle, ref float baseAngle, ref float totalWidth, float minWidth, float maxWidth ) {
