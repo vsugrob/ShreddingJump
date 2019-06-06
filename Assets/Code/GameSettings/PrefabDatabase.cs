@@ -19,59 +19,10 @@ public class PrefabDatabase : ScriptableObject {
 		set => _floorCompleteTrigger = value;
 	}
 	[SerializeField]
-	private float _holeStartAngleWidth = 22.5f;
-	public float HoleStartAngleWidth {
-		get => _holeStartAngleWidth;
-		set => _holeStartAngleWidth = value;
-	}
-	[SerializeField]
-	private float _holeEndAngleWidth = 360;
-	public float HoleEndAngleWidth {
-		get => _holeEndAngleWidth;
-		set => _holeEndAngleWidth = value;
-	}
-	[SerializeField]
-	private float _holeAngleWidthStep = 22.5f;
-	public float HoleAngleWidthStep {
-		get => _holeAngleWidthStep;
-		set => _holeAngleWidthStep = value;
-	}
-	[SerializeField]
 	private List <Platform> _predefinedPlatforms = new List <Platform> ();
 	public List <Platform> PredefinedPlatforms {
 		get => _predefinedPlatforms;
 		set => _predefinedPlatforms = value;
-	}
-	private List <Platform> allPlatforms = new List <Platform> ();
-	private ReadOnlyCollection <Platform> allPlatformsRo = null;
-	public ReadOnlyCollection <Platform> AllPlatforms {
-		get {
-			if ( allPlatformsVersion < 0 )
-				InitHoles ();
-
-			if ( allPlatformsVersion != version ) {
-				allPlatforms.Clear ();
-				allPlatforms.AddRange ( PredefinedPlatforms.Concat ( holesByWidth.Values ) );
-				allPlatformsVersion = version;
-			}
-
-			if ( allPlatformsRo == null )
-				allPlatformsRo = new ReadOnlyCollection <Platform> ( allPlatforms );
-
-			return	allPlatformsRo;
-		}
-	}
-	private int allPlatformsVersion = -1;
-	private int version = 0;
-	private Dictionary <float, Platform> holesByWidth = new Dictionary <float, Platform> ();
-	private ReadOnlyDictionary <float, Platform> holesByWidthRo;
-	public ReadOnlyDictionary <float, Platform> HolesByWidth {
-		get {
-			if ( holesByWidthRo == null )
-				holesByWidthRo = new ReadOnlyDictionary <float, Platform> ( holesByWidth );
-
-			return	holesByWidthRo;
-		}
 	}
 	[SerializeField]
 	private List <Column> _predefinedColumns = new List <Column> ();
@@ -80,61 +31,8 @@ public class PrefabDatabase : ScriptableObject {
 		set => _predefinedColumns = value;
 	}
 
-	public void Init () {
-		InitHoles ();
-	}
-
-	public void InitHoles () {
-		InitHoles ( HoleStartAngleWidth, HoleEndAngleWidth, HoleAngleWidthStep );
-	}
-
-	public void InitHoles ( float startAngleWidth, float endAngleWidth, float step ) {
-		if ( endAngleWidth <= startAngleWidth )
-			throw new ArgumentException ( $"{nameof ( endAngleWidth )} must be greater than {nameof ( startAngleWidth )}.", nameof ( endAngleWidth ) );
-		else if ( step <= float.Epsilon )
-			throw new ArgumentException ( $"{nameof ( step )} must be greater than 0.", nameof ( step ) );
-
-		holesByWidth.Clear ();
-		for ( float width = startAngleWidth ; width < endAngleWidth ; width += step ) {
-			AddHole ( width );
-		}
-
-		AddHole ( endAngleWidth );
-	}
-
-	public void InitHoles ( params float [] angleWidths ) {
-		InitHoles ( ( IEnumerable <float> ) angleWidths );
-	}
-
-	public void InitHoles ( IEnumerable <float> angleWidths ) {
-		holesByWidth.Clear ();
-		foreach ( var angleWidth in angleWidths ) {
-			if ( holesByWidth.TryGetValue ( angleWidth, out var platform ) )
-				continue;
-
-			AddHole ( angleWidth );
-		}
-	}
-
-	public bool AddHole ( float angleWidth ) {
-		var existingHole = PredefinedPlatforms.FirstOrDefault ( p => p.Kind == PlatformKindFlags.Hole && p.AngleWidth == angleWidth );
-		if ( existingHole != null )
-			return	false;
-
-		// TODO: group holes under RuntimeObjects root.
-		var platformGo = new GameObject ( $"Hole{angleWidth}", typeof ( Platform ) );
-		platformGo.transform.position = Vector3.right * 1e4f;		// Move it out of sight.
-		var platform = platformGo.GetComponent <Platform> ();
-		platform.Kind = PlatformKindFlags.Hole;
-		platform.StartAngle = 0;
-		platform.EndAngle = angleWidth;
-		holesByWidth.Add ( angleWidth, platform );
-		version++;
-		return	true;
-	}
-
 	public IEnumerable <Platform> Filter ( Func <Platform, bool> predicate ) {
-		return	AllPlatforms.Where ( p => p != null && predicate ( p ) );
+		return	PredefinedPlatforms.Where ( p => p != null && predicate ( p ) );
 	}
 
 	public IEnumerable <Platform> Filter ( PlatformKindFlags requiredFlags ) {

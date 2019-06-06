@@ -28,7 +28,6 @@ public class LevelController : MonoBehaviour {
 		if ( generator == null )
 			return;
 
-		generator.PrefabDatabase.Init ();
 		DestroyChildren ( FloorsContainer );
 		var dummyFloorGo = CreateDummyFloor ();
 		var generatorEn = generator
