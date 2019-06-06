@@ -17,7 +17,7 @@ public class LevelGenerator : MonoBehaviour {
 		set => _prefabDatabase = value;
 	}
 
-	public IEnumerable <GameObject> Generate ( GameObject prevFloor, int nextFloorIndex = 0 ) {
+	public IEnumerable <FloorRoot> Generate ( FloorRoot prevFloor, int nextFloorIndex = 0 ) {
 		var floorHeight = UnityEngine.Random.Range ( Settings.FloorHeightMin, Settings.FloorHeightMax );
 		var prevFloorTf = prevFloor.transform;
 		var floorY = prevFloorTf.position.y - floorHeight;
@@ -34,7 +34,7 @@ public class LevelGenerator : MonoBehaviour {
 			floorY -= floorHeight;
 			i++;
 			nextFloorIndex++;
-			yield return floorRoot.gameObject;
+			yield return floorRoot;
 		}
 	}
 
