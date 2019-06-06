@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7251e5dcbb8e3fa49b5db32848ced09a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _kind: 2
+  _kind: 18
   _startAngle: -360
   _endAngle: 0
   _height: 0.5

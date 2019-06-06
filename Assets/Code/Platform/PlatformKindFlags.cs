@@ -7,5 +7,6 @@ public enum PlatformKindFlags {
 	Hole			= 1 << 1,
 	KillerObstacle	= 1 << 2,
 	Wall			= 1 << 3,
+	Main			= 1 << 4,
 	All				= -1,
 }

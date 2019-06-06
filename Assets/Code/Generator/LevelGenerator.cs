@@ -61,7 +61,7 @@ public class LevelGenerator : MonoBehaviour {
 		var totalWidth = Settings.TotalHoleWidthMax;
 		// Add main hole.
 		var holeBaseAngle = 0f;
-		AddHole ( containerTf, platformCircle, ref holeBaseAngle, ref totalWidth, Settings.MainHoleWidthMin, Settings.MainHoleWidthMax );
+		AddHole ( containerTf, platformCircle, ref holeBaseAngle, ref totalWidth, Settings.MainHoleWidthMin, Settings.MainHoleWidthMax, isMain : true );
 		// Add secondary holes.
 		int actualCount = 1;
 		var holesLeft = holeCount;
@@ -72,7 +72,7 @@ public class LevelGenerator : MonoBehaviour {
 			if ( maxWidth < Settings.SecondaryHoleWidthMin )
 				continue;	// Too many holes, it's not possible to fit them all.
 
-			AddHole ( containerTf, platformCircle, ref holeBaseAngle, ref totalWidth, Settings.SecondaryHoleWidthMin, maxWidth );
+			AddHole ( containerTf, platformCircle, ref holeBaseAngle, ref totalWidth, Settings.SecondaryHoleWidthMin, maxWidth, isMain : false );
 			actualCount++;
 		}
 
@@ -82,13 +82,18 @@ public class LevelGenerator : MonoBehaviour {
 	private bool AddHole (
 		Transform containerTf, PlatformCircle platformCircle,
 		ref float baseAngle, ref float totalWidth,
-		float minWidth, float maxWidth
+		float minWidth, float maxWidth,
+		bool isMain
 	) {
 		var desiredWidth = RandomHelper.Range ( minWidth, maxWidth, Settings.HoleWidthStep );
 		if ( desiredWidth > totalWidth )
 			desiredWidth = totalWidth;
 
-		var holePrefab = PrefabDatabase.Filter ( PlatformKindFlags.Hole, desiredWidth, desiredWidth ).FirstOrDefault ();
+		var flags = PlatformKindFlags.Hole;
+		if ( isMain )
+			flags |= PlatformKindFlags.Main;
+
+		var holePrefab = PrefabDatabase.Filter ( flags, desiredWidth, desiredWidth ).FirstOrDefault ();
 		if ( holePrefab == null )
 			return	false;
 
