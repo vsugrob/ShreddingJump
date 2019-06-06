@@ -23,6 +23,6 @@ MonoBehaviour:
   _holeWidthStep: 22.5
   _holeCountMin: 1
   _holeCountMax: 4
-  _baseAngleOffsetMin: -22.5
-  _baseAngleOffsetMax: 22.5
+  _baseAngleOffsetMin: -67.5
+  _baseAngleOffsetMax: 67.5
   _baseAngleOffsetStep: 22.5
