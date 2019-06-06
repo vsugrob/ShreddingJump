@@ -14,12 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _floorHeightMin: 3
   _floorHeightMax: 4.5
-  _platformAngleWidthMin: 22.5
-  _mainHoleAngleWidthMin: 22.5
-  _mainHoleAngleWidthMax: 90
-  _secondaryHoleAngleWidthMin: 22.5
+  _platformWidthMin: 22.5
+  _mainHoleWidthMin: 45
+  _mainHoleWidthMax: 90
+  _secondaryHoleWidthMin: 22.5
   _spaceBetweenHolesMin: 22.5
-  _totalHoleAngleWidthMax: 180
-  _holeAngleWidthStep: 22.5
+  _totalHoleWidthMax: 180
+  _holeWidthStep: 22.5
   _holeCountMin: 1
   _holeCountMax: 4
+  _baseAngleOffsetMin: -22.5
+  _baseAngleOffsetMax: 22.5
+  _baseAngleOffsetStep: 22.5
