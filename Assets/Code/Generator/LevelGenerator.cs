@@ -32,7 +32,7 @@ public class LevelGenerator : MonoBehaviour {
 			var platformsContainerGo = new GameObject ( $"{nameof ( PlatformContainer )}{baseAngle}", typeof ( PlatformContainer ) );
 			var platformsContainerTf = platformsContainerGo.transform;
 			platformsContainerTf.SetParent ( floorTf, worldPositionStays : false );
-			GenerateFloor ( platformsContainerTf, floorHeight );
+			GenerateFloor ( floorTf, platformsContainerTf, floorHeight );
 			var floorCompleteTriggerGo = Instantiate ( PrefabDatabase.FloorCompleteTrigger, floorTf );
 			floorCompleteTriggerGo.transform.localPosition = Vector3.zero;
 			floorY -= floorHeight;
@@ -42,11 +42,11 @@ public class LevelGenerator : MonoBehaviour {
 		}
 	}
 
-	private void GenerateFloor ( Transform containerTf, float floorHeight ) {
+	private void GenerateFloor ( Transform floorTf, Transform platformContainerTf, float floorHeight ) {
 		var platformCircle = new PlatformCircle ();
-		GenerateHoles ( containerTf, platformCircle );
-		GeneratePlatforms ( containerTf, platformCircle );
-		GenerateColumn ( containerTf, floorHeight );
+		GenerateHoles ( platformContainerTf, platformCircle );
+		GeneratePlatforms ( platformContainerTf, platformCircle );
+		GenerateColumn ( floorTf, floorHeight );
 	}
 
 	private void GenerateHoles ( Transform containerTf, PlatformCircle platformCircle ) {
