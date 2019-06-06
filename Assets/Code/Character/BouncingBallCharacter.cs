@@ -164,7 +164,7 @@ public class BouncingBallCharacter : MonoBehaviour {
 		if ( IsMeteor ) {
 			// Meteor crushes floor it hits.
 			CrushSound.PlayOneShot ( audioSource );
-			FloorRoot.TryDismantleFloor ( gameObject );
+			FloorRoot.TryDismantle ( gameObject );
 		} else {
 			var obstacle = gameObject.GetComponentInParent <KillerObstacle> ();
 			if ( obstacle != null ) {

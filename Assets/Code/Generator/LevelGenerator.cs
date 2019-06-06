@@ -29,7 +29,10 @@ public class LevelGenerator : MonoBehaviour {
 			var floorTf = floorGo.transform;
 			floorTf.SetParent ( floorContainer );
 			floorTf.position = Vector3.up * floorY;
-			GenerateFloor ( floorTf, floorHeight );
+			var platformsContainerGo = new GameObject ( $"{nameof ( PlatformContainer )}{baseAngle}", typeof ( PlatformContainer ) );
+			var platformsContainerTf = platformsContainerGo.transform;
+			platformsContainerTf.SetParent ( floorTf, worldPositionStays : false );
+			GenerateFloor ( platformsContainerTf, floorHeight );
 			var floorCompleteTriggerGo = Instantiate ( PrefabDatabase.FloorCompleteTrigger, floorTf );
 			floorCompleteTriggerGo.transform.localPosition = Vector3.zero;
 			floorY -= floorHeight;
@@ -39,20 +42,20 @@ public class LevelGenerator : MonoBehaviour {
 		}
 	}
 
-	private void GenerateFloor ( Transform floorTf, float floorHeight ) {
+	private void GenerateFloor ( Transform containerTf, float floorHeight ) {
 		var platformCircle = new PlatformCircle ();
-		GenerateHoles ( floorTf, platformCircle );
-		GeneratePlatforms ( floorTf, platformCircle );
-		GenerateColumn ( floorTf, floorHeight );
+		GenerateHoles ( containerTf, platformCircle );
+		GeneratePlatforms ( containerTf, platformCircle );
+		GenerateColumn ( containerTf, floorHeight );
 	}
 
-	private void GenerateHoles ( Transform floorTf, PlatformCircle platformCircle ) {
+	private void GenerateHoles ( Transform containerTf, PlatformCircle platformCircle ) {
 		var holeCount = UnityEngine.Random.Range ( Settings.HoleCountMin, Settings.HoleCountMax + 1 );
 		if ( holeCount > 0 ) {
 			AddHoles ( platformCircle, holeCount );
 			SeparateHoles ( platformCircle );
 			ShakeHoles ( platformCircle );
-			MaterializeHoles ( floorTf, platformCircle );
+			MaterializeHoles ( containerTf, platformCircle );
 		}
 	}
 
@@ -143,14 +146,14 @@ public class LevelGenerator : MonoBehaviour {
 		}
 	}
 
-	private void MaterializeHoles ( Transform floorTf, PlatformCircle platformCircle ) {
+	private void MaterializeHoles ( Transform containerTf, PlatformCircle platformCircle ) {
 		foreach ( var fragment in platformCircle ) {
-			var hole = InstantiatePlatform ( fragment.Element, fragment.Range.Start, floorTf );
+			var hole = InstantiatePlatform ( fragment.Element, fragment.Range.Start, containerTf );
 			fragment.Element = hole;
 		}
 	}
 
-	private void GeneratePlatforms ( Transform floorTf, PlatformCircle platformCircle ) {
+	private void GeneratePlatforms ( Transform containerTf, PlatformCircle platformCircle ) {
 		while ( platformCircle.TryFindEmptyRange ( out var emptyRange ) ) {
 			var start = emptyRange.Start;
 			var platformPrefab = PrefabDatabase
@@ -158,13 +161,13 @@ public class LevelGenerator : MonoBehaviour {
 				.OrderByDescending ( p => p.AngleWidth )
 				.FirstOrDefault ();
 			if ( platformPrefab == null ) {
-				Debug.LogWarning ( $"No suitable platform was found for the range {emptyRange} at {floorTf.name}." );
+				Debug.LogWarning ( $"No suitable platform was found for the range {emptyRange} at {containerTf.name}." );
 				// Fill whole range to not revisit it in the next iteration.
 				platformCircle.Add ( null, emptyRange );
 				continue;
 			}
 
-			var platform = InstantiatePlatform ( platformPrefab, start, floorTf );
+			var platform = InstantiatePlatform ( platformPrefab, start, containerTf );
 			platformCircle.Add ( platform, start, start + platform.AngleWidth );
 		}
 	}
@@ -176,15 +179,15 @@ public class LevelGenerator : MonoBehaviour {
 		return	platform;
 	}
 
-	private Column GenerateColumn ( Transform floorTf, float floorHeight ) {
+	private Column GenerateColumn ( Transform containerTf, float floorHeight ) {
 		var columns = PrefabDatabase.PredefinedColumns;
 		if ( columns.Count == 0 ) {
-			Debug.LogWarning ( $"No suitable column was found at {floorTf.name}." );
+			Debug.LogWarning ( $"No suitable column was found at {containerTf.name}." );
 			return	null;
 		}
 
 		var prefab = columns [UnityEngine.Random.Range ( 0, columns.Count )];
-		var column = Instantiate ( prefab, floorTf );
+		var column = Instantiate ( prefab, containerTf );
 		var columnTf = column.transform;
 		columnTf.localPosition = Vector3.zero;
 		var scale = columnTf.localScale;

@@ -1,16 +1,34 @@
 ﻿using UnityEngine;
 
 public class FloorRoot : MonoBehaviour {
-	public static bool TryGetFloorRoot ( GameObject floorChildObject, out FloorRoot floorRoot ) {
+	public static bool FindRoot ( GameObject floorChildObject, out FloorRoot floorRoot ) {
 		floorRoot = floorChildObject.GetComponentInParent <FloorRoot> ();
 		return	floorRoot != null;
 	}
 
-	public static bool TryDismantleFloor ( GameObject floorChildObject ) {
-		if ( !TryGetFloorRoot ( floorChildObject, out var floorRoot ) )
+	public bool FindPlatformContainer ( out PlatformContainer container ) {
+		var count = transform.childCount;
+		for ( int i = 0 ; i < count ; i++ ) {
+			var childTf = transform.GetChild ( i );
+			container = childTf.GetComponent <PlatformContainer> ();
+			if ( container != null )
+				return	true;
+		}
+
+		container = null;
+		return	false;
+	}
+
+	public static bool FindPlatformContainer ( GameObject floorChildObject, out PlatformContainer container ) {
+		container = null;
+		return	FindRoot ( floorChildObject, out var floorRoot ) && floorRoot.FindPlatformContainer ( out container );
+	}
+
+	public static bool TryDismantle ( GameObject floorChildObject ) {
+		if ( !FindPlatformContainer ( floorChildObject, out var container ) )
 			return	false;
 
-		DismantleChildren ( floorRoot.transform );
+		DismantleChildren ( container.transform );
 		return	true;
 	}
 

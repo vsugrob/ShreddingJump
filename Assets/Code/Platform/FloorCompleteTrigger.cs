@@ -7,6 +7,6 @@ public class FloorCompleteTrigger : MonoBehaviour {
 			return;
 
 		character.OnFloorComplete ( this );
-		FloorRoot.TryDismantleFloor ( gameObject );
+		FloorRoot.TryDismantle ( gameObject );
 	}
 }
