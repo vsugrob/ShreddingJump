@@ -35,4 +35,13 @@ public class LevelGeneratorSettings : ScriptableObject {
 	[SerializeField]
 	private int _holeCountMax = 3;
 	public int HoleCountMax => _holeCountMax;
+	[SerializeField]
+	private float _baseAngleOffsetMin = 0;
+	public float BaseAngleOffsetMin => _baseAngleOffsetMin;
+	[SerializeField]
+	private float _baseAngleOffsetMax = 60;
+	public float BaseAngleOffsetMax => _baseAngleOffsetMax;
+	[SerializeField]
+	private float _baseAngleOffsetStep = 22.5f;
+	public float BaseAngleOffsetStep => _baseAngleOffsetStep;
 }

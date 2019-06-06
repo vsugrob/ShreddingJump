@@ -17,42 +17,42 @@ public class LevelGenerator : MonoBehaviour {
 		set => _prefabDatabase = value;
 	}
 
-	public IEnumerable <GameObject> Generate ( GameObject prevFloor, int nextFloorIndex = 0 ) {
+	public IEnumerable <FloorRoot> Generate ( FloorRoot prevFloor, int nextFloorIndex = 0 ) {
 		var floorHeight = UnityEngine.Random.Range ( Settings.FloorHeightMin, Settings.FloorHeightMax );
 		var prevFloorTf = prevFloor.transform;
 		var floorY = prevFloorTf.position.y - floorHeight;
 		var floorContainer = prevFloorTf.parent;
-		var baseAngle = 260;
-		int i = 0;
+		var baseAngle = 0f;
+		var i = 0;
 		while ( true ) {
-			var floorGo = new GameObject ( $"Floor ({nextFloorIndex})", typeof ( FloorRoot ) );
-			var floorTf = floorGo.transform;
-			floorTf.SetParent ( floorContainer );
-			floorTf.position = Vector3.up * floorY;
-			GenerateFloor ( floorTf, floorHeight );
+			var floorRoot = FloorRoot.Create ( floorContainer, nextFloorIndex, floorY );
+			var floorTf = floorRoot.transform;
+			var platformsContainer = PlatformContainer.Create ( floorTf, baseAngle );
+			GenerateFloor ( floorTf, platformsContainer.transform, floorHeight );
 			var floorCompleteTriggerGo = Instantiate ( PrefabDatabase.FloorCompleteTrigger, floorTf );
 			floorCompleteTriggerGo.transform.localPosition = Vector3.zero;
 			floorY -= floorHeight;
+			baseAngle += RandomHelper.Range ( Settings.BaseAngleOffsetMin, Settings.BaseAngleOffsetMax, Settings.BaseAngleOffsetStep );
 			i++;
 			nextFloorIndex++;
-			yield return floorGo;
+			yield return floorRoot;
 		}
 	}
 
-	private void GenerateFloor ( Transform floorTf, float floorHeight ) {
+	private void GenerateFloor ( Transform floorTf, Transform platformContainerTf, float floorHeight ) {
 		var platformCircle = new PlatformCircle ();
-		GenerateHoles ( floorTf, platformCircle );
-		GeneratePlatforms ( floorTf, platformCircle );
+		GenerateHoles ( platformContainerTf, platformCircle );
+		GeneratePlatforms ( platformContainerTf, platformCircle );
 		GenerateColumn ( floorTf, floorHeight );
 	}
 
-	private void GenerateHoles ( Transform floorTf, PlatformCircle platformCircle ) {
+	private void GenerateHoles ( Transform containerTf, PlatformCircle platformCircle ) {
 		var holeCount = UnityEngine.Random.Range ( Settings.HoleCountMin, Settings.HoleCountMax + 1 );
 		if ( holeCount > 0 ) {
 			AddHoles ( platformCircle, holeCount );
 			SeparateHoles ( platformCircle );
 			ShakeHoles ( platformCircle );
-			MaterializeHoles ( floorTf, platformCircle );
+			MaterializeHoles ( containerTf, platformCircle );
 		}
 	}
 
@@ -143,14 +143,14 @@ public class LevelGenerator : MonoBehaviour {
 		}
 	}
 
-	private void MaterializeHoles ( Transform floorTf, PlatformCircle platformCircle ) {
+	private void MaterializeHoles ( Transform containerTf, PlatformCircle platformCircle ) {
 		foreach ( var fragment in platformCircle ) {
-			var hole = InstantiatePlatform ( fragment.Element, fragment.Range.Start, floorTf );
+			var hole = InstantiatePlatform ( fragment.Element, fragment.Range.Start, containerTf );
 			fragment.Element = hole;
 		}
 	}
 
-	private void GeneratePlatforms ( Transform floorTf, PlatformCircle platformCircle ) {
+	private void GeneratePlatforms ( Transform containerTf, PlatformCircle platformCircle ) {
 		while ( platformCircle.TryFindEmptyRange ( out var emptyRange ) ) {
 			var start = emptyRange.Start;
 			var platformPrefab = PrefabDatabase
@@ -158,13 +158,13 @@ public class LevelGenerator : MonoBehaviour {
 				.OrderByDescending ( p => p.AngleWidth )
 				.FirstOrDefault ();
 			if ( platformPrefab == null ) {
-				Debug.LogWarning ( $"No suitable platform was found for the range {emptyRange} at {floorTf.name}." );
+				Debug.LogWarning ( $"No suitable platform was found for the range {emptyRange} at {containerTf.name}." );
 				// Fill whole range to not revisit it in the next iteration.
 				platformCircle.Add ( null, emptyRange );
 				continue;
 			}
 
-			var platform = InstantiatePlatform ( platformPrefab, start, floorTf );
+			var platform = InstantiatePlatform ( platformPrefab, start, containerTf );
 			platformCircle.Add ( platform, start, start + platform.AngleWidth );
 		}
 	}
@@ -172,19 +172,19 @@ public class LevelGenerator : MonoBehaviour {
 	private static Platform InstantiatePlatform ( Platform prefab, float startAngle, Transform parent ) {
 		var platform = Instantiate ( prefab, parent );
 		platform.transform.localPosition = Vector3.zero;
-		platform.StartAngleWorld = startAngle;
+		platform.StartAngleLocal = startAngle;
 		return	platform;
 	}
 
-	private Column GenerateColumn ( Transform floorTf, float floorHeight ) {
+	private Column GenerateColumn ( Transform containerTf, float floorHeight ) {
 		var columns = PrefabDatabase.PredefinedColumns;
 		if ( columns.Count == 0 ) {
-			Debug.LogWarning ( $"No suitable column was found at {floorTf.name}." );
+			Debug.LogWarning ( $"No suitable column was found at {containerTf.name}." );
 			return	null;
 		}
 
 		var prefab = columns [UnityEngine.Random.Range ( 0, columns.Count )];
-		var column = Instantiate ( prefab, floorTf );
+		var column = Instantiate ( prefab, containerTf );
 		var columnTf = column.transform;
 		columnTf.localPosition = Vector3.zero;
 		var scale = columnTf.localScale;

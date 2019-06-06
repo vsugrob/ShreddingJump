@@ -45,12 +45,8 @@ public class LevelController : MonoBehaviour {
 		}
 	}
 
-	private GameObject CreateDummyFloor () {
+	private FloorRoot CreateDummyFloor () {
 		var rooftopY = Character.transform.position.y + Character.JumpHeight / 2;
-		var floorGo = new GameObject ( "DummyFloor" );
-		var floorTf = floorGo.transform;
-		floorTf.position = Vector3.up * rooftopY;
-		floorTf.parent = FloorsContainer;
-		return	floorGo;
+		return	FloorRoot.Create ( FloorsContainer, -1, rooftopY );
 	}
 }
