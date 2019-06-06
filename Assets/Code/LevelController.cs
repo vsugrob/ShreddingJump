@@ -47,6 +47,6 @@ public class LevelController : MonoBehaviour {
 
 	private FloorRoot CreateDummyFloor () {
 		var rooftopY = Character.transform.position.y + Character.JumpHeight / 2;
-		return	FloorRoot.Create ( FloorsContainer, 0, rooftopY );
+		return	FloorRoot.Create ( FloorsContainer, -1, rooftopY );
 	}
 }
