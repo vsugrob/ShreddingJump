@@ -9,7 +9,7 @@ public static class RandomHelper {
 			throw new ArgumentException ( $"{nameof ( step )} must be greater than 0.", nameof ( step ) );
 
 		var width = max - min;
-		var count = Mathf.CeilToInt ( width / step ) + 1;
+		var count = Mathf.CeilToInt ( width / step );
 		var r = UnityEngine.Random.Range ( 0, count + 1 );
 		return	Mathf.Clamp ( r * step + min, min, max );
 	}
