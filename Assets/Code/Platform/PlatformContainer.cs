@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 public class PlatformContainer : MonoBehaviour {
-	public float Angle {
+	public float AngleLocal {
 		get => transform.localEulerAngles.y;
 		set {
 			var euler = transform.localEulerAngles;
@@ -14,6 +14,8 @@ public class PlatformContainer : MonoBehaviour {
 		var gameObject = new GameObject ( $"{nameof ( PlatformContainer )}{angle}", typeof ( PlatformContainer ) );
 		var tf = gameObject.transform;
 		tf.SetParent ( parentTf, worldPositionStays : false );
-		return	gameObject.GetComponent <PlatformContainer> ();
+		var container = gameObject.GetComponent <PlatformContainer> ();
+		container.AngleLocal = angle;
+		return	container;
 	}
 }

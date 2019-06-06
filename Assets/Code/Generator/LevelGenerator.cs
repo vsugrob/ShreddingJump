@@ -22,8 +22,8 @@ public class LevelGenerator : MonoBehaviour {
 		var prevFloorTf = prevFloor.transform;
 		var floorY = prevFloorTf.position.y - floorHeight;
 		var floorContainer = prevFloorTf.parent;
-		var baseAngle = 260;
-		int i = 0;
+		var baseAngle = 0f;
+		var i = 0;
 		while ( true ) {
 			var floorRoot = FloorRoot.Create ( floorContainer, nextFloorIndex, floorY );
 			var floorTf = floorRoot.transform;
@@ -32,6 +32,7 @@ public class LevelGenerator : MonoBehaviour {
 			var floorCompleteTriggerGo = Instantiate ( PrefabDatabase.FloorCompleteTrigger, floorTf );
 			floorCompleteTriggerGo.transform.localPosition = Vector3.zero;
 			floorY -= floorHeight;
+			baseAngle += RandomHelper.Range ( Settings.BaseAngleOffsetMin, Settings.BaseAngleOffsetMax, Settings.BaseAngleOffsetStep );
 			i++;
 			nextFloorIndex++;
 			yield return floorRoot;
@@ -171,7 +172,7 @@ public class LevelGenerator : MonoBehaviour {
 	private static Platform InstantiatePlatform ( Platform prefab, float startAngle, Transform parent ) {
 		var platform = Instantiate ( prefab, parent );
 		platform.transform.localPosition = Vector3.zero;
-		platform.StartAngleWorld = startAngle;
+		platform.StartAngleLocal = startAngle;
 		return	platform;
 	}
 
