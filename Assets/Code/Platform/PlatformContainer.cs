@@ -9,4 +9,11 @@ public class PlatformContainer : MonoBehaviour {
 			transform.localEulerAngles = euler;
 		}
 	}
+
+	public static PlatformContainer Create ( Transform parentTf, float angle ) {
+		var gameObject = new GameObject ( $"{nameof ( PlatformContainer )}{angle}", typeof ( PlatformContainer ) );
+		var tf = gameObject.transform;
+		tf.SetParent ( parentTf, worldPositionStays : false );
+		return	gameObject.GetComponent <PlatformContainer> ();
+	}
 }

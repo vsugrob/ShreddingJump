@@ -1,6 +1,14 @@
 ﻿using UnityEngine;
 
 public class FloorRoot : MonoBehaviour {
+	public static FloorRoot Create ( Transform parent, int index, float floorY ) {
+		var gameObject = new GameObject ( $"Floor ({index})", typeof ( FloorRoot ) );
+		var tf = gameObject.transform;
+		tf.SetParent ( parent );
+		tf.position = Vector3.up * floorY;
+		return	gameObject.GetComponent <FloorRoot> ();
+	}
+
 	public static bool FindRoot ( GameObject floorChildObject, out FloorRoot floorRoot ) {
 		floorRoot = floorChildObject.GetComponentInParent <FloorRoot> ();
 		return	floorRoot != null;

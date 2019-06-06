@@ -25,20 +25,16 @@ public class LevelGenerator : MonoBehaviour {
 		var baseAngle = 260;
 		int i = 0;
 		while ( true ) {
-			var floorGo = new GameObject ( $"Floor ({nextFloorIndex})", typeof ( FloorRoot ) );
-			var floorTf = floorGo.transform;
-			floorTf.SetParent ( floorContainer );
-			floorTf.position = Vector3.up * floorY;
-			var platformsContainerGo = new GameObject ( $"{nameof ( PlatformContainer )}{baseAngle}", typeof ( PlatformContainer ) );
-			var platformsContainerTf = platformsContainerGo.transform;
-			platformsContainerTf.SetParent ( floorTf, worldPositionStays : false );
-			GenerateFloor ( floorTf, platformsContainerTf, floorHeight );
+			var floorRoot = FloorRoot.Create ( floorContainer, nextFloorIndex, floorY );
+			var floorTf = floorRoot.transform;
+			var platformsContainer = PlatformContainer.Create ( floorTf, baseAngle );
+			GenerateFloor ( floorTf, platformsContainer.transform, floorHeight );
 			var floorCompleteTriggerGo = Instantiate ( PrefabDatabase.FloorCompleteTrigger, floorTf );
 			floorCompleteTriggerGo.transform.localPosition = Vector3.zero;
 			floorY -= floorHeight;
 			i++;
 			nextFloorIndex++;
-			yield return floorGo;
+			yield return floorRoot.gameObject;
 		}
 	}
 
