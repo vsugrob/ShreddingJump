@@ -86,11 +86,6 @@ namespace System.Collections.Generic {
 		}
 
 		public bool TryFindEmptyRange ( out Range <TLimit> emptyRange ) {
-			if ( fragmentsByStart.Count == 0 ) {
-				emptyRange = Range.Create ( MinLimit, MaxLimit );
-				return	true;
-			}
-
 			var prevRangeEnd = MinLimit;
 			var fragments = fragmentsByStart.Values;
 			for ( int i = 0 ; i < fragments.Count ; i++ ) {
@@ -104,10 +99,8 @@ namespace System.Collections.Generic {
 				prevRangeEnd = range.End;
 			}
 
-			var lastRange = fragments [fragments.Count - 1].Range;
-			var lastRangeEnd = lastRange.End;
-			if ( lastRangeEnd.CompareTo ( MaxLimit ) < 0 ) {
-				emptyRange = Range.Create ( lastRangeEnd, MaxLimit );
+			if ( prevRangeEnd.CompareTo ( MaxLimit ) < 0 ) {
+				emptyRange = Range.Create ( prevRangeEnd, MaxLimit );
 				return	true;
 			}
 
