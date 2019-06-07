@@ -25,5 +25,11 @@
 			range.End /= dividend;
 			return	range;
 		}
+
+		public static Range <float> Grow ( this Range <float> range, float delta ) {
+			range.Start -= delta;
+			range.End += delta;
+			return	range;
+		}
 	}
 }

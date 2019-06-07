@@ -42,7 +42,10 @@ public class LevelGenerator : MonoBehaviour {
 	private void GenerateFloor ( Transform floorTf, Transform platformContainerTf, float floorHeight ) {
 		var platformCircle = new PlatformCircle ();
 		GenerateHoles ( platformContainerTf, platformCircle );
+		var holeInversionRanges = platformCircle.GetAllEmptyRanges ();
 		GeneratePlatforms ( platformContainerTf, platformCircle );
+		var obstacleCircle = new PlatformCircle ();
+		GenerateHorzObstacles ( platformContainerTf, platformCircle, obstacleCircle, holeInversionRanges );
 		GenerateColumn ( floorTf, floorHeight );
 	}
 
@@ -185,6 +188,81 @@ public class LevelGenerator : MonoBehaviour {
 		platform.transform.localPosition = Vector3.zero;
 		platform.StartAngleLocal = startAngle;
 		return	platform;
+	}
+
+	private void GenerateHorzObstacles (
+		Transform platformContainerTf,
+		PlatformCircle platformCircle, PlatformCircle obstacleCircle,
+		List <Range <float>> platformRanges
+	) {
+		var obstacleCount = UnityEngine.Random.Range ( Settings.HorzObstacleCountMin, Settings.HorzObstacleCountMax + 1 );
+		if ( obstacleCount == 0 )
+			return;
+
+		// TODO: cut ranges under holes of previous floor. We don't want player to get sick of falling onto obstacles while following the right path.
+		// TODO: generate obstacles over holes.
+		var widthLeft = Settings.TotalHorzObstacleWidthMax;
+		GenerateHorzObstaclesOverPlatforms ( platformContainerTf, obstacleCircle, platformRanges, ref obstacleCount, ref widthLeft );
+	}
+
+	private void GenerateHorzObstaclesOverPlatforms (
+		Transform platformContainerTf,
+		PlatformCircle obstacleCircle,
+		List <Range <float>> allowedRanges,
+		ref int obstacleCount, ref float widthLeft
+	) {
+		while ( obstacleCount-- > 0 && allowedRanges.Count > 0 && widthLeft > 0 ) {
+			int index = UnityEngine.Random.Range ( 0, allowedRanges.Count );
+			var range = allowedRanges [index];
+			bool rangeIsValid = true;
+			if ( range.Width () < Settings.HorzObstacleWidthMin ) {
+				// Obstacle doesn't fit, this range is useless for us.
+				rangeIsValid = false;
+			}
+
+			if ( !RandomlyInsertHorzObstacle (
+				platformContainerTf, obstacleCircle, range,
+				ref widthLeft, out var occupiedRange
+			) ) {
+				/* By some reason we wasn't able to instantiate obstacle at the given range.
+				 * Remove it to avoid infinite loop. */
+				rangeIsValid = false;
+			}
+
+			allowedRanges.RemoveAt ( index );
+			if ( !rangeIsValid )
+				continue;
+
+			occupiedRange = occupiedRange.Grow ( Settings.MinSpaceBetweenHorzObstacles );
+			Range.SubtractOrdered ( range, occupiedRange, out var r1, out var r2 );
+			if ( r2.HasValue ) allowedRanges.Insert ( index, r2.Value );
+			if ( r1.HasValue ) allowedRanges.Insert ( index, r1.Value );
+		}
+	}
+
+	private bool RandomlyInsertHorzObstacle (
+		Transform containerTf,
+		PlatformCircle obstacleCircle,
+		Range <float> targetRange,
+		ref float widthLeft,
+		out Range <float> occupiedRange
+	) {
+		var maxWidth = Mathf.Min ( Settings.HorzObstacleWidthMax, widthLeft, targetRange.Width () );
+		var desiredWidth = RandomHelper.Range ( Settings.HorzObstacleWidthMin, maxWidth, Settings.HorzObstacleWidthStep );
+		var prefab = PrefabDatabase.Filter ( PlatformKindFlags.KillerObstacle | PlatformKindFlags.Platform, desiredWidth, desiredWidth )
+			.FirstOrDefault ();
+		if ( prefab == null ) {
+			occupiedRange = default;
+			return	false;
+		}
+
+		var actualWidth = prefab.AngleWidth;
+		var baseAngle = RandomHelper.Range ( targetRange.Start, targetRange.End - actualWidth, Settings.HorzObstacleWidthStep );
+		var instance = InstantiatePlatform ( prefab, baseAngle, containerTf );
+		occupiedRange = Range.Create ( baseAngle, baseAngle + actualWidth );
+		obstacleCircle.Add ( instance, occupiedRange );
+		widthLeft -= actualWidth;
+		return	true;
 	}
 
 	private Column GenerateColumn ( Transform containerTf, float floorHeight ) {
