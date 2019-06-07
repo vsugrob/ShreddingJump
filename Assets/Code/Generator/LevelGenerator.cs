@@ -121,7 +121,7 @@ public class LevelGenerator : MonoBehaviour {
 
 			var fragment = holeFragments [i];
 			var range = fragment.Range;
-			range = range.Add ( offset );
+			range = range.Shift ( offset );
 			holeFragments [i] = new LineFragment <Platform, float> ( fragment.Element, range );
 		}
 
@@ -146,7 +146,7 @@ public class LevelGenerator : MonoBehaviour {
 			var newStart = RandomHelper.Range ( start, maxStart, Settings.SecondaryHoleWidthMin );
 			if ( newStart != start ) {
 				platformCircle.Remove ( start );
-				range = range.Add ( newStart - start );
+				range = range.Shift ( newStart - start );
 				platformCircle.Add ( fragment.Element, range );
 			}
 

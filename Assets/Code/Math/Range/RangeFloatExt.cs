@@ -8,15 +8,9 @@
 			return	Math.Abs ( range.End - range.Start );
 		}
 
-		public static Range <float> Add ( this Range <float> range, float offset ) {
+		public static Range <float> Shift ( this Range <float> range, float offset ) {
 			range.Start += offset;
 			range.End += offset;
-			return	range;
-		}
-
-		public static Range <float> Subtract ( this Range <float> range, float offset ) {
-			range.Start -= offset;
-			range.End -= offset;
 			return	range;
 		}
 
