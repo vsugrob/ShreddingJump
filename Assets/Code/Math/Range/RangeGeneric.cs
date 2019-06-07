@@ -54,7 +54,7 @@ namespace System {
 		public void Reverse () {
 			var tmp = Start;
 			Start = End;
-			End = Start;
+			End = tmp;
 		}
 
 		public void Order () {
