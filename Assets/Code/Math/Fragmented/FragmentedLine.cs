@@ -108,6 +108,30 @@ namespace System.Collections.Generic {
 			return	false;
 		}
 
+		public List <Range <TLimit>> GetAllEmptyRanges () {
+			var emptyRanges = new List <Range <TLimit>> ();
+			if ( fragmentsByStart.Count == 0 ) {
+				emptyRanges.Add ( Range.Create ( MinLimit, MaxLimit ) );
+				return	emptyRanges;
+			}
+
+			var prevRangeEnd = MinLimit;
+			var fragments = fragmentsByStart.Values;
+			for ( int i = 0 ; i < fragments.Count ; i++ ) {
+				var range = fragments [i].Range;
+				var rangeStart = range.Start;
+				if ( rangeStart.CompareTo ( prevRangeEnd ) > 0 )
+					emptyRanges.Add ( Range.Create ( prevRangeEnd, rangeStart ) );
+
+				prevRangeEnd = range.End;
+			}
+
+			if ( prevRangeEnd.CompareTo ( MaxLimit ) < 0 )
+				emptyRanges.Add ( Range.Create ( prevRangeEnd, MaxLimit ) );
+
+			return	emptyRanges;
+		}
+
 		public IEnumerator <LineFragment <TElement, TLimit>> GetEnumerator () {
 			return	fragmentsByStart.Values.GetEnumerator ();
 		}
