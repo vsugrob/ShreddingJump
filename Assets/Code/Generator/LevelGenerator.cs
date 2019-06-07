@@ -101,7 +101,7 @@ public class LevelGenerator : MonoBehaviour {
 		var actualWidth = hole.AngleWidth;
 		platformCircle.Add ( hole, baseAngle, baseAngle + actualWidth );
 		baseAngle += actualWidth;
-		totalWidth -= desiredWidth;
+		totalWidth -= actualWidth;
 		return	true;
 	}
 
