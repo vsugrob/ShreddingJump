@@ -17,9 +17,9 @@ public class LevelGenerator : MonoBehaviour {
 		set => _prefabDatabase = value;
 	}
 
-	public IEnumerable <FloorRoot> Generate ( FloorRoot prevFloor, int nextFloorIndex = 0 ) {
+	public IEnumerable <FloorInfo> Generate ( FloorInfo prevFloorInfo, int nextFloorIndex = 0 ) {
 		var floorHeight = UnityEngine.Random.Range ( Settings.FloorHeightMin, Settings.FloorHeightMax );
-		var prevFloorTf = prevFloor.transform;
+		var prevFloorTf = prevFloorInfo.FloorRoot.transform;
 		var floorY = prevFloorTf.position.y - floorHeight;
 		var floorContainer = prevFloorTf.parent;
 		var baseAngle = 0f;
@@ -28,23 +28,29 @@ public class LevelGenerator : MonoBehaviour {
 			var floorRoot = FloorRoot.Create ( floorContainer, nextFloorIndex, floorY );
 			var floorTf = floorRoot.transform;
 			var platformsContainer = PlatformContainer.Create ( floorTf, baseAngle );
-			GenerateFloor ( floorTf, platformsContainer.transform, floorHeight );
+			GenerateFloor (
+				floorTf, platformsContainer.transform, floorHeight,
+				out var platformCircle, out var obstacleCircle
+			);
 			var floorCompleteTriggerGo = Instantiate ( PrefabDatabase.FloorCompleteTrigger, floorTf );
 			floorCompleteTriggerGo.transform.localPosition = Vector3.zero;
 			floorY -= floorHeight;
 			baseAngle += RandomHelper.Range ( Settings.BaseAngleOffsetMin, Settings.BaseAngleOffsetMax, Settings.BaseAngleOffsetStep );
 			i++;
 			nextFloorIndex++;
-			yield return floorRoot;
+			yield return new FloorInfo ( floorRoot, platformCircle, obstacleCircle );
 		}
 	}
 
-	private void GenerateFloor ( Transform floorTf, Transform platformContainerTf, float floorHeight ) {
-		var platformCircle = new PlatformCircle ();
+	private void GenerateFloor (
+		Transform floorTf, Transform platformContainerTf, float floorHeight,
+		out PlatformCircle platformCircle, out PlatformCircle obstacleCircle
+	) {
+		platformCircle = new PlatformCircle ();
 		GenerateHoles ( platformContainerTf, platformCircle );
 		var holeInversionRanges = platformCircle.GetAllEmptyRanges ();
 		GeneratePlatforms ( platformContainerTf, platformCircle );
-		var obstacleCircle = new PlatformCircle ();
+		obstacleCircle = new PlatformCircle ();
 		GenerateHorzObstacles ( platformContainerTf, platformCircle, obstacleCircle, holeInversionRanges );
 		GenerateColumn ( floorTf, floorHeight );
 	}
