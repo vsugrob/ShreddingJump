@@ -209,10 +209,34 @@ public class LevelGenerator : MonoBehaviour {
 		if ( obstacleCount == 0 )
 			return;
 
-		// TODO: cut ranges under holes of previous floor. We don't want player to get sick of falling onto obstacles while following the right path.
+		// We don't want player to get sick of falling onto obstacles while following the right path.
+		CutRangesUnderPreviousFloorHoles ( platformRanges );
 		// TODO: generate obstacles over holes.
 		var widthLeft = Settings.TotalHorzObstacleWidthMax;
 		GenerateHorzObstaclesOverPlatforms ( platformRanges, ref obstacleCount, ref widthLeft );
+	}
+
+	private void CutRangesUnderPreviousFloorHoles ( List <Range <float>> platformRanges ) {
+		var prevHoleRanges = prevFloorInfo.PlatformCircle
+			.Where ( f => ( f.Element.Kind & PlatformKindFlags.Hole ) != PlatformKindFlags.None )
+			.Select ( f => f.Range );
+		foreach ( var holeRange in prevHoleRanges ) {
+			for ( int i = 0 ; i < platformRanges.Count ; ) {
+				Range.SubtractOrdered ( platformRanges [i], holeRange, out var r1, out var r2 );
+				if ( r1.HasValue ) {
+					int step = 1;
+					platformRanges.RemoveAt ( i );
+					if ( r2.HasValue ) {
+						platformRanges.Insert ( i, r2.Value );
+						step = 2;
+					}
+
+					platformRanges.Insert ( i, r1.Value );
+					i += step;
+				} else
+					platformRanges.RemoveAt ( i );
+			}
+		}
 	}
 
 	private void GenerateHorzObstaclesOverPlatforms (

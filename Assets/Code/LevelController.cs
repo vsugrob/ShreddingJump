@@ -12,7 +12,7 @@ public class LevelController : MonoBehaviour {
 		Character = FindObjectOfType <BouncingBallCharacter> ();
 		Character.KillerObstacleHit += Character_KillerObstacleHit;
 		var seed = UnityEngine.Random.Range ( int.MinValue, int.MaxValue );
-		//seed = -799463940;
+		seed = 1821742774;
 		UnityEngine.Random.InitState ( seed );
 #pragma warning disable CS0618 // Type or member is obsolete
 		Debug.Log ( $"Random seed: {UnityEngine.Random.seed}" );
