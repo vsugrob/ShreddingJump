@@ -49,9 +49,9 @@ public class LevelGenerator : MonoBehaviour {
 
 	private void ProcessPrevFloorInfo ( float baseAngle ) {
 		// Transform prev floor coordinates to match with current floor.
-		var offset = baseAngle - prevFloorInfo.BaseAngle;
-		prevFloorInfo.PlatformCircle.Shift ( offset );
-		prevFloorInfo.ObstacleCircle.Shift ( offset );
+		var invOffset = prevFloorInfo.BaseAngle - baseAngle;
+		prevFloorInfo.PlatformCircle.Shift ( invOffset );
+		prevFloorInfo.ObstacleCircle.Shift ( invOffset );
 	}
 
 	private void GenerateFloor () {
