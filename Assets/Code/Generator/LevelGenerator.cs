@@ -41,7 +41,8 @@ public class LevelGenerator : MonoBehaviour {
 			baseAngle += RandomHelper.Range ( Settings.BaseAngleOffsetMin, Settings.BaseAngleOffsetMax, Settings.BaseAngleOffsetStep );
 			i++;
 			nextFloorIndex++;
-			yield return new FloorInfo ( floorRoot, platformCircle, obstacleCircle );
+			this.prevFloorInfo = new FloorInfo ( floorRoot, baseAngle, platformCircle, obstacleCircle );
+			yield return	prevFloorInfo;
 		}
 	}
 

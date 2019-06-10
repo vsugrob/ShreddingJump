@@ -48,7 +48,8 @@ public class LevelController : MonoBehaviour {
 	private FloorInfo CreateDummyFloor () {
 		var rooftopY = Character.transform.position.y + Character.JumpHeight / 2;
 		var floorRoot = FloorRoot.Create ( FloorsContainer, -1, rooftopY );
-		var platformsContainer = PlatformContainer.Create ( floorRoot.transform, angle : 0 );
+		var baseAngle = 0f;
+		var platformsContainer = PlatformContainer.Create ( floorRoot.transform, baseAngle );
 		var platformCircle = new PlatformCircle ();
 		var fullRoundHoleGo = new GameObject ( "InitialHole360", typeof ( Platform ) );
 		var holePlatform = fullRoundHoleGo.GetComponent <Platform> ();
@@ -57,6 +58,6 @@ public class LevelController : MonoBehaviour {
 		holePlatform.EndAngle = 360;
 		holePlatform.transform.SetParent ( platformsContainer.transform, worldPositionStays : false );
 		platformCircle.Add ( holePlatform, Range.Create ( 0, 360f ) );
-		return	new FloorInfo ( floorRoot, platformCircle, new PlatformCircle () );
+		return	new FloorInfo ( floorRoot, baseAngle, platformCircle, new PlatformCircle () );
 	}
 }
