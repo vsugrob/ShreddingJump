@@ -110,7 +110,10 @@ public class LevelGenerator : MonoBehaviour {
 		if ( isMain )
 			flags |= PlatformKindFlags.Main;
 
-		var holePrefab = PrefabDatabase.Filter ( flags, desiredWidth, desiredWidth ).FirstOrDefault ();
+		var holePrefab = PrefabDatabase.Platforms
+			.MatchFlags ( flags )
+			.WidthBetween ( desiredWidth, desiredWidth )
+			.FirstOrDefault ();
 		if ( holePrefab == null )
 			return	false;
 
@@ -182,7 +185,9 @@ public class LevelGenerator : MonoBehaviour {
 		while ( platformCircle.TryFindEmptyRange ( out var emptyRange ) ) {
 			var start = emptyRange.Start;
 			var platformPrefab = PrefabDatabase
-				.Filter ( PlatformKindFlags.Platform, Settings.PlatformWidthMin, emptyRange.Width () )
+				.Platforms
+				.MatchFlags ( PlatformKindFlags.Platform )
+				.WidthBetween ( Settings.PlatformWidthMin, emptyRange.Width () )
 				.OrderByDescending ( p => p.AngleWidth )
 				.FirstOrDefault ();
 			if ( platformPrefab == null ) {
@@ -279,7 +284,10 @@ public class LevelGenerator : MonoBehaviour {
 	) {
 		var maxWidth = Mathf.Min ( Settings.HorzObstacleWidthMax, widthLeft, targetRange.Width () );
 		var desiredWidth = RandomHelper.Range ( Settings.HorzObstacleWidthMin, maxWidth, Settings.HorzObstacleWidthStep );
-		var prefab = PrefabDatabase.Filter ( PlatformKindFlags.KillerObstacle | PlatformKindFlags.Platform, desiredWidth, desiredWidth )
+		var prefab = PrefabDatabase
+			.Platforms
+			.MatchFlags ( PlatformKindFlags.KillerObstacle | PlatformKindFlags.Platform )
+			.WidthBetween ( desiredWidth, desiredWidth )
 			.FirstOrDefault ();
 		if ( prefab == null ) {
 			occupiedRange = default;
