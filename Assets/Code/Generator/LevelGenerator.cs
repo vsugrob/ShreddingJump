@@ -16,22 +16,25 @@ public class LevelGenerator : MonoBehaviour {
 		get => _prefabDatabase ?? ( _prefabDatabase = ScriptableObject.CreateInstance <PrefabDatabase> () );
 		set => _prefabDatabase = value;
 	}
+	private FloorInfo prevFloorInfo;
+	private PlatformCircle platformCircle, obstacleCircle;
+	private float floorHeight, floorY;
+	private Transform floorTf, platformContainerTf;
 
 	public IEnumerable <FloorInfo> Generate ( FloorInfo prevFloorInfo, int nextFloorIndex = 0 ) {
-		var floorHeight = UnityEngine.Random.Range ( Settings.FloorHeightMin, Settings.FloorHeightMax );
+		this.prevFloorInfo = prevFloorInfo;
+		floorHeight = UnityEngine.Random.Range ( Settings.FloorHeightMin, Settings.FloorHeightMax );
 		var prevFloorTf = prevFloorInfo.FloorRoot.transform;
-		var floorY = prevFloorTf.position.y - floorHeight;
-		var floorContainer = prevFloorTf.parent;
+		floorY = prevFloorTf.position.y - floorHeight;
+		var floorContainerTf = prevFloorTf.parent;
 		var baseAngle = 0f;
 		var i = 0;
 		while ( true ) {
-			var floorRoot = FloorRoot.Create ( floorContainer, nextFloorIndex, floorY );
-			var floorTf = floorRoot.transform;
+			var floorRoot = FloorRoot.Create ( floorContainerTf, nextFloorIndex, floorY );
+			floorTf = floorRoot.transform;
 			var platformsContainer = PlatformContainer.Create ( floorTf, baseAngle );
-			GenerateFloor (
-				floorTf, platformsContainer.transform, floorHeight,
-				out var platformCircle, out var obstacleCircle
-			);
+			platformContainerTf = platformsContainer.transform;
+			GenerateFloor ();
 			var floorCompleteTriggerGo = Instantiate ( PrefabDatabase.FloorCompleteTrigger, floorTf );
 			floorCompleteTriggerGo.transform.localPosition = Vector3.zero;
 			floorY -= floorHeight;
@@ -42,35 +45,32 @@ public class LevelGenerator : MonoBehaviour {
 		}
 	}
 
-	private void GenerateFloor (
-		Transform floorTf, Transform platformContainerTf, float floorHeight,
-		out PlatformCircle platformCircle, out PlatformCircle obstacleCircle
-	) {
+	private void GenerateFloor () {
 		platformCircle = new PlatformCircle ();
-		GenerateHoles ( platformContainerTf, platformCircle );
+		GenerateHoles ();
 		var holeInversionRanges = platformCircle.GetAllEmptyRanges ();
-		GeneratePlatforms ( platformContainerTf, platformCircle );
+		GeneratePlatforms ();
 		obstacleCircle = new PlatformCircle ();
-		GenerateHorzObstacles ( platformContainerTf, platformCircle, obstacleCircle, holeInversionRanges );
-		GenerateColumn ( floorTf, floorHeight );
+		GenerateHorzObstacles ( holeInversionRanges );
+		GenerateColumn ();
 	}
 
-	private void GenerateHoles ( Transform containerTf, PlatformCircle platformCircle ) {
+	private void GenerateHoles () {
 		var holeCount = UnityEngine.Random.Range ( Settings.HoleCountMin, Settings.HoleCountMax + 1 );
 		if ( holeCount == 0 )
 			return;
 
-		AddHoles ( containerTf, platformCircle, holeCount );
-		SeparateHoles ( platformCircle );
-		ShakeHoles ( platformCircle );
-		SyncHoleAngles ( platformCircle );
+		AddHoles ( holeCount );
+		SeparateHoles ();
+		ShakeHoles ();
+		SyncHoleAngles ();
 	}
 
-	private int AddHoles ( Transform containerTf, PlatformCircle platformCircle, int holeCount ) {
+	private int AddHoles ( int holeCount ) {
 		var totalWidth = Settings.TotalHoleWidthMax;
 		// Add main hole.
 		var holeBaseAngle = 0f;
-		AddHole ( containerTf, platformCircle, ref holeBaseAngle, ref totalWidth, Settings.MainHoleWidthMin, Settings.MainHoleWidthMax, isMain : true );
+		AddHole ( ref holeBaseAngle, ref totalWidth, Settings.MainHoleWidthMin, Settings.MainHoleWidthMax, isMain : true );
 		// Add secondary holes.
 		int actualCount = 1;
 		var holesLeft = holeCount;
@@ -81,7 +81,7 @@ public class LevelGenerator : MonoBehaviour {
 			if ( maxWidth < Settings.SecondaryHoleWidthMin )
 				continue;	// Too many holes, it's not possible to fit them all.
 
-			AddHole ( containerTf, platformCircle, ref holeBaseAngle, ref totalWidth, Settings.SecondaryHoleWidthMin, maxWidth, isMain : false );
+			AddHole ( ref holeBaseAngle, ref totalWidth, Settings.SecondaryHoleWidthMin, maxWidth, isMain : false );
 			actualCount++;
 		}
 
@@ -89,7 +89,6 @@ public class LevelGenerator : MonoBehaviour {
 	}
 
 	private bool AddHole (
-		Transform containerTf, PlatformCircle platformCircle,
 		ref float baseAngle, ref float totalWidth,
 		float minWidth, float maxWidth,
 		bool isMain
@@ -106,7 +105,7 @@ public class LevelGenerator : MonoBehaviour {
 		if ( holePrefab == null )
 			return	false;
 
-		var hole = InstantiatePlatform ( holePrefab, baseAngle, containerTf );
+		var hole = InstantiatePlatform ( holePrefab, baseAngle, platformContainerTf );
 		var actualWidth = hole.AngleWidth;
 		platformCircle.Add ( hole, baseAngle, baseAngle + actualWidth );
 		baseAngle += actualWidth;
@@ -114,7 +113,7 @@ public class LevelGenerator : MonoBehaviour {
 		return	true;
 	}
 
-	private void SeparateHoles ( PlatformCircle platformCircle ) {
+	private void SeparateHoles () {
 		if ( platformCircle.Count < 2 )
 			return;
 
@@ -137,7 +136,7 @@ public class LevelGenerator : MonoBehaviour {
 		platformCircle.AddRange ( holeFragments );
 	}
 
-	private void ShakeHoles ( PlatformCircle platformCircle ) {
+	private void ShakeHoles () {
 		// Randomly "shake" hole positions.
 		var nextStart = 360f;
 		var holeFragments = platformCircle.ToArray ();
@@ -163,14 +162,14 @@ public class LevelGenerator : MonoBehaviour {
 		}
 	}
 
-	private void SyncHoleAngles ( PlatformCircle platformCircle ) {
+	private void SyncHoleAngles () {
 		foreach ( var fragment in platformCircle ) {
 			var hole = fragment.Element;
 			hole.StartAngleLocal = fragment.Range.Start;
 		}
 	}
 
-	private void GeneratePlatforms ( Transform containerTf, PlatformCircle platformCircle ) {
+	private void GeneratePlatforms () {
 		while ( platformCircle.TryFindEmptyRange ( out var emptyRange ) ) {
 			var start = emptyRange.Start;
 			var platformPrefab = PrefabDatabase
@@ -178,13 +177,13 @@ public class LevelGenerator : MonoBehaviour {
 				.OrderByDescending ( p => p.AngleWidth )
 				.FirstOrDefault ();
 			if ( platformPrefab == null ) {
-				Debug.LogWarning ( $"No suitable platform was found for the range {emptyRange} at {containerTf.name}." );
+				Debug.LogWarning ( $"No suitable platform was found for the range {emptyRange} at {platformContainerTf.name}." );
 				// Fill whole range to not revisit it in the next iteration.
 				platformCircle.Add ( null, emptyRange );
 				continue;
 			}
 
-			var platform = InstantiatePlatform ( platformPrefab, start, containerTf );
+			var platform = InstantiatePlatform ( platformPrefab, start, platformContainerTf );
 			platformCircle.Add ( platform, start, start + platform.AngleWidth );
 		}
 	}
@@ -196,11 +195,7 @@ public class LevelGenerator : MonoBehaviour {
 		return	platform;
 	}
 
-	private void GenerateHorzObstacles (
-		Transform platformContainerTf,
-		PlatformCircle platformCircle, PlatformCircle obstacleCircle,
-		List <Range <float>> platformRanges
-	) {
+	private void GenerateHorzObstacles ( List <Range <float>> platformRanges ) {
 		var obstacleCount = UnityEngine.Random.Range ( Settings.HorzObstacleCountMin, Settings.HorzObstacleCountMax + 1 );
 		if ( obstacleCount == 0 )
 			return;
@@ -208,12 +203,10 @@ public class LevelGenerator : MonoBehaviour {
 		// TODO: cut ranges under holes of previous floor. We don't want player to get sick of falling onto obstacles while following the right path.
 		// TODO: generate obstacles over holes.
 		var widthLeft = Settings.TotalHorzObstacleWidthMax;
-		GenerateHorzObstaclesOverPlatforms ( platformContainerTf, obstacleCircle, platformRanges, ref obstacleCount, ref widthLeft );
+		GenerateHorzObstaclesOverPlatforms ( platformRanges, ref obstacleCount, ref widthLeft );
 	}
 
 	private void GenerateHorzObstaclesOverPlatforms (
-		Transform platformContainerTf,
-		PlatformCircle obstacleCircle,
 		List <Range <float>> allowedRanges,
 		ref int obstacleCount, ref float widthLeft
 	) {
@@ -227,7 +220,7 @@ public class LevelGenerator : MonoBehaviour {
 			}
 
 			if ( !RandomlyInsertHorzObstacle (
-				platformContainerTf, obstacleCircle, range,
+				range,
 				ref widthLeft, out var occupiedRange
 			) ) {
 				/* By some reason we wasn't able to instantiate obstacle at the given range.
@@ -247,8 +240,6 @@ public class LevelGenerator : MonoBehaviour {
 	}
 
 	private bool RandomlyInsertHorzObstacle (
-		Transform containerTf,
-		PlatformCircle obstacleCircle,
 		Range <float> targetRange,
 		ref float widthLeft,
 		out Range <float> occupiedRange
@@ -264,22 +255,22 @@ public class LevelGenerator : MonoBehaviour {
 
 		var actualWidth = prefab.AngleWidth;
 		var baseAngle = RandomHelper.Range ( targetRange.Start, targetRange.End - actualWidth, Settings.HorzObstacleWidthStep );
-		var instance = InstantiatePlatform ( prefab, baseAngle, containerTf );
+		var instance = InstantiatePlatform ( prefab, baseAngle, platformContainerTf );
 		occupiedRange = Range.Create ( baseAngle, baseAngle + actualWidth );
 		obstacleCircle.Add ( instance, occupiedRange );
 		widthLeft -= actualWidth;
 		return	true;
 	}
 
-	private Column GenerateColumn ( Transform containerTf, float floorHeight ) {
+	private Column GenerateColumn () {
 		var columns = PrefabDatabase.PredefinedColumns;
 		if ( columns.Count == 0 ) {
-			Debug.LogWarning ( $"No suitable column was found at {containerTf.name}." );
+			Debug.LogWarning ( $"No suitable column was found at {floorTf.name}." );
 			return	null;
 		}
 
 		var prefab = columns [UnityEngine.Random.Range ( 0, columns.Count )];
-		var column = Instantiate ( prefab, containerTf );
+		var column = Instantiate ( prefab, floorTf );
 		var columnTf = column.transform;
 		columnTf.localPosition = Vector3.zero;
 		var scale = columnTf.localScale;
