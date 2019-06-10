@@ -70,4 +70,7 @@ public class LevelGeneratorSettings : ScriptableObject {
 	[SerializeField]
 	private int _horzObstacleCountMax = 4;
 	public int HorzObstacleCountMax => _horzObstacleCountMax;
+	[SerializeField]
+	private bool _allowObstaclesUnderHoles = false;
+	public bool AllowObstaclesUnderHoles => _allowObstaclesUnderHoles;
 }

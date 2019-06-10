@@ -214,8 +214,10 @@ public class LevelGenerator : MonoBehaviour {
 		if ( obstacleCount == 0 )
 			return;
 
-		// We don't want player to get sick of falling onto obstacles while following the right path.
-		CutRangesUnderPreviousFloorHoles ( platformRanges );
+		if ( !Settings.AllowObstaclesUnderHoles ) {
+			// We don't want player to get sick of falling onto obstacles while following the right path.
+			CutRangesUnderPreviousFloorHoles ( platformRanges );
+		}
 		// TODO: generate obstacles over holes.
 		var widthLeft = Settings.TotalHorzObstacleWidthMax;
 		GenerateHorzObstaclesOverPlatforms ( platformRanges, ref obstacleCount, ref widthLeft );
