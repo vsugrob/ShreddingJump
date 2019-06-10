@@ -54,5 +54,15 @@
 
 			return	b;
 		}
+
+		public void Shift ( float offset ) {
+			var fragments = new LineFragment <TElement, float> [fragmentsByStart.Count];
+			fragmentsByStart.Values.CopyTo ( fragments, 0 );
+			Clear ();
+			for ( int i = 0 ; i < fragments.Length ; i++ ) {
+				var frag = fragments [i];
+				Add ( frag.Element, frag.Range.Shift ( offset ) );
+			}
+		}
 	}
 }

@@ -34,16 +34,24 @@ public class LevelGenerator : MonoBehaviour {
 			floorTf = floorRoot.transform;
 			var platformsContainer = PlatformContainer.Create ( floorTf, baseAngle );
 			platformContainerTf = platformsContainer.transform;
+			ProcessPrevFloorInfo ( baseAngle );
 			GenerateFloor ();
 			var floorCompleteTriggerGo = Instantiate ( PrefabDatabase.FloorCompleteTrigger, floorTf );
 			floorCompleteTriggerGo.transform.localPosition = Vector3.zero;
+			this.prevFloorInfo = new FloorInfo ( floorRoot, baseAngle, platformCircle, obstacleCircle );
 			floorY -= floorHeight;
 			baseAngle += RandomHelper.Range ( Settings.BaseAngleOffsetMin, Settings.BaseAngleOffsetMax, Settings.BaseAngleOffsetStep );
 			i++;
 			nextFloorIndex++;
-			this.prevFloorInfo = new FloorInfo ( floorRoot, baseAngle, platformCircle, obstacleCircle );
-			yield return	prevFloorInfo;
+			yield return	this.prevFloorInfo;
 		}
+	}
+
+	private void ProcessPrevFloorInfo ( float baseAngle ) {
+		// Transform prev floor coordinates to match with current floor.
+		var offset = baseAngle - prevFloorInfo.BaseAngle;
+		prevFloorInfo.PlatformCircle.Shift ( offset );
+		prevFloorInfo.ObstacleCircle.Shift ( offset );
 	}
 
 	private void GenerateFloor () {

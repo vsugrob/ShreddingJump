@@ -5,7 +5,7 @@ namespace System.Collections.Generic {
 	public class FragmentedLine <TElement, TLimit> : IReadOnlyList <LineFragment <TElement, TLimit>>
 		where TLimit : IComparable <TLimit>
 	{
-		private SortedList <TLimit, LineFragment <TElement, TLimit>> fragmentsByStart = new SortedList <TLimit, LineFragment <TElement, TLimit>> ();
+		protected SortedList <TLimit, LineFragment <TElement, TLimit>> fragmentsByStart = new SortedList <TLimit, LineFragment <TElement, TLimit>> ();
 		public int Count => fragmentsByStart.Count;
 		public TLimit MinLimit { get; private set; }
 		public TLimit MaxLimit { get; private set; }
