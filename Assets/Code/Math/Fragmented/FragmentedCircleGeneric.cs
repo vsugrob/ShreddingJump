@@ -64,5 +64,28 @@
 				Add ( frag.Element, frag.Range.Shift ( offset ) );
 			}
 		}
+
+		public override int SeekFragmentBoundary ( float start, int dir, out float boundary ) {
+			if ( start != MaxLimit )
+				start = CoerceAngle ( start );
+
+			return	base.SeekFragmentBoundary ( start, dir, out boundary );
+		}
+
+		public override int SeekClosestFragmentIndex ( float point, int dir ) {
+			if ( point != MaxLimit )
+				point = CoerceAngle ( point );
+
+			int index = base.SeekClosestFragmentIndex ( point, dir );
+			if ( index >= 0 )
+				return	index;
+
+			if ( dir > 0 )
+				return	base.SeekClosestFragmentIndex ( MinLimit, dir );
+			else if ( dir < 0 )
+				return	base.SeekClosestFragmentIndex ( MaxLimit, dir );
+			else
+				return	-1;
+		}
 	}
 }
