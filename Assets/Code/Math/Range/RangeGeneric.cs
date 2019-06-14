@@ -24,6 +24,8 @@ namespace System {
 		public bool IsValid => !ReferenceEquals ( Start, null ) && !ReferenceEquals ( End, null );
 		/// <summary>Returns true when <see cref="End"/> is less than <see cref="Start"/>.</summary>
 		public bool IsReversed => IsValid && Start.CompareTo ( End ) > 0;
+		/// <summary>Returns true when <see cref="Start"/> is less than or equal to <see cref="End"/>.</summary>
+		public bool IsOrdered => IsValid && Start.CompareTo ( End ) <= 0;
 		/// <summary>Returns true when <see cref="End"/> is equal to <see cref="Start"/>.</summary>
 		public bool IsPoint => IsValid && Start.CompareTo ( End ) == 0;
 		public Range <T> Reversed {
@@ -145,6 +147,17 @@ namespace System {
 					point.CompareTo ( range.End ) >= 0;
 		}
 		#endregion Operators
+
+		public int CompareOrderedTo ( T point ) {
+			var eSign = End.CompareTo ( point );
+			if ( eSign < 0 )
+				return	-1;
+			else if ( eSign == 0 )
+				return	IsPoint ? 0 : -1;
+
+			var sSign = Start.CompareTo ( point );
+			return	sSign >= 0 ? 1 : 0;
+		}
 
 		public override bool Equals ( object obj ) {
 			if ( ReferenceEquals ( this, obj ) )
