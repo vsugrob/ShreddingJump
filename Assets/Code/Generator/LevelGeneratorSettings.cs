@@ -73,4 +73,14 @@ public class LevelGeneratorSettings : ScriptableObject {
 	[SerializeField]
 	private bool _allowObstaclesUnderHoles = false;
 	public bool AllowObstaclesUnderHoles => _allowObstaclesUnderHoles;
+	[Header ( "Moving obstacles" )]
+	[SerializeField]
+	private float _obstacleOverPlatformMovingChance = 0.3f;
+	public float ObstacleOverPlatformMovingChance => _obstacleOverPlatformMovingChance;
+	[SerializeField]
+	private float _movingObstacleAngularSpeedMin = 45;
+	public float MovingObstacleAngularSpeedMin => _movingObstacleAngularSpeedMin;
+	[SerializeField]
+	private float _movingObstacleAngularSpeedMax = 135;
+	public float MovingObstacleAngularSpeedMax => _movingObstacleAngularSpeedMax;
 }

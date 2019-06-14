@@ -221,6 +221,7 @@ public class LevelGenerator : MonoBehaviour {
 		// TODO: generate obstacles over holes.
 		var widthLeft = Settings.TotalHorzObstacleWidthMax;
 		GenerateHorzObstaclesOverPlatforms ( platformRanges, ref obstacleCount, ref widthLeft );
+		MakeObstaclesOverPlatformMoving ();
 	}
 
 	private void CutRangesUnderPreviousFloorHoles ( List <Range <float>> platformRanges ) {
@@ -303,6 +304,31 @@ public class LevelGenerator : MonoBehaviour {
 		obstacleCircle.Add ( instance, occupiedRange );
 		widthLeft -= actualWidth;
 		return	true;
+	}
+
+	private void MakeObstaclesOverPlatformMoving () {
+		if ( obstacleCircle.Count == 0 )
+			return;
+
+		var holeFrags = platformCircle.Where ( f => ( f.Element.Kind & PlatformKindFlags.Platform ) != PlatformKindFlags.None );
+		var holeCircle = FragmentedCircle.CreateDegrees <Platform> ();
+		holeCircle.AddRange ( holeFrags );
+		for ( int i = 0 ; i < obstacleCircle.Count ; i++ ) {
+			var fragment = obstacleCircle [i];
+			// TODO: skip if obstacle is already moving.
+			var range = fragment.Range;
+			// Obstacle boundaries are always found, because event in the most degenerate case there is not less than one obstacle.
+			obstacleCircle.SeekFragmentBoundary ( range.Start, -1, out var minObsBound );
+			obstacleCircle.SeekFragmentBoundary ( range.End  ,  1, out var maxObsBound );
+			// TODO: check whether minObsBound and maxObsBound are not the same as start and end. If they're same - continue loop.
+			if ( holeCircle.Count != 0 ) {
+				obstacleCircle.SeekFragmentBoundary ( range.Start, -1, out var minHoleBound );
+				obstacleCircle.SeekFragmentBoundary ( range.End  , -1, out var maxHoleBound );
+				// TODO: intersect both arcs and write into minObsBound and maxObsBound.
+			}
+
+			// TODO: add ObjectRotator with boundaries between minObsBound and maxObsBound.
+		}
 	}
 
 	private Column GenerateColumn () {
