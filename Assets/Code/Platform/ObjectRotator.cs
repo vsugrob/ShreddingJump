@@ -9,6 +9,9 @@ public class ObjectRotator : MonoBehaviour {
 	private bool _enableBoundaries = true;
 	public bool EnableBoundaries => _enableBoundaries;
 	[SerializeField]
+	private bool _useLocalSpace = true;
+	public bool UseLocalSpace => _useLocalSpace;
+	[SerializeField]
 	private float _minAngle = 0;
 	public float MinAngleDeg => _minAngle;
 	[SerializeField]
@@ -23,7 +26,7 @@ public class ObjectRotator : MonoBehaviour {
 		get => _movingForward;
 		set => _movingForward = value;
 	}
-	public float AngleDeg {
+	public float AngleWorld {
 		get {
 			var euler = transform.eulerAngles;
 			switch ( Axis ) {
@@ -44,13 +47,34 @@ public class ObjectRotator : MonoBehaviour {
 			transform.eulerAngles = euler;
 		}
 	}
+	public float AngleLocal {
+		get {
+			var euler = transform.localEulerAngles;
+			switch ( Axis ) {
+			case Axis.X: return	euler.x;
+			case Axis.Y: return	euler.y;
+			case Axis.Z: return	euler.z;
+			default: return	0;
+			}
+		}
+		set {
+			var euler = transform.localEulerAngles;
+			switch ( Axis ) {
+			case Axis.X: euler.x = value; break;
+			case Axis.Y: euler.y = value; break;
+			case Axis.Z: euler.z = value; break;
+			}
+
+			transform.localEulerAngles = euler;
+		}
+	}
 
 	private void FixedUpdate () {
 		var angleStep = AngularSpeedDeg * Time.fixedDeltaTime;
 		if ( !MovingForward )
 			angleStep = -angleStep;
 
-		var angle = AngleDeg;
+		var angle = UseLocalSpace ? AngleLocal : AngleWorld;
 		if ( EnableBoundaries ) {
 			var positiveStep = angleStep >= 0;
 			angle = MathHelper.ToNormAngleDeg ( angle );
@@ -70,6 +94,9 @@ public class ObjectRotator : MonoBehaviour {
 		} else
 			angle += angleStep;
 
-		AngleDeg = angle;
+		if ( UseLocalSpace )
+			AngleLocal = angle;
+		else
+			AngleWorld = angle;
 	}
 }
