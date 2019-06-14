@@ -64,6 +64,12 @@ namespace System {
 				Reverse ();
 		}
 
+		public T GetBoundaryByDir ( int dir ) {
+			if ( dir > 0 ) return	End;
+			else if ( dir < 0 ) return	Start;
+			else throw new ArgumentException ( "Direction cannot be equal to 0.", nameof ( dir ) );
+		}
+
 		public bool Contains ( T value ) {
 			if ( !IsValid )
 				return	false;

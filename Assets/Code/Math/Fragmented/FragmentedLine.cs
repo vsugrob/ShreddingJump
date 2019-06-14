@@ -132,6 +132,60 @@ namespace System.Collections.Generic {
 			return	emptyRanges;
 		}
 
+		public virtual int SeekFragmentBoundary ( TLimit start, int dir, out TLimit boundary ) {
+			ThrowIfOutOfBounds ( start );
+			if ( dir == 0 || Count == 0 ) {
+				boundary = default;
+				return	-1;
+			}
+
+			var index = SeekClosestFragmentIndex ( start, dir );
+			if ( index < 0 ) {
+				boundary = default;
+				return	-1;
+			}
+
+			var fragment = this [index];
+			boundary = fragment.Range.GetBoundaryByDir ( -dir );
+			return	index;
+		}
+
+		public virtual int SeekClosestFragmentIndex ( TLimit point, int dir ) {
+			ThrowIfOutOfBounds ( point );
+			int count = Count;
+			if ( count == 0 )
+				return	-1;
+
+			dir = Math.Sign ( dir );
+			int startIndex, endIndex, increment;
+			if ( dir >= 0 ) {
+				startIndex = count - 1;
+				endIndex = -1;
+				increment = -1;
+			} else {
+				startIndex = 0;
+				endIndex = count;
+				increment = 1;
+			}
+
+			int lastAcceptableIndex = -1;
+			for ( int i = startIndex ; i != endIndex ; i += increment ) {
+				var range = this [i].Range;
+				var sign = range.CompareOrderedTo ( point );
+				if ( sign == dir || ( sign == 0 && range.IsPoint ) )
+					lastAcceptableIndex = i;
+				else
+					break;
+			}
+
+			return	lastAcceptableIndex;
+		}
+
+		private void ThrowIfOutOfBounds ( TLimit point ) {
+			if ( MinLimit.CompareTo ( point ) > 0 || MaxLimit.CompareTo ( point ) < 0 )
+				throw new ArgumentException ( $"Value must fall in range [{MinLimit};{MaxLimit}]." );
+		}
+
 		public IEnumerator <LineFragment <TElement, TLimit>> GetEnumerator () {
 			return	fragmentsByStart.Values.GetEnumerator ();
 		}
