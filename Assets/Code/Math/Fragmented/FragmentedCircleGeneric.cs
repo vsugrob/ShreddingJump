@@ -5,10 +5,10 @@
 		{}
 
 		public override void Add ( TElement element, Range <float> arc ) {
-			CircleMath.CoerceArc ( arc, MaxLimit, out var range1, out var range2 );
-			AddOrdered ( element, range1 );
-			if ( range2.HasValue )
-				AddOrdered ( element, range2.Value );
+			CircleMath.CoerceArc ( arc, MaxLimit, out var resultArc1, out var resultArc2 );
+			AddOrdered ( element, resultArc1 );
+			if ( resultArc2.HasValue )
+				AddOrdered ( element, resultArc2.Value );
 		}
 
 		public void Add ( TElement element, float arcEnd1, float arcEnd2, int dir ) {
@@ -16,10 +16,10 @@
 		}
 
 		public void Add ( TElement element, Range <float> arcEnds, int dir ) {
-			CircleMath.CoerceArc ( arcEnds, dir, MaxLimit, out var range1, out var range2 );
-			AddOrdered ( element, range1 );
-			if ( range2.HasValue )
-				AddOrdered ( element, range2.Value );
+			CircleMath.CoerceArc ( arcEnds, dir, MaxLimit, out var resultArc1, out var resultArc2 );
+			AddOrdered ( element, resultArc1 );
+			if ( resultArc2.HasValue )
+				AddOrdered ( element, resultArc2.Value );
 		}
 
 		public void Shift ( float offset ) {

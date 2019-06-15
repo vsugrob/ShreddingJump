@@ -2,25 +2,25 @@
 	public static class CircleMath {
 		public static void CoerceArc (
 			Range <float> arc, float pi2,
-			out Range <float> range1, out Range <float>? range2
+			out Range <float> resultArc1, out Range <float>? resultArc2
 		) {
 			arc.Order ();
-			CoerceArcOrdered ( arc, pi2, out range1, out range2 );
+			CoerceArcOrdered ( arc, pi2, out resultArc1, out resultArc2 );
 		}
 
 		public static void CoerceArcOrdered (
 			Range <float> arc, float pi2,
-			out Range <float> range1, out Range <float>? range2
+			out Range <float> resultArc1, out Range <float>? resultArc2
 		) {
-			range2 = null;
+			resultArc2 = null;
 			var start = arc.Start;
 			var end = arc.End;
 			var diff = end - start;
 			if ( diff >= pi2 ) {
-				range1 = Range.Create ( 0, pi2 );
+				resultArc1 = Range.Create ( 0, pi2 );
 				return;
 			} else if ( diff == 0 ) {
-				range1 = new Range <float> ( CoerceAngle ( start, pi2 ) );
+				resultArc1 = new Range <float> ( CoerceAngle ( start, pi2 ) );
 				return;
 			}
 
@@ -28,10 +28,10 @@
 			start -= baseAngle;
 			end -= baseAngle;
 			if ( end <= pi2 ) {
-				range1 = Range.Create ( start, end );
+				resultArc1 = Range.Create ( start, end );
 			} else {
-				range1 = Range.Create ( 0, end - pi2 );
-				range2 = Range.Create ( start, pi2 );
+				resultArc1 = Range.Create ( 0, end - pi2 );
+				resultArc2 = Range.Create ( start, pi2 );
 			}
 		}
 
@@ -56,7 +56,7 @@
 
 		public static void CoerceArc (
 			Range <float> arcEnds, int dir, float pi2,
-			out Range <float> range1, out Range <float>? range2
+			out Range <float> resultArc1, out Range <float>? resultArc2
 		) {
 			var diff = arcEnds.Width ();
 			if ( diff != 0 ) {
@@ -73,7 +73,7 @@
 				}
 			}
 
-			CoerceArc ( arcEnds, pi2, out range1, out range2 );
+			CoerceArc ( arcEnds, pi2, out resultArc1, out resultArc2 );
 		}
 	}
 }
