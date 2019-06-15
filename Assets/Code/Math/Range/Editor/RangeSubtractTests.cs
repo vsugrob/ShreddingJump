@@ -2,7 +2,7 @@
 using NUnit.Framework;
 
 namespace Tests {
-    public class RangeBooleanOpsTests {
+    public class RangeSubtractTests {
 		[Test]
 		public void Range_Subtract () {
 			AssertSubtractOrdered (
