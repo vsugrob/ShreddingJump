@@ -13,26 +13,35 @@
 			out Range <float> resultArc1, out Range <float>? resultArc2
 		) {
 			resultArc2 = null;
+			arc = CoerceArcToClosestBase ( arc, pi2, out var splitIsPossible );
+			if ( !splitIsPossible ) {
+				resultArc1 = arc;
+				return;
+			}
+
+			if ( arc.End <= pi2 ) {
+				resultArc1 = Range.Create ( arc.Start, arc.End );
+			} else {
+				resultArc1 = Range.Create ( 0, arc.End - pi2 );
+				resultArc2 = Range.Create ( arc.Start, pi2 );
+			}
+		}
+
+		private static Range <float> CoerceArcToClosestBase ( Range <float> arc, float pi2, out bool splitIsPossible ) {
 			var start = arc.Start;
 			var end = arc.End;
 			var diff = end - start;
 			if ( diff >= pi2 ) {
-				resultArc1 = Range.Create ( 0, pi2 );
-				return;
+				splitIsPossible = false;
+				return	Range.Create ( 0, pi2 );
 			} else if ( diff == 0 ) {
-				resultArc1 = new Range <float> ( CoerceAngle ( start, pi2 ) );
-				return;
+				splitIsPossible = false;
+				return	new Range <float> ( CoerceAngle ( start, pi2 ) );
 			}
 
+			splitIsPossible = true;
 			var baseAngle = FindClosestCircleBase ( start, pi2 );
-			start -= baseAngle;
-			end -= baseAngle;
-			if ( end <= pi2 ) {
-				resultArc1 = Range.Create ( start, end );
-			} else {
-				resultArc1 = Range.Create ( 0, end - pi2 );
-				resultArc2 = Range.Create ( start, pi2 );
-			}
+			return	arc.Shift ( -baseAngle );
 		}
 
 		public static float CoerceAngle ( float angle, float pi2 ) {
