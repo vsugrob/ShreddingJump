@@ -4,11 +4,19 @@
 			Range <float> arc, float pi2,
 			out Range <float> range1, out Range <float>? range2
 		) {
+			arc.Order ();
+			CoerceArcOrdered ( arc, pi2, out range1, out range2 );
+		}
+
+		public static void CoerceArcOrdered (
+			Range <float> arc, float pi2,
+			out Range <float> range1, out Range <float>? range2
+		) {
 			range2 = null;
 			var start = arc.Start;
 			var end = arc.End;
 			var diff = end - start;
-			if ( Math.Abs ( diff ) >= pi2 ) {
+			if ( diff >= pi2 ) {
 				range1 = Range.Create ( 0, pi2 );
 				return;
 			} else if ( diff == 0 ) {
@@ -16,7 +24,6 @@
 				return;
 			}
 
-			MathHelper.SortMinMax ( ref start, ref end );
 			var baseAngle = FindClosestCircleBase ( start, pi2 );
 			start -= baseAngle;
 			end -= baseAngle;
