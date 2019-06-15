@@ -16,22 +16,10 @@
 		}
 
 		public void AddArc ( TElement element, Range <float> arcEnds, int dir ) {
-			var diff = arcEnds.Width ();
-			if ( diff != 0 ) {
-				if ( dir == 0 )
-					throw new ArgumentException ( "Non-point arc cannot be represented with zero winding.", nameof ( dir ) );
-
-				var absDiff = Math.Abs ( diff );
-				if ( absDiff < MaxLimit ) {
-					dir = Math.Sign ( dir );
-					if ( Math.Sign ( diff ) != dir ) {
-						var outerArc = MaxLimit - absDiff;
-						arcEnds.End = arcEnds.Start + outerArc * dir;
-					}
-				}
-			}
-
-			Add ( element, arcEnds );
+			CircleMath.CoerceArc ( arcEnds, dir, MaxLimit, out var range1, out var range2 );
+			AddOrdered ( element, range1 );
+			if ( range2.HasValue )
+				AddOrdered ( element, range2.Value );
 		}
 
 		public void Shift ( float offset ) {

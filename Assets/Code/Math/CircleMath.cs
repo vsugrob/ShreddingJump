@@ -46,5 +46,27 @@
 
 			return	b;
 		}
+
+		public static void CoerceArc (
+			Range <float> arcEnds, int dir, float pi2,
+			out Range <float> range1, out Range <float>? range2
+		) {
+			var diff = arcEnds.Width ();
+			if ( diff != 0 ) {
+				if ( dir == 0 )
+					throw new ArgumentException ( "Non-point arc cannot be represented with zero winding.", nameof ( dir ) );
+
+				var absDiff = Math.Abs ( diff );
+				if ( absDiff < pi2 ) {
+					dir = Math.Sign ( dir );
+					if ( Math.Sign ( diff ) != dir ) {
+						var outerArc = pi2 - absDiff;
+						arcEnds.End = arcEnds.Start + outerArc * dir;
+					}
+				}
+			}
+
+			CoerceRange ( arcEnds, pi2, out range1, out range2 );
+		}
 	}
 }
