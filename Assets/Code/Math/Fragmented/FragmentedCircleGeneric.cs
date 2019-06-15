@@ -11,6 +11,29 @@
 				AddOrdered ( element, range2.Value );
 		}
 
+		public void AddArc ( TElement element, float arcEnd1, float arcEnd2, int dir ) {
+			AddArc ( element, Range.Create ( arcEnd1, arcEnd2 ), dir );
+		}
+
+		public void AddArc ( TElement element, Range <float> arcEnds, int dir ) {
+			var diff = arcEnds.Width ();
+			if ( diff != 0 ) {
+				if ( dir == 0 )
+					throw new ArgumentException ( "Non-point arc cannot be represented with zero winding.", nameof ( dir ) );
+
+				var absDiff = Math.Abs ( diff );
+				if ( absDiff < MaxLimit ) {
+					dir = Math.Sign ( dir );
+					if ( Math.Sign ( diff ) != dir ) {
+						var outerArc = MaxLimit - absDiff;
+						arcEnds.End = arcEnds.Start + outerArc * dir;
+					}
+				}
+			}
+
+			Add ( element, arcEnds );
+		}
+
 		private void CoerceRange ( Range <float> range, out Range <float> range1, out Range <float>? range2 ) {
 			range2 = null;
 			var start = range.Start;
