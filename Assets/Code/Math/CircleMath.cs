@@ -1,12 +1,12 @@
 ﻿namespace System {
 	public static class CircleMath {
-		public static void CoerceRange (
-			Range <float> range, float pi2,
+		public static void CoerceArc (
+			Range <float> arc, float pi2,
 			out Range <float> range1, out Range <float>? range2
 		) {
 			range2 = null;
-			var start = range.Start;
-			var end = range.End;
+			var start = arc.Start;
+			var end = arc.End;
 			var diff = end - start;
 			if ( Math.Abs ( diff ) >= pi2 ) {
 				range1 = Range.Create ( 0, pi2 );
@@ -66,7 +66,7 @@
 				}
 			}
 
-			CoerceRange ( arcEnds, pi2, out range1, out range2 );
+			CoerceArc ( arcEnds, pi2, out range1, out range2 );
 		}
 	}
 }

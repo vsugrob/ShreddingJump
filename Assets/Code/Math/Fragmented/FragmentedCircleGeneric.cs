@@ -4,18 +4,18 @@
 			base ( 0, pi2 )
 		{}
 
-		public override void Add ( TElement element, Range <float> range ) {
-			CircleMath.CoerceRange ( range, MaxLimit, out var range1, out var range2 );
+		public override void Add ( TElement element, Range <float> arc ) {
+			CircleMath.CoerceArc ( arc, MaxLimit, out var range1, out var range2 );
 			AddOrdered ( element, range1 );
 			if ( range2.HasValue )
 				AddOrdered ( element, range2.Value );
 		}
 
-		public void AddArc ( TElement element, float arcEnd1, float arcEnd2, int dir ) {
-			AddArc ( element, Range.Create ( arcEnd1, arcEnd2 ), dir );
+		public void Add ( TElement element, float arcEnd1, float arcEnd2, int dir ) {
+			Add ( element, Range.Create ( arcEnd1, arcEnd2 ), dir );
 		}
 
-		public void AddArc ( TElement element, Range <float> arcEnds, int dir ) {
+		public void Add ( TElement element, Range <float> arcEnds, int dir ) {
 			CircleMath.CoerceArc ( arcEnds, dir, MaxLimit, out var range1, out var range2 );
 			AddOrdered ( element, range1 );
 			if ( range2.HasValue )

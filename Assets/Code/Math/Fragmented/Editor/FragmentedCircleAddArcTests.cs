@@ -103,7 +103,7 @@ namespace Tests {
 
 		private void AssertAddArc ( float arcEnd1, float arcEnd2, int dir, float s1, float e1, float? s2 = null, float? e2 = null ) {
 			var circle = FragmentedCircle.CreateDegrees <string> ();
-			circle.AddArc ( "r0", arcEnd1, arcEnd2, dir );
+			circle.Add ( "r0", arcEnd1, arcEnd2, dir );
 			if ( s2.HasValue )
 				Assert.AreEqual ( 2, circle.Count );
 			else
