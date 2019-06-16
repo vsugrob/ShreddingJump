@@ -112,7 +112,12 @@ public class PlatformRotator : MonoBehaviour {
 		var angle = StartAngle;
 		var y = transform.position.y + VerticalOffset;
 		Vector3? pPrev = null;
-		for ( int i = 0 ; i <= numSegments ; i++, angle += SegmentAngularLength ) {
+		var angleDelta = SegmentAngularLength;
+		if ( EndAngle < StartAngle )
+			angleDelta = -angleDelta;
+
+		var parent = transform.parent;
+		for ( int i = 0 ; i <= numSegments ; i++, angle += angleDelta ) {
 			if ( i == numSegments )
 				angle = EndAngle;
 
@@ -121,6 +126,9 @@ public class PlatformRotator : MonoBehaviour {
 				y,
 				-Mathf.Sin ( angle * Mathf.Deg2Rad ) * Radius
 			);
+			if ( parent != null )
+				p = parent.TransformDirection ( p );
+
 			if ( pPrev.HasValue )
 				Gizmos.DrawLine ( pPrev.Value, p );
 
