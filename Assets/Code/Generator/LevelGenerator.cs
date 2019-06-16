@@ -331,7 +331,7 @@ public class LevelGenerator : MonoBehaviour {
 				continue;
 			}
 			// We don't want obstacles to behave unpredictably: they must not trespass boundaries between platforms and holes.
-			if ( holeCircle.Count != 0 ) {
+			if ( false && holeCircle.Count != 0 ) {
 				holeCircle.SeekFragmentBoundary ( range.Start, -1, out var minHoleBound );
 				holeCircle.SeekFragmentBoundary ( range.End  ,  1, out var maxHoleBound );
 				CircleMath.IntersectArcs (
@@ -353,6 +353,7 @@ public class LevelGenerator : MonoBehaviour {
 			rotator.EndAngle = maxBound;
 			rotator.AngularSpeed = UnityEngine.Random.Range ( Settings.MovingObstacleAngularSpeedMin, Settings.MovingObstacleAngularSpeedMax );
 			rotator.MotionCurve = Settings.MovingObstacleMotionCurve;
+			rotator.AngularSpeed = 0;
 		}
 	}
 
