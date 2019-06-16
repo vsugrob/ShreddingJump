@@ -3648,10 +3648,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _angularSpeed: 60
-  _enableBoundaries: 1
   _useLocalSpace: 1
-  _startAngle: 0
-  _endAngle: 135
+  _startAngle: 180
+  _endAngle: 315
   _motionCurve:
     serializedVersion: 2
     m_Curve:
@@ -3676,7 +3675,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _axis: 2
 --- !u!1 &757131089
 GameObject:
   m_ObjectHideFlags: 0
@@ -6866,10 +6864,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _angularSpeed: 60
-  _enableBoundaries: 0
   _useLocalSpace: 1
   _startAngle: 0
-  _endAngle: 135
+  _endAngle: 180
   _motionCurve:
     serializedVersion: 2
     m_Curve:
@@ -6894,7 +6891,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _axis: 2
 --- !u!43 &1572158115
 Mesh:
   m_ObjectHideFlags: 0
