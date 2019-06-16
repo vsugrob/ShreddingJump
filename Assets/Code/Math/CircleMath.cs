@@ -69,22 +69,43 @@
 			Range <float> arcEnds, int dir, float pi2,
 			out Range <float> resultArc1, out Range <float>? resultArc2
 		) {
-			var diff = arcEnds.Width ();
-			if ( diff != 0 ) {
-				if ( dir == 0 )
-					throw new ArgumentException ( "Non-point arc cannot be represented with zero winding.", nameof ( dir ) );
+			arcEnds = ArcEndsToArc ( arcEnds, dir, pi2 );
+			CoerceArc ( arcEnds, pi2, out resultArc1, out resultArc2 );
+		}
 
-				var absDiff = Math.Abs ( diff );
-				if ( absDiff < pi2 ) {
-					dir = Math.Sign ( dir );
-					if ( Math.Sign ( diff ) != dir ) {
-						var outerArc = pi2 - absDiff;
-						arcEnds.End = arcEnds.Start + outerArc * dir;
-					}
-				}
+		public static Range <float> ArcEndsToArc ( Range <float> arcEnds, int dir, float pi2 ) {
+			var diff = arcEnds.Width ();
+			if ( diff == 0 )
+				return	arcEnds;
+			else if ( dir == 0 )
+				throw new ArgumentException ( "Non-point arc cannot be represented with zero winding.", nameof ( dir ) );
+
+			var absDiff = Math.Abs ( diff );
+			if ( absDiff >= pi2 )
+				return	Range.Create ( 0, pi2 );
+
+			dir = Math.Sign ( dir );
+			if ( Math.Sign ( diff ) != dir ) {
+				var outerArc = pi2 - absDiff;
+				arcEnds.End = arcEnds.Start + outerArc * dir;
 			}
 
-			CoerceArc ( arcEnds, pi2, out resultArc1, out resultArc2 );
+			return	arcEnds;
+		}
+
+		public static void IntersectArcs (
+			float pi2,
+			Range <float> arcEnds1, int dir1,
+			Range <float> arcEnds2, int dir2,
+			out Range <float>? resultArc1, out Range <float>? resultArc2
+		) {
+			var arc1 = ArcEndsToArc ( arcEnds1, dir1, pi2 );
+			var arc2 = ArcEndsToArc ( arcEnds2, dir2, pi2 );
+			IntersectArcs (
+				pi2,
+				arc1, arc2,
+				out resultArc1, out resultArc2
+			);
 		}
 
 		public static void IntersectArcs (

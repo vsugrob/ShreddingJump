@@ -243,6 +243,9 @@ namespace Tests {
 					$"expectedArc2Ends.End does not match with actual value. arc1: {arc1}, arc2: {arc2}"
 				);
 			}
+			CircleMath.IntersectArcs ( 360, arc1, Math.Sign ( arc1.Width () ), arc2, Math.Sign ( arc2.Width () ), out var actualArc21, out var actualArc22 );
+			Assert.AreEqual ( actualArc1, actualArc21 );
+			Assert.AreEqual ( actualArc2, actualArc22 );
 		}
 	}
 }
