@@ -83,4 +83,10 @@ public class LevelGeneratorSettings : ScriptableObject {
 	[SerializeField]
 	private float _movingObstacleAngularSpeedMax = 135;
 	public float MovingObstacleAngularSpeedMax => _movingObstacleAngularSpeedMax;
+	[SerializeField]
+	private AnimationCurve _movingObstacleMotionCurve = new AnimationCurve ( new Keyframe ( 0, 0 ), new Keyframe ( 1, 1 ) );
+	public AnimationCurve MovingObstacleMotionCurve {
+		get => _movingObstacleMotionCurve;
+		set => _movingObstacleMotionCurve = value;
+	}
 }

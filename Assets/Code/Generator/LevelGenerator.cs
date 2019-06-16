@@ -315,31 +315,43 @@ public class LevelGenerator : MonoBehaviour {
 		holeCircle.AddRange ( holeFrags );
 		for ( int i = 0 ; i < obstacleCircle.Count ; i++ ) {
 			var fragment = obstacleCircle [i];
-			// TODO: skip if obstacle is already moving.
-			var range = fragment.Range;
-			// Obstacle boundaries are always present, because even in the most degenerate case there is no less than one obstacle.
-			obstacleCircle.SeekFragmentBoundary ( range.Start, -1, out var minObsBound );
-			obstacleCircle.SeekFragmentBoundary ( range.End  ,  1, out var maxObsBound );
-			if ( minObsBound == range.Start && maxObsBound == range.End ) {
-				// There's no space for oscillation.
+			var platform = fragment.Element;
+			if ( null != platform.GetComponent <PlatformRotator> () ) {
+				// Obstacle is already moving.
 				continue;
 			}
 
+			var range = fragment.Range;
+			// Obstacle boundaries are always present, because even in the most degenerate case there is no less than one obstacle.
+			obstacleCircle.SeekFragmentBoundary ( range.Start, -1, out var minBound );
+			obstacleCircle.SeekFragmentBoundary ( range.End  ,  1, out var maxBound );
+			if ( minBound == range.Start && maxBound == range.End ) {
+				// There's no space for oscillation.
+				continue;
+			}
+			// We don't want obstacles to behave unpredictably: they must not trespass boundaries between platforms and holes.
 			if ( holeCircle.Count != 0 ) {
 				holeCircle.SeekFragmentBoundary ( range.Start, -1, out var minHoleBound );
 				holeCircle.SeekFragmentBoundary ( range.End  ,  1, out var maxHoleBound );
-				// TODO: intersect both arcs and write into minObsBound and maxObsBound.
 				CircleMath.IntersectArcs (
 					360,
-					Range.Create ( minObsBound, maxObsBound ), dir1 : 1,
+					Range.Create ( minBound, maxBound ), dir1 : 1,
 					Range.Create ( minHoleBound, maxHoleBound ), dir2 : 1,
-					out var intersectionArc, out _	// Both arcs grew up from the same point. Therefore there is only one intersection.
+					out var intersectionArc, out _	// Both arcs grew up from the same point, therefore there is always only one intersection.
 				);
-				minObsBound = intersectionArc.Value.Start;	// TODO: +half width.
-				maxObsBound = intersectionArc.Value.End;	// TODO: -half width.
+				minBound = intersectionArc.Value.Start;
+				maxBound = intersectionArc.Value.End;
+				if ( minBound == range.Start && maxBound == range.End ) {
+					// There's no space for oscillation.
+					continue;
+				}
 			}
 
-			// TODO: add ObjectRotator with boundaries between minObsBound and maxObsBound.
+			var rotator = platform.gameObject.AddComponent <PlatformRotator> ();
+			rotator.StartAngle = minBound;
+			rotator.EndAngle = maxBound;
+			rotator.AngularSpeed = UnityEngine.Random.Range ( Settings.MovingObstacleAngularSpeedMin, Settings.MovingObstacleAngularSpeedMax );
+			rotator.MotionCurve = Settings.MovingObstacleMotionCurve;
 		}
 	}
 
