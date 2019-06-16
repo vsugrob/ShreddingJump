@@ -101,4 +101,30 @@ public class PlatformRotator : MonoBehaviour {
 		var k = MotionCurve.Evaluate ( t );
 		Angle = Mathf.Lerp ( motionStartAngle, motionEndAngle, k );
 	}
+
+	private void OnDrawGizmos () {
+		Gizmos.color = Color.gray;
+		var absDistance = Mathf.Abs ( EndAngle - StartAngle );
+		const float SegmentAngularLength = 8;
+		const float Radius = 2;
+		const float VerticalOffset = 1;
+		int numSegments = Mathf.CeilToInt ( absDistance / SegmentAngularLength );
+		var angle = StartAngle;
+		var y = transform.position.y + VerticalOffset;
+		Vector3? pPrev = null;
+		for ( int i = 0 ; i <= numSegments ; i++, angle += SegmentAngularLength ) {
+			if ( i == numSegments )
+				angle = EndAngle;
+
+			var p = new Vector3 (
+				Mathf.Cos ( angle * Mathf.Deg2Rad ) * Radius,
+				y,
+				-Mathf.Sin ( angle * Mathf.Deg2Rad ) * Radius
+			);
+			if ( pPrev.HasValue )
+				Gizmos.DrawLine ( pPrev.Value, p );
+
+			pPrev = p;
+		}
+	}
 }
