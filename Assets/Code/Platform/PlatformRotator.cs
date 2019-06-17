@@ -107,10 +107,11 @@ public class PlatformRotator : MonoBehaviour {
 		var absDistance = Mathf.Abs ( EndAngle - StartAngle );
 		const float SegmentAngularLength = 8;
 		const float Radius = 2;
-		const float VerticalOffset = 1;
+		const float VerticalOffsetBase = 1;
+		const float VerticalOffsetPerDegree = 0.5f / 360;
 		int numSegments = Mathf.CeilToInt ( absDistance / SegmentAngularLength );
 		var angle = StartAngle;
-		var y = transform.position.y + VerticalOffset;
+		var y = transform.position.y + VerticalOffsetBase + VerticalOffsetPerDegree * StartAngle;
 		Vector3? pPrev = null;
 		var angleDelta = SegmentAngularLength;
 		if ( EndAngle < StartAngle )
