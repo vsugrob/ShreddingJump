@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+[SelectionBase]
 public class Column : MonoBehaviour {
 	[SerializeField]
 	private float _initialHeight = 3;
