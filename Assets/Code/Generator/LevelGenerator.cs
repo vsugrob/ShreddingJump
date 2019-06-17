@@ -347,6 +347,9 @@ public class LevelGenerator : MonoBehaviour {
 				}
 			}
 
+			var arc = CircleMath.ArcEndsToArc ( Range.Create ( minBound, maxBound ), dir : 1, pi2 : 360 );
+			minBound = arc.Start;
+			maxBound = arc.End;
 			var rotator = platform.gameObject.AddComponent <PlatformRotator> ();
 			rotator.StartAngle = minBound;
 			rotator.EndAngle = maxBound;
