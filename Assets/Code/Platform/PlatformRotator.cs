@@ -103,7 +103,15 @@ public class PlatformRotator : MonoBehaviour {
 	}
 
 	private void OnDrawGizmos () {
-		Gizmos.color = Color.gray;
+		DrawGizmos ( Color.gray );
+	}
+
+	private void OnDrawGizmosSelected () {
+		DrawGizmos ( Color.green );
+	}
+
+	private void DrawGizmos ( Color color ) {
+		Gizmos.color = color;
 		var absDistance = Mathf.Abs ( EndAngle - StartAngle );
 		const float SegmentAngularLength = 8;
 		const float Radius = 2;
