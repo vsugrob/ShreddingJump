@@ -368,7 +368,7 @@ public class LevelGenerator : MonoBehaviour {
 			rotator.EndAngle = maxBound;
 			rotator.AngularSpeed = UnityEngine.Random.Range ( Settings.MovingObstacleAngularSpeedMin, Settings.MovingObstacleAngularSpeedMax );
 			rotator.MotionCurve = Settings.MovingObstacleMotionCurve;
-			//rotator.AngularSpeed = 0;
+			rotator.MinOscillationTime = Settings.MovingObstacleMinOscillationTime;
 		}
 	}
 

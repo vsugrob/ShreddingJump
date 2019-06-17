@@ -89,4 +89,10 @@ public class LevelGeneratorSettings : ScriptableObject {
 		get => _movingObstacleMotionCurve;
 		set => _movingObstacleMotionCurve = value;
 	}
+	[SerializeField]
+	private float _movingObstacleMinOscillationTime = 0.5f;
+	public float MovingObstacleMinOscillationTime {
+		get => _movingObstacleMinOscillationTime;
+		set => _movingObstacleMinOscillationTime = value;
+	}
 }

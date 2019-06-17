@@ -27,6 +27,12 @@ public class PlatformRotator : MonoBehaviour {
 		set => _endAngle = value;
 	}
 	[SerializeField]
+	private float _minOscillationTime = 0;
+	public float MinOscillationTime {
+		get => _minOscillationTime;
+		set => _minOscillationTime = value;
+	}
+	[SerializeField]
 	private AnimationCurve _motionCurve = new AnimationCurve ( new Keyframe ( 0, 0 ), new Keyframe ( 1, 1 ) );
 	public AnimationCurve MotionCurve {
 		get => _motionCurve;
@@ -91,7 +97,7 @@ public class PlatformRotator : MonoBehaviour {
 
 		var timeSinceStart = Time.fixedTime - startTime;
 		var absDistance = Mathf.Abs ( motionEndAngle - motionStartAngle );
-		var travelTime = absDistance / AngularSpeed;
+		var travelTime = Mathf.Max ( absDistance / AngularSpeed, MinOscillationTime );
 		var turn = timeSinceStart / travelTime;
 		var turnIndex = ( int ) turn;
 		var t = turn - turnIndex;
