@@ -346,10 +346,16 @@ public class LevelGenerator : MonoBehaviour {
 					360,
 					Range.Create ( minBound, maxBound ), dir1 : 1,
 					Range.Create ( minHoleBound, maxHoleBound ), dir2 : 1,
-					out var intersectionArc, out _	// Both arcs grew up from the same point, therefore there is always only one intersection.
+					out var intersectionArc1, out var intersectionArc2
 				);
-				minBound = intersectionArc.Value.Start;
-				maxBound = intersectionArc.Value.End;
+				// Both arcs grew up from the same point, therefore there is always at least one intersection.
+				if ( intersectionArc2.HasValue ) {
+					// There are two intersections. Only one of them contains initial range.
+					if ( intersectionArc2.Value.Contains ( range ) )
+						intersectionArc1 = intersectionArc2;
+				}
+				minBound = intersectionArc1.Value.Start;
+				maxBound = intersectionArc1.Value.End;
 				if ( range.Start == minBound && range.End == maxBound ) {
 					// There's no space for oscillation.
 					continue;
