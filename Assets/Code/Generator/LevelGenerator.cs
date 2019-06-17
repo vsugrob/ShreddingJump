@@ -321,12 +321,11 @@ public class LevelGenerator : MonoBehaviour {
 				continue;
 			}
 
-			var platformWidth = platform.AngleWidth;
 			var range = fragment.Range;
 			// Obstacle boundaries are always present, because even in the most degenerate case there is no less than one obstacle.
 			obstacleCircle.SeekFragmentBoundary ( range.Start, -1, out var minBound );
 			obstacleCircle.SeekFragmentBoundary ( range.End  ,  1, out var maxBound );
-			if ( platformWidth <= maxBound - maxBound ) {
+			if ( range.Start == minBound && range.End == maxBound ) {
 				// There's no space for oscillation.
 				continue;
 			}
@@ -342,7 +341,7 @@ public class LevelGenerator : MonoBehaviour {
 				);
 				minBound = intersectionArc.Value.Start;
 				maxBound = intersectionArc.Value.End;
-				if ( platformWidth <= maxBound - maxBound ) {
+				if ( range.Start == minBound && range.End == maxBound ) {
 					// There's no space for oscillation.
 					continue;
 				}
