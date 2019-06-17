@@ -310,7 +310,7 @@ public class LevelGenerator : MonoBehaviour {
 		if ( obstacleCircle.Count == 0 )
 			return;
 
-		var holeFrags = platformCircle.Where ( f => ( f.Element.Kind & PlatformKindFlags.Platform ) != PlatformKindFlags.None );
+		var holeFrags = platformCircle.Where ( f => ( f.Element.Kind & PlatformKindFlags.Hole ) != PlatformKindFlags.None );
 		var holeCircle = FragmentedCircle.CreateDegrees <Platform> ();
 		holeCircle.AddRange ( holeFrags );
 		for ( int i = 0 ; i < obstacleCircle.Count ; i++ ) {
