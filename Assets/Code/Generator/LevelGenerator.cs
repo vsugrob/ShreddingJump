@@ -28,7 +28,6 @@ public class LevelGenerator : MonoBehaviour {
 		floorY = prevFloorTf.position.y - floorHeight;
 		var floorContainerTf = prevFloorTf.parent;
 		var baseAngle = 0f;
-		var i = 0;
 		while ( true ) {
 			var floorRoot = FloorRoot.Create ( floorContainerTf, nextFloorIndex, floorY );
 			floorTf = floorRoot.transform;
@@ -41,7 +40,6 @@ public class LevelGenerator : MonoBehaviour {
 			this.prevFloorInfo = new FloorInfo ( floorRoot, baseAngle, platformCircle, obstacleCircle );
 			floorY -= floorHeight;
 			baseAngle += RandomHelper.Range ( Settings.BaseAngleOffsetMin, Settings.BaseAngleOffsetMax, Settings.BaseAngleOffsetStep );
-			i++;
 			nextFloorIndex++;
 			yield return	this.prevFloorInfo;
 		}
