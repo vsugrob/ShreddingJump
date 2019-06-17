@@ -322,15 +322,24 @@ public class LevelGenerator : MonoBehaviour {
 			}
 
 			var range = fragment.Range;
-			// Obstacle boundaries are always present, because even in the most degenerate case there is no less than one obstacle.
-			obstacleCircle.SeekFragmentBoundary ( range.Start, -1, out var minBound );
-			obstacleCircle.SeekFragmentBoundary ( range.End  ,  1, out var maxBound );
-			if ( range.Start == minBound && range.End == maxBound ) {
-				// There's no space for oscillation.
-				continue;
+			float minBound, maxBound;
+			if ( obstacleCircle.Count <= 1 ) {
+				/* Fragment boundary seeking algorithm produces inverted arc when there's only one obstacle.
+				 * Min boundary settles at range.End and max boundary at range.Start, which results in hole at the place of original obstacle.
+				 * With all of that being said, it's better to define boundaries as 360 degree arc. */
+				minBound = range.Start;
+				maxBound = minBound + 360;
+			} else {
+				obstacleCircle.SeekFragmentBoundary ( range.Start, -1, out minBound );
+				obstacleCircle.SeekFragmentBoundary ( range.End  ,  1, out maxBound );
+				if ( range.Start == minBound && range.End == maxBound ) {
+					// There's no space for oscillation.
+					continue;
+				}
 			}
+
 			// We don't want obstacles to behave unpredictably: they must not trespass boundaries between platforms and holes.
-			if ( false && holeCircle.Count != 0 ) {
+			if ( holeCircle.Count != 0 ) {
 				holeCircle.SeekFragmentBoundary ( range.Start, -1, out var minHoleBound );
 				holeCircle.SeekFragmentBoundary ( range.End  ,  1, out var maxHoleBound );
 				CircleMath.IntersectArcs (
