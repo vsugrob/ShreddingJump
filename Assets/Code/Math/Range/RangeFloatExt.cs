@@ -8,6 +8,10 @@
 			return	Math.Abs ( range.End - range.Start );
 		}
 
+		public static float Middle ( this Range <float> range ) {
+			return	( range.Start + range.End ) / 2;
+		}
+
 		public static Range <float> Shift ( this Range <float> range, float offset ) {
 			range.Start += offset;
 			range.End += offset;

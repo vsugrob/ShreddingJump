@@ -311,6 +311,7 @@ public class LevelGenerator : MonoBehaviour {
 		var holeFrags = platformCircle.Where ( f => ( f.Element.Kind & PlatformKindFlags.Hole ) != PlatformKindFlags.None );
 		var holeCircle = FragmentedCircle.CreateDegrees <Platform> ();
 		holeCircle.AddRange ( holeFrags );
+		var movingFragments = new List <LineFragment <Platform, float>> ();
 		for ( int i = 0 ; i < obstacleCircle.Count ; i++ ) {
 			var fragment = obstacleCircle [i];
 			var platform = fragment.Element;
@@ -369,6 +370,31 @@ public class LevelGenerator : MonoBehaviour {
 			rotator.AngularSpeed = UnityEngine.Random.Range ( Settings.MovingObstacleAngularSpeedMin, Settings.MovingObstacleAngularSpeedMax );
 			rotator.MotionCurve = Settings.MovingObstacleMotionCurve;
 			rotator.MinOscillationTime = Settings.MovingObstacleMinOscillationTime;
+			movingFragments.Add ( fragment );
+		}
+
+		// Separate overlapping rotators.
+		if ( movingFragments.Count >= 2 ) {
+			var fragment = movingFragments [movingFragments.Count - 1];
+			var rotator0 = fragment.Element.GetComponent <PlatformRotator> ();
+			var range0 = fragment.Range;
+			for ( int i = 0 ; i < movingFragments.Count ; i++ ) {
+				fragment = movingFragments [i];
+				var rotator1 = fragment.Element.GetComponent <PlatformRotator> ();
+				var range1 = fragment.Range;
+				if ( rotator0.EndAngle % 360 == range1.Start &&
+					 rotator1.StartAngle % 360 == range0.End
+				) {
+					// Make rotating platforms meet at their bisector instead of overlapping.
+					var arc = CircleMath.ArcEndsToArc ( Range.Create ( range0.End, range1.Start ), dir : 1, pi2 : 360 );
+					var halfDistance = arc.End - arc.Middle ();
+					rotator0.EndAngle -= halfDistance;
+					rotator1.StartAngle += halfDistance;
+				}
+
+				rotator0 = rotator1;
+				range0 = range1;
+			}
 		}
 	}
 
