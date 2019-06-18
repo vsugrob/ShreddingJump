@@ -320,6 +320,9 @@ public class LevelGenerator : MonoBehaviour {
 				continue;
 			}
 
+			if ( UnityEngine.Random.value > Settings.ObstacleOverPlatformMovingChance )
+				continue;
+
 			var range = fragment.Range;
 			float minBound, maxBound;
 			if ( obstacleCircle.Count <= 1 ) {

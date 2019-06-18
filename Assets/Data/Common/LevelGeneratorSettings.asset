@@ -34,7 +34,7 @@ MonoBehaviour:
   _horzObstacleCountMin: 0
   _horzObstacleCountMax: 4
   _allowObstaclesUnderHoles: 0
-  _obstacleOverPlatformMovingChance: 0.3
+  _obstacleOverPlatformMovingChance: 0.5
   _movingObstacleAngularSpeedMin: 20
   _movingObstacleAngularSpeedMax: 60
   _movingObstacleMotionCurve:
