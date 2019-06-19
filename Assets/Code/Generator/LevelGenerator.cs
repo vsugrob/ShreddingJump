@@ -404,7 +404,7 @@ public class LevelGenerator : MonoBehaviour {
 	) {
 		resultsInNoSpace = false;
 		if ( occlusionCircle.Count != 0 ) {
-			if ( occlusionCircle.Intersects ( platformRange ) ) {
+			if ( occlusionCircle.Intersects ( platformRange, includeTouch : false ) ) {
 				resultsInNoSpace = true;
 				return	true;
 			}
