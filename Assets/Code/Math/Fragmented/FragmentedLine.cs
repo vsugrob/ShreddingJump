@@ -132,6 +132,17 @@ namespace System.Collections.Generic {
 			return	emptyRanges;
 		}
 
+		public virtual bool Intersects ( Range <TLimit> range ) {
+			var fragments = fragmentsByStart.Values;
+			for ( int i = 0 ; i < fragments.Count ; i++ ) {
+				var fragRange = fragments [i].Range;
+				if ( fragRange.Intersects ( range ) )
+					return	true;
+			}
+
+			return	false;
+		}
+
 		public virtual int SeekFragmentBoundary ( TLimit start, int dir, out TLimit boundary ) {
 			ThrowIfOutOfBounds ( start );
 			if ( dir == 0 || Count == 0 ) {

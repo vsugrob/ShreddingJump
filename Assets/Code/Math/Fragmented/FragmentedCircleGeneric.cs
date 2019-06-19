@@ -32,6 +32,11 @@
 			}
 		}
 
+		public override bool Intersects ( Range <float> arc ) {
+			CircleMath.CoerceArc ( arc, MaxLimit, out var resultArc1, out var resultArc2 );
+			return	base.Intersects ( resultArc1 ) || ( resultArc2.HasValue && base.Intersects ( resultArc2.Value ) );
+		}
+
 		public override int SeekFragmentBoundary ( float start, int dir, out float boundary ) {
 			if ( start != MaxLimit )
 				start = CircleMath.CoerceAngle ( start, MaxLimit );
