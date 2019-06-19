@@ -311,6 +311,14 @@ public class LevelGenerator : MonoBehaviour {
 		var holeFrags = platformCircle.Where ( f => ( f.Element.Kind & PlatformKindFlags.Hole ) != PlatformKindFlags.None );
 		var holeCircle = FragmentedCircle.CreateDegrees <Platform> ();
 		holeCircle.AddRange ( holeFrags );
+		FragmentedCircle <Platform> prevFloorHoleCircle = null;
+		if ( !Settings.AllowObstaclesMoveUnderHoles ) {
+			prevFloorHoleCircle = FragmentedCircle.CreateDegrees <Platform> ();
+			holeFrags = prevFloorInfo.PlatformCircle
+				.Where ( f => ( f.Element.Kind & PlatformKindFlags.Hole ) != PlatformKindFlags.None );
+			prevFloorHoleCircle.AddRange ( holeFrags );
+		}
+
 		var movingFragments = new List <LineFragment <Platform, float>> ();
 		for ( int i = 0 ; i < obstacleCircle.Count ; i++ ) {
 			var fragment = obstacleCircle [i];
@@ -343,7 +351,13 @@ public class LevelGenerator : MonoBehaviour {
 			// We don't want obstacles to behave unpredictably: they must not trespass boundaries between platforms and holes.
 			IntersectWithFreeSpaceArc ( holeCircle, range, ref minBound, ref maxBound, out var resultsInNoSpace );
 			if ( resultsInNoSpace )
+				continue;
+
+			if ( prevFloorHoleCircle != null ) {
+				IntersectWithFreeSpaceArc ( prevFloorHoleCircle, range, ref minBound, ref maxBound, out resultsInNoSpace );
+				if ( resultsInNoSpace )
 					continue;
+			}
 
 			var arc = CircleMath.ArcEndsToArc ( Range.Create ( minBound, maxBound ), dir : 1, pi2 : 360 );
 			minBound = arc.Start;
