@@ -80,6 +80,16 @@ namespace System {
 				return	 Start.CompareTo ( value ) <= 0 && End.CompareTo ( value ) >= 0;
 		}
 
+		public bool ContainsNoTouch ( T value ) {
+			if ( !IsValid )
+				return	false;
+
+			if ( IsReversed )
+				return	End.CompareTo ( value ) < 0 && Start.CompareTo ( value ) > 0;
+			else
+				return	 Start.CompareTo ( value ) < 0 && End.CompareTo ( value ) > 0;
+		}
+
 		public bool Contains ( Range <T> otherRange ) {
 			return	IsValid && otherRange.IsValid &&
 				Contains ( otherRange.Start ) &&
@@ -89,6 +99,24 @@ namespace System {
 		private bool ContainsAnyEnd ( Range <T> otherRange ) {
 			return	Contains ( otherRange.Start ) ||
 					Contains ( otherRange.End );
+		}
+
+		private bool ContainsAnyEndNoTouch ( Range <T> otherRange ) {
+			return	ContainsNoTouch ( otherRange.Start ) ||
+					ContainsNoTouch ( otherRange.End );
+		}
+
+		public bool Intersects ( Range <T> otherRange, bool includeTouch ) {
+			if ( includeTouch )
+				return	Intersects ( otherRange );
+			else
+				return	IntersectsNoTouch ( otherRange );
+		}
+
+		public bool IntersectsNoTouch ( Range <T> otherRange ) {
+			return	IsValid && otherRange.IsValid &&
+				( ContainsAnyEndNoTouch ( otherRange ) ||
+					otherRange.ContainsAnyEndNoTouch ( this ) );
 		}
 
 		public bool Intersects ( Range <T> otherRange ) {

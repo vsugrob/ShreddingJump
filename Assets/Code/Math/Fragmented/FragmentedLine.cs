@@ -132,11 +132,11 @@ namespace System.Collections.Generic {
 			return	emptyRanges;
 		}
 
-		public virtual bool Intersects ( Range <TLimit> range ) {
+		public virtual bool Intersects ( Range <TLimit> range, bool includeTouch = true ) {
 			var fragments = fragmentsByStart.Values;
 			for ( int i = 0 ; i < fragments.Count ; i++ ) {
 				var fragRange = fragments [i].Range;
-				if ( fragRange.Intersects ( range ) )
+				if ( fragRange.Intersects ( range, includeTouch ) )
 					return	true;
 			}
 
