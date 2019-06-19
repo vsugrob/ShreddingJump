@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace Tests {
     public class FragmentedCircleIntersectsTests {
 		[Test]
-		public void FragmentedCircle_Intersects () {
+		public void FragmentedCircle_IntersectsIncludeTouch () {
 			AssertIntersects ( 0, 0, includeTouch : true, expectedResult : false );
 			AssertIntersects ( 4, 0, includeTouch : true, expectedResult : false );
 			AssertIntersects ( -120, 400, includeTouch : true, expectedResult : false );
@@ -66,6 +66,53 @@ namespace Tests {
 				-400, -780, includeTouch : true, expectedResult : true,
 				5, 60,
 				70, 90
+			);
+		}
+
+		[Test]
+		public void FragmentedCircle_IntersectsExcludeTouch () {
+			AssertIntersects ( 90, 90, includeTouch : false, expectedResult : false );
+			AssertIntersects ( 30, 270, includeTouch : false, expectedResult : false );
+			AssertIntersects ( 600, 1090, includeTouch : false, expectedResult : false );
+			AssertIntersects (
+				20, 20, includeTouch : false, expectedResult : false,
+				3, 3
+			);
+			AssertIntersects (
+				50, 50, includeTouch : false, expectedResult : false,
+				80, 250
+			);
+			AssertIntersects (
+				80, 80, includeTouch : false, expectedResult : false,
+				80, 250
+			);
+			AssertIntersects (
+				81, 81, includeTouch : false, expectedResult : true,
+				80, 250
+			);
+			AssertIntersects (
+				250, 250, includeTouch : false, expectedResult : false,
+				80, 250
+			);
+			AssertIntersects (
+				251, 251, includeTouch : false, expectedResult : false,
+				80, 250
+			);
+			AssertIntersects (
+				50, 80, includeTouch : false, expectedResult : false,
+				80, 250
+			);
+			AssertIntersects (
+				250, 290, includeTouch : false, expectedResult : false,
+				80, 250
+			);
+			AssertIntersects (
+				50, 90, includeTouch : false, expectedResult : true,
+				80, 250
+			);
+			AssertIntersects (
+				240, 260, includeTouch : false, expectedResult : true,
+				80, 250
 			);
 		}
 
