@@ -354,6 +354,7 @@ public class LevelGenerator : MonoBehaviour {
 				continue;
 
 			if ( prevFloorHoleCircle != null ) {
+				// Moving obstacles should not enter space under the holes of previous floor.
 				IntersectWithFreeSpaceArc ( prevFloorHoleCircle, range, ref minBound, ref maxBound, out resultsInNoSpace );
 				if ( resultsInNoSpace )
 					continue;
@@ -403,6 +404,11 @@ public class LevelGenerator : MonoBehaviour {
 	) {
 		resultsInNoSpace = false;
 		if ( occlusionCircle.Count != 0 ) {
+			if ( occlusionCircle.Intersects ( platformRange ) ) {
+				resultsInNoSpace = true;
+				return	true;
+			}
+
 			occlusionCircle.SeekFragmentBoundary ( platformRange.Start, -1, out var minOccluderBound );
 			occlusionCircle.SeekFragmentBoundary ( platformRange.End  ,  1, out var maxOccluderBound );
 			CircleMath.IntersectArcs (
