@@ -341,28 +341,9 @@ public class LevelGenerator : MonoBehaviour {
 			}
 
 			// We don't want obstacles to behave unpredictably: they must not trespass boundaries between platforms and holes.
-			if ( holeCircle.Count != 0 ) {
-				holeCircle.SeekFragmentBoundary ( range.Start, -1, out var minHoleBound );
-				holeCircle.SeekFragmentBoundary ( range.End  ,  1, out var maxHoleBound );
-				CircleMath.IntersectArcs (
-					360,
-					Range.Create ( minBound, maxBound ), dir1 : 1,
-					Range.Create ( minHoleBound, maxHoleBound ), dir2 : 1,
-					out var intersectionArc1, out var intersectionArc2
-				);
-				// Both arcs grew up from the same point, therefore there is always at least one intersection.
-				if ( intersectionArc2.HasValue ) {
-					// There are two intersections. Only one of them contains initial range.
-					if ( intersectionArc2.Value.Contains ( range ) )
-						intersectionArc1 = intersectionArc2;
-				}
-				minBound = intersectionArc1.Value.Start;
-				maxBound = intersectionArc1.Value.End;
-				if ( range.Start == minBound && range.End == maxBound ) {
-					// There's no space for oscillation.
+			IntersectWithFreeSpaceArc ( holeCircle, range, ref minBound, ref maxBound, out var resultsInNoSpace );
+			if ( resultsInNoSpace )
 					continue;
-				}
-			}
 
 			var arc = CircleMath.ArcEndsToArc ( Range.Create ( minBound, maxBound ), dir : 1, pi2 : 360 );
 			minBound = arc.Start;
@@ -399,6 +380,41 @@ public class LevelGenerator : MonoBehaviour {
 				range0 = range1;
 			}
 		}
+	}
+
+	private static bool IntersectWithFreeSpaceArc (
+		FragmentedCircle <Platform> occlusionCircle, Range <float> platformRange,
+		ref float minBound, ref float maxBound,
+		out bool resultsInNoSpace
+	) {
+		resultsInNoSpace = false;
+		if ( occlusionCircle.Count != 0 ) {
+			occlusionCircle.SeekFragmentBoundary ( platformRange.Start, -1, out var minOccluderBound );
+			occlusionCircle.SeekFragmentBoundary ( platformRange.End  ,  1, out var maxOccluderBound );
+			CircleMath.IntersectArcs (
+				360,
+				Range.Create ( minBound, maxBound ), dir1 : 1,
+				Range.Create ( minOccluderBound, maxOccluderBound ), dir2 : 1,
+				out var intersectionArc1, out var intersectionArc2
+			);
+			// Both arcs grew up from the same point, therefore there is always at least one intersection.
+			if ( intersectionArc2.HasValue ) {
+				// There are two intersections. Only one of them contains initial range.
+				if ( intersectionArc2.Value.Contains ( platformRange ) )
+					intersectionArc1 = intersectionArc2;
+			}
+
+			minBound = intersectionArc1.Value.Start;
+			maxBound = intersectionArc1.Value.End;
+			if ( platformRange.Start == minBound && platformRange.End == maxBound ) {
+				// There's no space for oscillation.
+				resultsInNoSpace = true;
+			}
+
+			return	true;
+		}
+
+		return	false;
 	}
 
 	private Column GenerateColumn () {
