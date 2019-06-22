@@ -252,10 +252,10 @@ public class LevelGenerator : MonoBehaviour {
 		while ( obstacleCount-- > 0 && allowedRanges.Count > 0 && widthLeft > 0 ) {
 			int index = UnityEngine.Random.Range ( 0, allowedRanges.Count );
 			var range = allowedRanges [index];
-			bool rangeIsValid = true;
+			allowedRanges.RemoveAt ( index );
 			if ( range.Width () < Settings.HorzObstacleWidthMin ) {
 				// Obstacle doesn't fit, this range is useless for us.
-				rangeIsValid = false;
+				continue;
 			}
 
 			if ( !RandomlyInsertHorzObstacle (
@@ -264,12 +264,8 @@ public class LevelGenerator : MonoBehaviour {
 			) ) {
 				/* By some reason we wasn't able to instantiate obstacle at the given range.
 				 * Remove it to avoid infinite loop. */
-				rangeIsValid = false;
-			}
-
-			allowedRanges.RemoveAt ( index );
-			if ( !rangeIsValid )
 				continue;
+			}
 
 			occupiedRange = occupiedRange.Grow ( Settings.MinSpaceBetweenHorzObstacles );
 			Range.SubtractOrdered ( range, occupiedRange, out var r1, out var r2 );
