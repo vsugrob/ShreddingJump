@@ -48,10 +48,10 @@ public class LevelGeneratorSettings : ScriptableObject {
 	[SerializeField]
 	private float _baseAngleOffsetStep = 22.5f;
 	public float BaseAngleOffsetStep => _baseAngleOffsetStep;
-	[Header ( "Horizontal obstacles" )]
+	[Header ( "Obstacles(horizontal and walls)" )]
 	[SerializeField]
-	private float _horzObstacleWidthMin = 22.5f;
-	public float HorzObstacleWidthMin => _horzObstacleWidthMin;
+	private float _obstacleWidthMin = 22.5f;
+	public float ObstacleWidthMin => _obstacleWidthMin;
 	[SerializeField]
 	private float _horzObstacleWidthMax = 45;
 	public float HorzObstacleWidthMax => _horzObstacleWidthMax;
@@ -59,17 +59,17 @@ public class LevelGeneratorSettings : ScriptableObject {
 	private float _horzObstacleWidthStep = 22.5f;
 	public float HorzObstacleWidthStep => _horzObstacleWidthStep;
 	[SerializeField]
-	private float _totalHorzObstacleWidthMax = 135;
-	public float TotalHorzObstacleWidthMax => _totalHorzObstacleWidthMax;
+	private float _totalObstacleWidthMax = 135;
+	public float TotalObstacleWidthMax => _totalObstacleWidthMax;
 	[SerializeField]
-	private float _minSpaceBetweenHorzObstacles = 22.5f;
-	public float MinSpaceBetweenHorzObstacles => _minSpaceBetweenHorzObstacles;
+	private float _minSpaceBetweenObstacles = 22.5f;
+	public float MinSpaceBetweenObstacles => _minSpaceBetweenObstacles;
 	[SerializeField]
-	private int _horzObstacleCountMin = 0;
-	public int HorzObstacleCountMin => _horzObstacleCountMin;
+	private int _obstacleCountMin = 0;
+	public int ObstacleCountMin => _obstacleCountMin;
 	[SerializeField]
-	private int _horzObstacleCountMax = 4;
-	public int HorzObstacleCountMax => _horzObstacleCountMax;
+	private int _obstacleCountMax = 4;
+	public int ObstacleCountMax => _obstacleCountMax;
 	[SerializeField]
 	private bool _allowObstaclesUnderHoles = false;
 	public bool AllowObstaclesUnderHoles => _allowObstaclesUnderHoles;

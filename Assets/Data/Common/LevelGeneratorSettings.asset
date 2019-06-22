@@ -26,13 +26,13 @@ MonoBehaviour:
   _baseAngleOffsetMin: -67.5
   _baseAngleOffsetMax: 67.5
   _baseAngleOffsetStep: 22.5
-  _horzObstacleWidthMin: 22.5
+  _obstacleWidthMin: 22.5
   _horzObstacleWidthMax: 45
   _horzObstacleWidthStep: 22.5
-  _totalHorzObstacleWidthMax: 135
-  _minSpaceBetweenHorzObstacles: 22.5
-  _horzObstacleCountMin: 0
-  _horzObstacleCountMax: 4
+  _totalObstacleWidthMax: 135
+  _minSpaceBetweenObstacles: 22.5
+  _obstacleCountMin: 0
+  _obstacleCountMax: 4
   _allowObstaclesUnderHoles: 0
   _obstacleOverPlatformMovingChance: 0.5
   _movingObstacleAngularSpeedMin: 20
@@ -62,3 +62,4 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _movingObstacleMinOscillationTime: 0.5
+  _allowObstaclesMoveUnderHoles: 0

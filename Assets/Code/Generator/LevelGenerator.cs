@@ -58,7 +58,7 @@ public class LevelGenerator : MonoBehaviour {
 		var holeInversionRanges = platformCircle.GetAllEmptyRanges ();
 		GeneratePlatforms ();
 		obstacleCircle = new PlatformCircle ();
-		GenerateHorzObstacles ( holeInversionRanges );
+		GenerateObstacles ( holeInversionRanges );
 		GenerateColumn ();
 	}
 
@@ -207,8 +207,8 @@ public class LevelGenerator : MonoBehaviour {
 		return	platform;
 	}
 
-	private void GenerateHorzObstacles ( List <Range <float>> platformRanges ) {
-		var obstacleCount = UnityEngine.Random.Range ( Settings.HorzObstacleCountMin, Settings.HorzObstacleCountMax + 1 );
+	private void GenerateObstacles ( List <Range <float>> platformRanges ) {
+		var obstacleCount = UnityEngine.Random.Range ( Settings.ObstacleCountMin, Settings.ObstacleCountMax + 1 );
 		if ( obstacleCount == 0 )
 			return;
 
@@ -216,10 +216,10 @@ public class LevelGenerator : MonoBehaviour {
 			// We don't want player to get sick of falling onto obstacles while following the right path.
 			CutRangesUnderPreviousFloorHoles ( platformRanges );
 		}
-		// TODO: generate obstacles over holes.
-		var widthLeft = Settings.TotalHorzObstacleWidthMax;
-		GenerateHorzObstaclesOverPlatforms ( platformRanges, ref obstacleCount, ref widthLeft );
-		MakeObstaclesOverPlatformMoving ();
+		// TODO: generate horizontal obstacles over holes.
+		var widthLeft = Settings.TotalObstacleWidthMax;
+		GenerateObstaclesOverPlatforms ( platformRanges, ref obstacleCount, ref widthLeft );
+		MakeHorzObstaclesOverPlatformsMoving ();
 	}
 
 	private void CutRangesUnderPreviousFloorHoles ( List <Range <float>> platformRanges ) {
@@ -245,7 +245,7 @@ public class LevelGenerator : MonoBehaviour {
 		}
 	}
 
-	private void GenerateHorzObstaclesOverPlatforms (
+	private void GenerateObstaclesOverPlatforms (
 		List <Range <float>> allowedRanges,
 		ref int obstacleCount, ref float widthLeft
 	) {
@@ -253,12 +253,12 @@ public class LevelGenerator : MonoBehaviour {
 			int index = UnityEngine.Random.Range ( 0, allowedRanges.Count );
 			var range = allowedRanges [index];
 			allowedRanges.RemoveAt ( index );
-			if ( range.Width () < Settings.HorzObstacleWidthMin ) {
+			if ( range.Width () < Settings.ObstacleWidthMin ) {
 				// Obstacle doesn't fit, this range is useless for us.
 				continue;
 			}
 
-			if ( !RandomlyInsertHorzObstacle (
+			if ( !RandomlyInsertObstacle (
 				range,
 				ref widthLeft, out var occupiedRange
 			) ) {
@@ -267,20 +267,20 @@ public class LevelGenerator : MonoBehaviour {
 				continue;
 			}
 
-			occupiedRange = occupiedRange.Grow ( Settings.MinSpaceBetweenHorzObstacles );
+			occupiedRange = occupiedRange.Grow ( Settings.MinSpaceBetweenObstacles );
 			Range.SubtractOrdered ( range, occupiedRange, out var r1, out var r2 );
 			if ( r2.HasValue ) allowedRanges.Insert ( index, r2.Value );
 			if ( r1.HasValue ) allowedRanges.Insert ( index, r1.Value );
 		}
 	}
 
-	private bool RandomlyInsertHorzObstacle (
+	private bool RandomlyInsertObstacle (
 		Range <float> targetRange,
 		ref float widthLeft,
 		out Range <float> occupiedRange
 	) {
 		var maxWidth = Mathf.Min ( Settings.HorzObstacleWidthMax, widthLeft, targetRange.Width () );
-		var desiredWidth = RandomHelper.Range ( Settings.HorzObstacleWidthMin, maxWidth, Settings.HorzObstacleWidthStep );
+		var desiredWidth = RandomHelper.Range ( Settings.ObstacleWidthMin, maxWidth, Settings.HorzObstacleWidthStep );
 		var prefab = PrefabDatabase
 			.Platforms
 			.MatchFlags ( PlatformKindFlags.KillerObstacle | PlatformKindFlags.Platform )
@@ -300,7 +300,7 @@ public class LevelGenerator : MonoBehaviour {
 		return	true;
 	}
 
-	private void MakeObstaclesOverPlatformMoving () {
+	private void MakeHorzObstaclesOverPlatformsMoving () {
 		if ( obstacleCircle.Count == 0 )
 			return;
 
