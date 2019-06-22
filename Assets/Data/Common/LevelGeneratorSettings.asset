@@ -15,11 +15,11 @@ MonoBehaviour:
   _floorHeightMin: 3
   _floorHeightMax: 4.5
   _platformWidthMin: 22.5
-  _mainHoleWidthMin: 45
-  _mainHoleWidthMax: 90
+  _mainHoleWidthMin: 22.5
+  _mainHoleWidthMax: 67.5
   _secondaryHoleWidthMin: 22.5
   _spaceBetweenHolesMin: 22.5
-  _totalHoleWidthMax: 180
+  _totalHoleWidthMax: 112.5
   _holeWidthStep: 22.5
   _holeCountMin: 1
   _holeCountMax: 4
@@ -27,14 +27,18 @@ MonoBehaviour:
   _baseAngleOffsetMax: 67.5
   _baseAngleOffsetStep: 22.5
   _obstacleWidthMin: 22.5
+  _obstacleWidthStep: 22.5
   _horzObstacleWidthMax: 45
-  _horzObstacleWidthStep: 22.5
+  _wallWidthMax: 22.5
   _totalObstacleWidthMax: 135
   _minSpaceBetweenObstacles: 22.5
   _obstacleCountMin: 0
   _obstacleCountMax: 4
   _allowObstaclesUnderHoles: 0
-  _obstacleOverPlatformMovingChance: 0.5
+  _wallObstacleChance: 0.3
+  _wallCountMax: 3
+  _horzObstacleOverPlatformMovingChance: 0.5
+  _wallOverPlatformMovingChance: 0.05
   _movingObstacleAngularSpeedMin: 20
   _movingObstacleAngularSpeedMax: 60
   _movingObstacleMotionCurve:
