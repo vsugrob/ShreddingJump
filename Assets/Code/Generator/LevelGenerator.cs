@@ -24,6 +24,7 @@ public class LevelGenerator : MonoBehaviour {
 	public IEnumerable <FloorInfo> Generate ( FloorInfo prevFloorInfo, int nextFloorIndex = 0 ) {
 		this.prevFloorInfo = prevFloorInfo;
 		floorHeight = UnityEngine.Random.Range ( Settings.FloorHeightMin, Settings.FloorHeightMax );
+		Debug.Log ( $"floorHeight: {floorHeight}." );
 		var prevFloorTf = prevFloorInfo.FloorRoot.transform;
 		floorY = prevFloorTf.position.y - floorHeight;
 		var floorContainerTf = prevFloorTf.parent;

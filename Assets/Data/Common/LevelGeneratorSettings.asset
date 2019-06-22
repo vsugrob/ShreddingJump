@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68d7984394d1d3f48adb1c51dcd0f871, type: 3}
   m_Name: LevelGeneratorSettings
   m_EditorClassIdentifier: 
-  _floorHeightMin: 3
+  _floorHeightMin: 3.75
   _floorHeightMax: 4.5
   _platformWidthMin: 22.5
   _mainHoleWidthMin: 22.5
