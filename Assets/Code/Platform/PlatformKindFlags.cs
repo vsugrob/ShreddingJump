@@ -13,5 +13,10 @@ public enum PlatformKindFlags {
 	Wall			= 1 << 3,
 	/// <summary>Marks object as main on the floor. Currently used to distinct main hole from secondary ones.</summary>
 	Main			= 1 << 4,
+	/// <summary>
+	/// Character won't be able to pass through this object, either because it's too tall to jump over,
+	/// or it triggers some action that kills character.
+	/// </summary>
+	Unpassable		= 1 << 5,
 	All				= -1,
 }

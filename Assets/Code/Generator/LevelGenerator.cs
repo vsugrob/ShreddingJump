@@ -220,7 +220,8 @@ public class LevelGenerator : MonoBehaviour {
 		// TODO: generate horizontal obstacles over holes.
 		var widthLeft = Settings.TotalObstacleWidthMax;
 		var wallCount = 0;
-		GenerateObstaclesOverPlatforms ( platformRanges, ref obstacleCount, ref wallCount, ref widthLeft );
+		var unpassableWallCount = 0;
+		GenerateObstaclesOverPlatforms ( platformRanges, ref obstacleCount, ref wallCount, ref unpassableWallCount, ref widthLeft );
 		MakeHorzObstaclesOverPlatformsMoving ();
 	}
 
@@ -249,7 +250,7 @@ public class LevelGenerator : MonoBehaviour {
 
 	private void GenerateObstaclesOverPlatforms (
 		List <Range <float>> allowedRanges,
-		ref int obstacleCount, ref int wallCount, ref float widthLeft
+		ref int obstacleCount, ref int wallCount, ref int unpassableWallCount, ref float widthLeft
 	) {
 		while ( obstacleCount-- > 0 && allowedRanges.Count > 0 && widthLeft > 0 ) {
 			int index = UnityEngine.Random.Range ( 0, allowedRanges.Count );
@@ -262,7 +263,7 @@ public class LevelGenerator : MonoBehaviour {
 
 			if ( !RandomlyInsertObstacle (
 				range,
-				ref wallCount,
+				ref wallCount, ref unpassableWallCount,
 				ref widthLeft, out var occupiedRange
 			) ) {
 				/* By some reason we wasn't able to instantiate obstacle at the given range.
@@ -279,7 +280,7 @@ public class LevelGenerator : MonoBehaviour {
 
 	private bool RandomlyInsertObstacle (
 		Range <float> targetRange,
-		ref int wallCount,
+		ref int wallCount, ref int unpassableWallCount,
 		ref float widthLeft,
 		out Range <float> occupiedRange
 	) {
@@ -288,6 +289,8 @@ public class LevelGenerator : MonoBehaviour {
 		if ( wallCount < Settings.WallCountMax && UnityEngine.Random.value <= Settings.WallObstacleChance ) {
 			obstacleWidthMax = Settings.WallWidthMax;
 			flags = PlatformKindFlags.KillerObstacle | PlatformKindFlags.Wall;
+			if ( unpassableWallCount < Settings.UnpassableWallCountMax && UnityEngine.Random.value <= Settings.UnpassableWallObstacleChance )
+				flags |= PlatformKindFlags.Unpassable;
 		} else {
 			obstacleWidthMax = Settings.HorzObstacleWidthMax;
 			flags = PlatformKindFlags.KillerObstacle | PlatformKindFlags.Platform;
@@ -305,8 +308,11 @@ public class LevelGenerator : MonoBehaviour {
 			return	false;
 		}
 
-		if ( ( flags & PlatformKindFlags.Wall ) != PlatformKindFlags.None )
+		if ( ( flags & PlatformKindFlags.Wall ) != PlatformKindFlags.None ) {
 			wallCount++;
+			if ( ( flags & PlatformKindFlags.Unpassable ) != PlatformKindFlags.None )
+				unpassableWallCount++;
+		}
 
 		var actualWidth = prefab.AngleWidth;
 		var baseAngle = RandomHelper.Range ( targetRange.Start, targetRange.End - actualWidth, Settings.ObstacleWidthStep );

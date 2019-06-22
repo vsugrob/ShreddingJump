@@ -82,6 +82,12 @@ public class LevelGeneratorSettings : ScriptableObject {
 	[SerializeField]
 	private int _wallCountMax = 3;
 	public int WallCountMax => _wallCountMax;
+	[SerializeField]
+	private float _unpassableWallObstacleChance = 0.2f;
+	public float UnpassableWallObstacleChance => _unpassableWallObstacleChance;
+	[SerializeField]
+	private int _unpassableWallCountMax = 1;
+	public int UnpassableWallCountMax => _unpassableWallCountMax;
 	[Header ( "Moving obstacles" )]
 	[SerializeField]
 	private float _horzObstacleOverPlatformMovingChance = 0.5f;
