@@ -1221,7 +1221,7 @@ GameObject:
   m_Component:
   - component: {fileID: 980569957075289213}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Reference horz obstacle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1268,13 +1268,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7583661474134175843}
-  m_LocalRotation: {x: -0, y: 0.19509031, z: -0, w: 0.98078537}
-  m_LocalPosition: {x: 2.043, y: 0.85, z: -0.7}
-  m_LocalScale: {x: 1.9826133, y: 1.4747, z: 0.20000002}
+  m_LocalRotation: {x: 0, y: 0.19509031, z: 0, w: 0.98078537}
+  m_LocalPosition: {x: 2.006, y: 0.9324, z: -0.608}
+  m_LocalScale: {x: 1.6659359, y: 1.6395495, z: 0.19999999}
   m_Children: []
   m_Father: {fileID: 4248233933526154430}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 22.5, z: 0}
 --- !u!33 &5122666550426237119
 MeshFilter:
   m_ObjectHideFlags: 0
