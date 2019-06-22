@@ -340,7 +340,13 @@ public class LevelGenerator : MonoBehaviour {
 				continue;
 			}
 
-			if ( UnityEngine.Random.value > Settings.ObstacleOverPlatformMovingChance )
+			float chance;
+			if ( ( platform.Kind & PlatformKindFlags.Wall ) != PlatformKindFlags.None )
+				chance = Settings.WallOverPlatformMovingChance;
+			else
+				chance = Settings.HorzObstacleOverPlatformMovingChance;
+
+			if ( UnityEngine.Random.value > chance )
 				continue;
 
 			var range = fragment.Range;
