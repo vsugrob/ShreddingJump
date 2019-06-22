@@ -96,6 +96,9 @@ public class LevelGeneratorSettings : ScriptableObject {
 	private float _wallOverPlatformMovingChance = 0.05f;
 	public float WallOverPlatformMovingChance => _wallOverPlatformMovingChance;
 	[SerializeField]
+	private float _unpassableWallOverPlatformMovingChance = 0;
+	public float UnpassableWallOverPlatformMovingChance => _unpassableWallOverPlatformMovingChance;
+	[SerializeField]
 	private float _movingObstacleAngularSpeedMin = 45;
 	public float MovingObstacleAngularSpeedMin => _movingObstacleAngularSpeedMin;
 	[SerializeField]
