@@ -53,11 +53,14 @@ public class LevelGeneratorSettings : ScriptableObject {
 	private float _obstacleWidthMin = 22.5f;
 	public float ObstacleWidthMin => _obstacleWidthMin;
 	[SerializeField]
+	private float _obstacleWidthStep = 22.5f;
+	public float ObstacleWidthStep => _obstacleWidthStep;
+	[SerializeField]
 	private float _horzObstacleWidthMax = 45;
 	public float HorzObstacleWidthMax => _horzObstacleWidthMax;
 	[SerializeField]
-	private float _horzObstacleWidthStep = 22.5f;
-	public float HorzObstacleWidthStep => _horzObstacleWidthStep;
+	private float _wallWidthMax = 22.5f;
+	public float WallWidthMax => _wallWidthMax;
 	[SerializeField]
 	private float _totalObstacleWidthMax = 135;
 	public float TotalObstacleWidthMax => _totalObstacleWidthMax;
@@ -73,6 +76,12 @@ public class LevelGeneratorSettings : ScriptableObject {
 	[SerializeField]
 	private bool _allowObstaclesUnderHoles = false;
 	public bool AllowObstaclesUnderHoles => _allowObstaclesUnderHoles;
+	[SerializeField]
+	private float _wallObstacleChance = 0.3f;
+	public float WallObstacleChance => _wallObstacleChance;
+	[SerializeField]
+	private int _wallCountMax = 3;
+	public int WallCountMax => _wallCountMax;
 	[Header ( "Moving obstacles" )]
 	[SerializeField]
 	private float _obstacleOverPlatformMovingChance = 0.3f;
