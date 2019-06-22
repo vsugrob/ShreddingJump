@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Linq;
+using System;
 
 public class LevelController : MonoBehaviour {
 	public BouncingBallCharacter Character { get; private set; }
@@ -10,11 +11,11 @@ public class LevelController : MonoBehaviour {
 	private void Start () {
 		Character = FindObjectOfType <BouncingBallCharacter> ();
 		Character.KillerObstacleHit += Character_KillerObstacleHit;
-		var seed = Random.Range ( int.MinValue, int.MaxValue );
-		seed = -799463940;
-		Random.InitState ( seed );
+		var seed = UnityEngine.Random.Range ( int.MinValue, int.MaxValue );
+		seed = 1821742774;
+		UnityEngine.Random.InitState ( seed );
 #pragma warning disable CS0618 // Type or member is obsolete
-		Debug.Log ( $"Random seed: {Random.seed}" );
+		Debug.Log ( $"Random seed: {UnityEngine.Random.seed}" );
 #pragma warning restore CS0618 // Type or member is obsolete
 		GenerateLevel ();
 	}
@@ -29,9 +30,9 @@ public class LevelController : MonoBehaviour {
 			return;
 
 		DestroyChildren ( FloorsContainer );
-		var dummyFloorGo = CreateDummyFloor ();
+		var dummyFloorInfo = CreateDummyFloor ();
 		var generatorEn = generator
-			.Generate ( dummyFloorGo )
+			.Generate ( dummyFloorInfo )
 			.Take ( 100 );
 		foreach ( var floor in generatorEn ) {}
 	}
@@ -44,8 +45,19 @@ public class LevelController : MonoBehaviour {
 		}
 	}
 
-	private FloorRoot CreateDummyFloor () {
+	private FloorInfo CreateDummyFloor () {
 		var rooftopY = Character.transform.position.y + Character.JumpHeight / 2;
-		return	FloorRoot.Create ( FloorsContainer, -1, rooftopY );
+		var floorRoot = FloorRoot.Create ( FloorsContainer, -1, rooftopY );
+		var baseAngle = 0f;
+		var platformsContainer = PlatformContainer.Create ( floorRoot.transform, baseAngle );
+		var platformCircle = new PlatformCircle ();
+		var fullRoundHoleGo = new GameObject ( "InitialHole360", typeof ( Platform ) );
+		var holePlatform = fullRoundHoleGo.GetComponent <Platform> ();
+		holePlatform.Kind = PlatformKindFlags.Hole;
+		holePlatform.StartAngle = 0;
+		holePlatform.EndAngle = 360;
+		holePlatform.transform.SetParent ( platformsContainer.transform, worldPositionStays : false );
+		platformCircle.Add ( holePlatform, Range.Create ( 0, 360f ) );
+		return	new FloorInfo ( floorRoot, baseAngle, platformCircle, new PlatformCircle () );
 	}
 }

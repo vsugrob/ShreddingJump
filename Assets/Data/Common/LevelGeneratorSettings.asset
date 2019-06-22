@@ -26,3 +26,39 @@ MonoBehaviour:
   _baseAngleOffsetMin: -67.5
   _baseAngleOffsetMax: 67.5
   _baseAngleOffsetStep: 22.5
+  _horzObstacleWidthMin: 22.5
+  _horzObstacleWidthMax: 45
+  _horzObstacleWidthStep: 22.5
+  _totalHorzObstacleWidthMax: 135
+  _minSpaceBetweenHorzObstacles: 22.5
+  _horzObstacleCountMin: 0
+  _horzObstacleCountMax: 4
+  _allowObstaclesUnderHoles: 0
+  _obstacleOverPlatformMovingChance: 0.5
+  _movingObstacleAngularSpeedMin: 20
+  _movingObstacleAngularSpeedMax: 60
+  _movingObstacleMotionCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _movingObstacleMinOscillationTime: 0.5

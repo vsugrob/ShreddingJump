@@ -16,9 +16,6 @@ MonoBehaviour:
     type: 3}
   _floorCompleteTrigger: {fileID: 85218593333133323, guid: 95b465936a4c58b40b54dda9db13eecf,
     type: 3}
-  _holeStartAngleWidth: 22.5
-  _holeEndAngleWidth: 360
-  _holeAngleWidthStep: 22.5
   _predefinedPlatforms:
   - {fileID: -7572012969867061938, guid: 9c1277a81c6d1fb49975c0bc8f232326, type: 3}
   - {fileID: -4434915890182212109, guid: d1089d6ceb5fd79449098ba21bf016bd, type: 3}
@@ -62,6 +59,9 @@ MonoBehaviour:
   - {fileID: 93195961, guid: b0421df3a6cac6043b5b086e4b29e6b8, type: 3}
   - {fileID: 1519442403, guid: 6e4494d23c54a5246a72e71b69222052, type: 3}
   - {fileID: 1759789645, guid: 711971080845b4342a26242437647476, type: 3}
+  - {fileID: 4248233933526154431, guid: 79f78102c6a4a644681e8e2b625ad744, type: 3}
+  - {fileID: 8987879421783382888, guid: 54bf7de5198852144832ae433bc76160, type: 3}
+  - {fileID: 6630786359793649695, guid: 91fab483b43f55349b6e90ad3dad4e36, type: 3}
   _predefinedColumns:
   - {fileID: 6842570489401208665, guid: a338e1e5f3ae40b4bbe75815d0139bdd, type: 3}
   - {fileID: -4627247508190201626, guid: 54a076a10dfa96d419c6b7d2657ef2c7, type: 3}

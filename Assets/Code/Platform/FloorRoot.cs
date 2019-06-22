@@ -33,10 +33,16 @@ public class FloorRoot : MonoBehaviour {
 	}
 
 	public static bool TryDismantle ( GameObject floorChildObject ) {
-		if ( !FindPlatformContainer ( floorChildObject, out var container ) )
+		if ( !FindRoot ( floorChildObject, out var floorRoot ) )
 			return	false;
 
-		DismantleChildren ( container.transform );
+		if ( floorRoot.FindPlatformContainer ( out var container ) )
+			DismantleChildren ( container.transform );
+
+		/* Disable floor completion from triggering again,
+		 * which is possible when jump height is greater than the distance between floors. */
+		var floorCompleteTrigger = floorRoot.GetComponentInChildren <FloorCompleteTrigger> ();
+		floorCompleteTrigger?.gameObject.SetActive ( false );
 		return	true;
 	}
 

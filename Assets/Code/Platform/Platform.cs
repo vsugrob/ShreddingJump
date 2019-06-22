@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+[SelectionBase]
 public class Platform : MonoBehaviour {
 	[SerializeField, EnumFlags]
 	private PlatformKindFlags _kind = PlatformKindFlags.Platform;

@@ -24,6 +24,8 @@ namespace System {
 		public bool IsValid => !ReferenceEquals ( Start, null ) && !ReferenceEquals ( End, null );
 		/// <summary>Returns true when <see cref="End"/> is less than <see cref="Start"/>.</summary>
 		public bool IsReversed => IsValid && Start.CompareTo ( End ) > 0;
+		/// <summary>Returns true when <see cref="Start"/> is less than or equal to <see cref="End"/>.</summary>
+		public bool IsOrdered => IsValid && Start.CompareTo ( End ) <= 0;
 		/// <summary>Returns true when <see cref="End"/> is equal to <see cref="Start"/>.</summary>
 		public bool IsPoint => IsValid && Start.CompareTo ( End ) == 0;
 		public Range <T> Reversed {
@@ -54,12 +56,18 @@ namespace System {
 		public void Reverse () {
 			var tmp = Start;
 			Start = End;
-			End = Start;
+			End = tmp;
 		}
 
 		public void Order () {
 			if ( IsReversed )
 				Reverse ();
+		}
+
+		public T GetBoundaryByDir ( int dir ) {
+			if ( dir > 0 ) return	End;
+			else if ( dir < 0 ) return	Start;
+			else throw new ArgumentException ( "Direction cannot be equal to 0.", nameof ( dir ) );
 		}
 
 		public bool Contains ( T value ) {
@@ -72,6 +80,16 @@ namespace System {
 				return	 Start.CompareTo ( value ) <= 0 && End.CompareTo ( value ) >= 0;
 		}
 
+		public bool ContainsNoTouch ( T value ) {
+			if ( !IsValid )
+				return	false;
+
+			if ( IsReversed )
+				return	End.CompareTo ( value ) < 0 && Start.CompareTo ( value ) > 0;
+			else
+				return	 Start.CompareTo ( value ) < 0 && End.CompareTo ( value ) > 0;
+		}
+
 		public bool Contains ( Range <T> otherRange ) {
 			return	IsValid && otherRange.IsValid &&
 				Contains ( otherRange.Start ) &&
@@ -81,6 +99,24 @@ namespace System {
 		private bool ContainsAnyEnd ( Range <T> otherRange ) {
 			return	Contains ( otherRange.Start ) ||
 					Contains ( otherRange.End );
+		}
+
+		private bool ContainsAnyEndNoTouch ( Range <T> otherRange ) {
+			return	ContainsNoTouch ( otherRange.Start ) ||
+					ContainsNoTouch ( otherRange.End );
+		}
+
+		public bool Intersects ( Range <T> otherRange, bool includeTouch ) {
+			if ( includeTouch )
+				return	Intersects ( otherRange );
+			else
+				return	IntersectsNoTouch ( otherRange );
+		}
+
+		public bool IntersectsNoTouch ( Range <T> otherRange ) {
+			return	IsValid && otherRange.IsValid &&
+				( ContainsAnyEndNoTouch ( otherRange ) ||
+					otherRange.ContainsAnyEndNoTouch ( this ) );
 		}
 
 		public bool Intersects ( Range <T> otherRange ) {
@@ -145,6 +181,17 @@ namespace System {
 					point.CompareTo ( range.End ) >= 0;
 		}
 		#endregion Operators
+
+		public int CompareOrderedTo ( T point ) {
+			var eSign = End.CompareTo ( point );
+			if ( eSign < 0 )
+				return	-1;
+			else if ( eSign == 0 )
+				return	IsPoint ? 0 : -1;
+
+			var sSign = Start.CompareTo ( point );
+			return	sSign >= 0 ? 1 : 0;
+		}
 
 		public override bool Equals ( object obj ) {
 			if ( ReferenceEquals ( this, obj ) )

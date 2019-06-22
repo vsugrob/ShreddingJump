@@ -5,7 +5,7 @@ namespace System.Collections.Generic {
 	public class FragmentedLine <TElement, TLimit> : IReadOnlyList <LineFragment <TElement, TLimit>>
 		where TLimit : IComparable <TLimit>
 	{
-		private SortedList <TLimit, LineFragment <TElement, TLimit>> fragmentsByStart = new SortedList <TLimit, LineFragment <TElement, TLimit>> ();
+		protected SortedList <TLimit, LineFragment <TElement, TLimit>> fragmentsByStart = new SortedList <TLimit, LineFragment <TElement, TLimit>> ();
 		public int Count => fragmentsByStart.Count;
 		public TLimit MinLimit { get; private set; }
 		public TLimit MaxLimit { get; private set; }
@@ -86,11 +86,6 @@ namespace System.Collections.Generic {
 		}
 
 		public bool TryFindEmptyRange ( out Range <TLimit> emptyRange ) {
-			if ( fragmentsByStart.Count == 0 ) {
-				emptyRange = Range.Create ( MinLimit, MaxLimit );
-				return	true;
-			}
-
 			var prevRangeEnd = MinLimit;
 			var fragments = fragmentsByStart.Values;
 			for ( int i = 0 ; i < fragments.Count ; i++ ) {
@@ -104,15 +99,102 @@ namespace System.Collections.Generic {
 				prevRangeEnd = range.End;
 			}
 
-			var lastRange = fragments [fragments.Count - 1].Range;
-			var lastRangeEnd = lastRange.End;
-			if ( lastRangeEnd.CompareTo ( MaxLimit ) < 0 ) {
-				emptyRange = Range.Create ( lastRangeEnd, MaxLimit );
+			if ( prevRangeEnd.CompareTo ( MaxLimit ) < 0 ) {
+				emptyRange = Range.Create ( prevRangeEnd, MaxLimit );
 				return	true;
 			}
 
 			emptyRange = default;
 			return	false;
+		}
+
+		public List <Range <TLimit>> GetAllEmptyRanges () {
+			var emptyRanges = new List <Range <TLimit>> ();
+			if ( fragmentsByStart.Count == 0 ) {
+				emptyRanges.Add ( Range.Create ( MinLimit, MaxLimit ) );
+				return	emptyRanges;
+			}
+
+			var prevRangeEnd = MinLimit;
+			var fragments = fragmentsByStart.Values;
+			for ( int i = 0 ; i < fragments.Count ; i++ ) {
+				var range = fragments [i].Range;
+				var rangeStart = range.Start;
+				if ( rangeStart.CompareTo ( prevRangeEnd ) > 0 )
+					emptyRanges.Add ( Range.Create ( prevRangeEnd, rangeStart ) );
+
+				prevRangeEnd = range.End;
+			}
+
+			if ( prevRangeEnd.CompareTo ( MaxLimit ) < 0 )
+				emptyRanges.Add ( Range.Create ( prevRangeEnd, MaxLimit ) );
+
+			return	emptyRanges;
+		}
+
+		public virtual bool Intersects ( Range <TLimit> range, bool includeTouch = true ) {
+			var fragments = fragmentsByStart.Values;
+			for ( int i = 0 ; i < fragments.Count ; i++ ) {
+				var fragRange = fragments [i].Range;
+				if ( fragRange.Intersects ( range, includeTouch ) )
+					return	true;
+			}
+
+			return	false;
+		}
+
+		public virtual int SeekFragmentBoundary ( TLimit start, int dir, out TLimit boundary ) {
+			ThrowIfOutOfBounds ( start );
+			if ( dir == 0 || Count == 0 ) {
+				boundary = default;
+				return	-1;
+			}
+
+			var index = SeekClosestFragmentIndex ( start, dir );
+			if ( index < 0 ) {
+				boundary = default;
+				return	-1;
+			}
+
+			var fragment = this [index];
+			boundary = fragment.Range.GetBoundaryByDir ( -dir );
+			return	index;
+		}
+
+		public virtual int SeekClosestFragmentIndex ( TLimit point, int dir ) {
+			ThrowIfOutOfBounds ( point );
+			int count = Count;
+			if ( count == 0 )
+				return	-1;
+
+			dir = Math.Sign ( dir );
+			int startIndex, endIndex, increment;
+			if ( dir >= 0 ) {
+				startIndex = count - 1;
+				endIndex = -1;
+				increment = -1;
+			} else {
+				startIndex = 0;
+				endIndex = count;
+				increment = 1;
+			}
+
+			int lastAcceptableIndex = -1;
+			for ( int i = startIndex ; i != endIndex ; i += increment ) {
+				var range = this [i].Range;
+				var sign = range.CompareOrderedTo ( point );
+				if ( sign == dir || ( sign == 0 && range.IsPoint ) )
+					lastAcceptableIndex = i;
+				else
+					break;
+			}
+
+			return	lastAcceptableIndex;
+		}
+
+		private void ThrowIfOutOfBounds ( TLimit point ) {
+			if ( MinLimit.CompareTo ( point ) > 0 || MaxLimit.CompareTo ( point ) < 0 )
+				throw new ArgumentException ( $"Value must fall in range [{MinLimit};{MaxLimit}]." );
 		}
 
 		public IEnumerator <LineFragment <TElement, TLimit>> GetEnumerator () {

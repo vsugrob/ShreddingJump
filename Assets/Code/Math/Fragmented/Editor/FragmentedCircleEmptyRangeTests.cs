@@ -34,26 +34,36 @@ namespace Tests {
 			);
 		}
 
-		private void AssertEmptyRanges ( int [] ranges, int [] expectedEmptyRanges ) {
-			Assert.IsTrue ( ranges.Length % 2 == 0 );
-			Assert.IsTrue ( expectedEmptyRanges.Length % 2 == 0 );
+		private void AssertEmptyRanges ( int [] rangeEnds, int [] expectedEmptyRangeEnds ) {
+			Assert.IsTrue ( rangeEnds.Length % 2 == 0 );
+			Assert.IsTrue ( expectedEmptyRangeEnds.Length % 2 == 0 );
 			var circle = FragmentedCircle.CreateDegrees <string> ();
-			for ( int i = 0, j = 0 ; j < ranges.Length ; ) {
-				circle.Add ( "Element" + i++, ranges [j++], ranges [j++] );
+			for ( int i = 0, j = 0 ; j < rangeEnds.Length ; ) {
+				circle.Add ( "Element" + i++, rangeEnds [j++], rangeEnds [j++] );
 			}
-
-			var actualEmptyRanges = new List <int> ();
+			var emptyRanges = circle.GetAllEmptyRanges ();
+			// Test TryFindEmptyRange().
+			var actualEmptyRangeEnds = new List <int> ();
 			for ( int i = 0 ; i < 1000 ; i++ ) {
 				if ( !circle.TryFindEmptyRange ( out var range ) )
 					break;
 
 				int s = ( int ) range.Start, e = ( int ) range.End;
-				actualEmptyRanges.Add ( s );
-				actualEmptyRanges.Add ( e );
+				actualEmptyRangeEnds.Add ( s );
+				actualEmptyRangeEnds.Add ( e );
 				circle.Add ( "Empty" + i, s, e );
 			}
 
-			CollectionAssert.AreEqual ( expectedEmptyRanges, actualEmptyRanges );
+			CollectionAssert.AreEqual ( expectedEmptyRangeEnds, actualEmptyRangeEnds );
+			// Test GetAllEmptyRanges().
+			actualEmptyRangeEnds.Clear ();
+			for ( int i = 0 ; i < emptyRanges.Count ; i++ ) {
+				var emptyRange = emptyRanges [i];
+				actualEmptyRangeEnds.Add ( ( int ) emptyRange.Start );
+				actualEmptyRangeEnds.Add ( ( int ) emptyRange.End );
+			}
+
+			CollectionAssert.AreEqual ( expectedEmptyRangeEnds, actualEmptyRangeEnds );
 		}
 	}
 }
