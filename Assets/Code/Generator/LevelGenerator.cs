@@ -111,7 +111,7 @@ public class LevelGenerator : MonoBehaviour {
 		var holePrefab = PrefabDatabase.Platforms
 			.MatchFlags ( flags )
 			.WidthBetween ( desiredWidth, desiredWidth )
-			.FirstOrDefault ();
+			.TakeRandomSingleOrDefault ();
 		if ( holePrefab == null )
 			return	false;
 
@@ -187,7 +187,7 @@ public class LevelGenerator : MonoBehaviour {
 				.MatchFlags ( PlatformKindFlags.Platform )
 				.WidthBetween ( Settings.PlatformWidthMin, emptyRange.Width () )
 				.OrderByDescending ( p => p.AngleWidth )
-				.FirstOrDefault ();
+				.TakeRandomSingleOrDefault ();
 			if ( platformPrefab == null ) {
 				Debug.LogWarning ( $"No suitable platform was found for the range {emptyRange} at {platformContainerTf.name}." );
 				// Fill whole range to not revisit it in the next iteration.
@@ -289,7 +289,7 @@ public class LevelGenerator : MonoBehaviour {
 			.Platforms
 			.MatchFlags ( PlatformKindFlags.KillerObstacle | PlatformKindFlags.Platform )
 			.WidthBetween ( desiredWidth, desiredWidth )
-			.FirstOrDefault ();
+			.TakeRandomSingleOrDefault ();
 		if ( prefab == null ) {
 			occupiedRange = default;
 			return	false;
