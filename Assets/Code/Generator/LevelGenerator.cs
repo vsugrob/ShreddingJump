@@ -213,10 +213,7 @@ public class LevelGenerator : MonoBehaviour {
 		if ( obstacleCount == 0 )
 			return;
 
-		if ( !Settings.AllowObstaclesUnderHoles ) {
-			// We don't want player to get sick of falling onto obstacles while following the right path.
-			CutRangesUnderPreviousFloorHoles ( platformRanges );
-		}
+		CutRangesUnderPreviousFloorHoles ( platformRanges );
 		// TODO: generate horizontal obstacles over holes.
 		var widthLeft = Settings.TotalObstacleWidthMax;
 		var wallCount = 0;
@@ -229,7 +226,11 @@ public class LevelGenerator : MonoBehaviour {
 		var prevHoleRanges = prevFloorInfo.PlatformCircle
 			.Where ( f => ( f.Element.Kind & PlatformKindFlags.Hole ) != PlatformKindFlags.None )
 			.Select ( f => f.Range );
-		foreach ( var holeRange in prevHoleRanges ) {
+		foreach ( var prevHoleRange in prevHoleRanges ) {
+			var holeRange = ShrinkHole ( prevHoleRange );
+			if ( holeRange.IsPoint )
+				continue;
+
 			for ( int i = 0 ; i < platformRanges.Count ; ) {
 				Range.SubtractOrdered ( platformRanges [i], holeRange, out var r1, out var r2 );
 				if ( r1.HasValue ) {
@@ -246,6 +247,35 @@ public class LevelGenerator : MonoBehaviour {
 					platformRanges.RemoveAt ( i );
 			}
 		}
+	}
+
+	private Range <float> ShrinkHole ( Range <float> hole ) {
+		var shrinkStep = Settings.SafeZoneShrinkStep;
+		var shrink = RandomHelper.Range ( Settings.SafeZoneShrinkMin, Settings.SafeZoneShrinkMax, shrinkStep );
+		if ( shrink <= 0 )
+			return	hole;
+
+		var width = hole.Width ();
+		var maxAvailShrink = width - Settings.SafeZoneMinWidth;
+		if ( maxAvailShrink <= 0 )
+			return	hole;
+
+		if ( shrink > maxAvailShrink )
+			shrink = maxAvailShrink;
+
+		var shrinkDiv = ( int ) ( shrink / shrinkStep );
+		if ( shrinkDiv % 2 == 1 ) {
+			// Shrink is uneven. One side must be contracted more than other.
+			shrink -= shrinkStep;
+			bool affectStart = UnityEngine.Random.Range ( 0, 2 ) == 0;
+			if ( affectStart )
+				hole.Start += shrinkStep;
+			else
+				hole.End -= shrinkStep;
+		}
+
+		hole = hole.Shrink ( shrink / 2 );
+		return	hole;
 	}
 
 	private void GenerateObstaclesOverPlatforms (

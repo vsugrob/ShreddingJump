@@ -74,9 +74,6 @@ public class LevelGeneratorSettings : ScriptableObject {
 	private int _obstacleCountMax = 4;
 	public int ObstacleCountMax => _obstacleCountMax;
 	[SerializeField]
-	private bool _allowObstaclesUnderHoles = false;
-	public bool AllowObstaclesUnderHoles => _allowObstaclesUnderHoles;
-	[SerializeField]
 	private float _wallObstacleChance = 0.3f;
 	public float WallObstacleChance => _wallObstacleChance;
 	[SerializeField]
@@ -88,6 +85,19 @@ public class LevelGeneratorSettings : ScriptableObject {
 	[SerializeField]
 	private int _unpassableWallCountMax = 1;
 	public int UnpassableWallCountMax => _unpassableWallCountMax;
+	[Header ( "Safe Zone" )]
+	[SerializeField]
+	private float _safeZoneShrinkMin = 0;
+	public float SafeZoneShrinkMin => _safeZoneShrinkMin;
+	[SerializeField]
+	private float _safeZoneShrinkMax = 67.5f;
+	public float SafeZoneShrinkMax => _safeZoneShrinkMax;
+	[SerializeField]
+	private float _safeZoneShrinkStep = 22.5f;
+	public float SafeZoneShrinkStep => _safeZoneShrinkStep;
+	[SerializeField]
+	private float _safeZoneMinWidth = 22.5f;
+	public float SafeZoneMinWidth => _safeZoneMinWidth;
 	[Header ( "Moving obstacles" )]
 	[SerializeField]
 	private float _horzObstacleOverPlatformMovingChance = 0.5f;
