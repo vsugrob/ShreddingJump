@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3431020530200043216}
   - component: {fileID: 8987879421783382888}
   - component: {fileID: 4661710544512756800}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ArchObstacle67.5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -75,7 +75,7 @@ GameObject:
   - component: {fileID: 2625379635051390908}
   - component: {fileID: 2625379635051390907}
   - component: {fileID: 2625379635051390906}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Arch
   m_TagString: Untagged
   m_Icon: {fileID: 0}

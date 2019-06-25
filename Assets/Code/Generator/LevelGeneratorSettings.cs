@@ -48,35 +48,66 @@ public class LevelGeneratorSettings : ScriptableObject {
 	[SerializeField]
 	private float _baseAngleOffsetStep = 22.5f;
 	public float BaseAngleOffsetStep => _baseAngleOffsetStep;
-	[Header ( "Horizontal obstacles" )]
+	[Header ( "Obstacles(horizontal and walls)" )]
 	[SerializeField]
-	private float _horzObstacleWidthMin = 22.5f;
-	public float HorzObstacleWidthMin => _horzObstacleWidthMin;
+	private float _obstacleWidthMin = 22.5f;
+	public float ObstacleWidthMin => _obstacleWidthMin;
+	[SerializeField]
+	private float _obstacleWidthStep = 22.5f;
+	public float ObstacleWidthStep => _obstacleWidthStep;
 	[SerializeField]
 	private float _horzObstacleWidthMax = 45;
 	public float HorzObstacleWidthMax => _horzObstacleWidthMax;
 	[SerializeField]
-	private float _horzObstacleWidthStep = 22.5f;
-	public float HorzObstacleWidthStep => _horzObstacleWidthStep;
+	private float _wallWidthMax = 22.5f;
+	public float WallWidthMax => _wallWidthMax;
 	[SerializeField]
-	private float _totalHorzObstacleWidthMax = 135;
-	public float TotalHorzObstacleWidthMax => _totalHorzObstacleWidthMax;
+	private float _totalObstacleWidthMax = 135;
+	public float TotalObstacleWidthMax => _totalObstacleWidthMax;
 	[SerializeField]
-	private float _minSpaceBetweenHorzObstacles = 22.5f;
-	public float MinSpaceBetweenHorzObstacles => _minSpaceBetweenHorzObstacles;
+	private float _minSpaceBetweenObstacles = 22.5f;
+	public float MinSpaceBetweenObstacles => _minSpaceBetweenObstacles;
 	[SerializeField]
-	private int _horzObstacleCountMin = 0;
-	public int HorzObstacleCountMin => _horzObstacleCountMin;
+	private int _obstacleCountMin = 0;
+	public int ObstacleCountMin => _obstacleCountMin;
 	[SerializeField]
-	private int _horzObstacleCountMax = 4;
-	public int HorzObstacleCountMax => _horzObstacleCountMax;
+	private int _obstacleCountMax = 4;
+	public int ObstacleCountMax => _obstacleCountMax;
 	[SerializeField]
-	private bool _allowObstaclesUnderHoles = false;
-	public bool AllowObstaclesUnderHoles => _allowObstaclesUnderHoles;
+	private float _wallObstacleChance = 0.3f;
+	public float WallObstacleChance => _wallObstacleChance;
+	[SerializeField]
+	private int _wallCountMax = 3;
+	public int WallCountMax => _wallCountMax;
+	[SerializeField]
+	private float _unpassableWallObstacleChance = 0.2f;
+	public float UnpassableWallObstacleChance => _unpassableWallObstacleChance;
+	[SerializeField]
+	private int _unpassableWallCountMax = 1;
+	public int UnpassableWallCountMax => _unpassableWallCountMax;
+	[Header ( "Safe Zone" )]
+	[SerializeField]
+	private float _safeZoneShrinkMin = 0;
+	public float SafeZoneShrinkMin => _safeZoneShrinkMin;
+	[SerializeField]
+	private float _safeZoneShrinkMax = 67.5f;
+	public float SafeZoneShrinkMax => _safeZoneShrinkMax;
+	[SerializeField]
+	private float _safeZoneShrinkStep = 22.5f;
+	public float SafeZoneShrinkStep => _safeZoneShrinkStep;
+	[SerializeField]
+	private float _safeZoneMinWidth = 22.5f;
+	public float SafeZoneMinWidth => _safeZoneMinWidth;
 	[Header ( "Moving obstacles" )]
 	[SerializeField]
-	private float _obstacleOverPlatformMovingChance = 0.3f;
-	public float ObstacleOverPlatformMovingChance => _obstacleOverPlatformMovingChance;
+	private float _horzObstacleOverPlatformMovingChance = 0.5f;
+	public float HorzObstacleOverPlatformMovingChance => _horzObstacleOverPlatformMovingChance;
+	[SerializeField]
+	private float _wallOverPlatformMovingChance = 0.05f;
+	public float WallOverPlatformMovingChance => _wallOverPlatformMovingChance;
+	[SerializeField]
+	private float _unpassableWallOverPlatformMovingChance = 0;
+	public float UnpassableWallOverPlatformMovingChance => _unpassableWallOverPlatformMovingChance;
 	[SerializeField]
 	private float _movingObstacleAngularSpeedMin = 45;
 	public float MovingObstacleAngularSpeedMin => _movingObstacleAngularSpeedMin;

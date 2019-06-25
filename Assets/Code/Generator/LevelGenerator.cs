@@ -24,6 +24,7 @@ public class LevelGenerator : MonoBehaviour {
 	public IEnumerable <FloorInfo> Generate ( FloorInfo prevFloorInfo, int nextFloorIndex = 0 ) {
 		this.prevFloorInfo = prevFloorInfo;
 		floorHeight = UnityEngine.Random.Range ( Settings.FloorHeightMin, Settings.FloorHeightMax );
+		Debug.Log ( $"floorHeight: {floorHeight}." );
 		var prevFloorTf = prevFloorInfo.FloorRoot.transform;
 		floorY = prevFloorTf.position.y - floorHeight;
 		var floorContainerTf = prevFloorTf.parent;
@@ -58,7 +59,7 @@ public class LevelGenerator : MonoBehaviour {
 		var holeInversionRanges = platformCircle.GetAllEmptyRanges ();
 		GeneratePlatforms ();
 		obstacleCircle = new PlatformCircle ();
-		GenerateHorzObstacles ( holeInversionRanges );
+		GenerateObstacles ( holeInversionRanges );
 		GenerateColumn ();
 	}
 
@@ -207,26 +208,29 @@ public class LevelGenerator : MonoBehaviour {
 		return	platform;
 	}
 
-	private void GenerateHorzObstacles ( List <Range <float>> platformRanges ) {
-		var obstacleCount = UnityEngine.Random.Range ( Settings.HorzObstacleCountMin, Settings.HorzObstacleCountMax + 1 );
+	private void GenerateObstacles ( List <Range <float>> platformRanges ) {
+		var obstacleCount = UnityEngine.Random.Range ( Settings.ObstacleCountMin, Settings.ObstacleCountMax + 1 );
 		if ( obstacleCount == 0 )
 			return;
 
-		if ( !Settings.AllowObstaclesUnderHoles ) {
-			// We don't want player to get sick of falling onto obstacles while following the right path.
-			CutRangesUnderPreviousFloorHoles ( platformRanges );
-		}
-		// TODO: generate obstacles over holes.
-		var widthLeft = Settings.TotalHorzObstacleWidthMax;
-		GenerateHorzObstaclesOverPlatforms ( platformRanges, ref obstacleCount, ref widthLeft );
-		MakeObstaclesOverPlatformMoving ();
+		CutRangesUnderPreviousFloorHoles ( platformRanges );
+		// TODO: generate horizontal obstacles over holes.
+		var widthLeft = Settings.TotalObstacleWidthMax;
+		var wallCount = 0;
+		var unpassableWallCount = 0;
+		GenerateObstaclesOverPlatforms ( platformRanges, ref obstacleCount, ref wallCount, ref unpassableWallCount, ref widthLeft );
+		MakeHorzObstaclesOverPlatformsMoving ();
 	}
 
 	private void CutRangesUnderPreviousFloorHoles ( List <Range <float>> platformRanges ) {
 		var prevHoleRanges = prevFloorInfo.PlatformCircle
 			.Where ( f => ( f.Element.Kind & PlatformKindFlags.Hole ) != PlatformKindFlags.None )
 			.Select ( f => f.Range );
-		foreach ( var holeRange in prevHoleRanges ) {
+		foreach ( var prevHoleRange in prevHoleRanges ) {
+			var holeRange = ShrinkHole ( prevHoleRange );
+			if ( holeRange.IsPoint )
+				continue;
+
 			for ( int i = 0 ; i < platformRanges.Count ; ) {
 				Range.SubtractOrdered ( platformRanges [i], holeRange, out var r1, out var r2 );
 				if ( r1.HasValue ) {
@@ -245,49 +249,88 @@ public class LevelGenerator : MonoBehaviour {
 		}
 	}
 
-	private void GenerateHorzObstaclesOverPlatforms (
+	private Range <float> ShrinkHole ( Range <float> hole ) {
+		var shrinkStep = Settings.SafeZoneShrinkStep;
+		var shrink = RandomHelper.Range ( Settings.SafeZoneShrinkMin, Settings.SafeZoneShrinkMax, shrinkStep );
+		if ( shrink <= 0 )
+			return	hole;
+
+		var width = hole.Width ();
+		var maxAvailShrink = width - Settings.SafeZoneMinWidth;
+		if ( maxAvailShrink <= 0 )
+			return	hole;
+
+		if ( shrink > maxAvailShrink )
+			shrink = maxAvailShrink;
+
+		var shrinkDiv = ( int ) ( shrink / shrinkStep );
+		if ( shrinkDiv % 2 == 1 ) {
+			// Shrink is uneven. One side must be contracted more than other.
+			shrink -= shrinkStep;
+			bool affectStart = UnityEngine.Random.Range ( 0, 2 ) == 0;
+			if ( affectStart )
+				hole.Start += shrinkStep;
+			else
+				hole.End -= shrinkStep;
+		}
+
+		hole = hole.Shrink ( shrink / 2 );
+		return	hole;
+	}
+
+	private void GenerateObstaclesOverPlatforms (
 		List <Range <float>> allowedRanges,
-		ref int obstacleCount, ref float widthLeft
+		ref int obstacleCount, ref int wallCount, ref int unpassableWallCount, ref float widthLeft
 	) {
 		while ( obstacleCount-- > 0 && allowedRanges.Count > 0 && widthLeft > 0 ) {
 			int index = UnityEngine.Random.Range ( 0, allowedRanges.Count );
 			var range = allowedRanges [index];
-			bool rangeIsValid = true;
-			if ( range.Width () < Settings.HorzObstacleWidthMin ) {
+			allowedRanges.RemoveAt ( index );
+			if ( range.Width () < Settings.ObstacleWidthMin ) {
 				// Obstacle doesn't fit, this range is useless for us.
-				rangeIsValid = false;
+				continue;
 			}
 
-			if ( !RandomlyInsertHorzObstacle (
+			if ( !RandomlyInsertObstacle (
 				range,
+				ref wallCount, ref unpassableWallCount,
 				ref widthLeft, out var occupiedRange
 			) ) {
 				/* By some reason we wasn't able to instantiate obstacle at the given range.
 				 * Remove it to avoid infinite loop. */
-				rangeIsValid = false;
+				continue;
 			}
 
-			allowedRanges.RemoveAt ( index );
-			if ( !rangeIsValid )
-				continue;
-
-			occupiedRange = occupiedRange.Grow ( Settings.MinSpaceBetweenHorzObstacles );
+			occupiedRange = occupiedRange.Grow ( Settings.MinSpaceBetweenObstacles );
 			Range.SubtractOrdered ( range, occupiedRange, out var r1, out var r2 );
 			if ( r2.HasValue ) allowedRanges.Insert ( index, r2.Value );
 			if ( r1.HasValue ) allowedRanges.Insert ( index, r1.Value );
 		}
 	}
 
-	private bool RandomlyInsertHorzObstacle (
+	private bool RandomlyInsertObstacle (
 		Range <float> targetRange,
+		ref int wallCount, ref int unpassableWallCount,
 		ref float widthLeft,
 		out Range <float> occupiedRange
 	) {
-		var maxWidth = Mathf.Min ( Settings.HorzObstacleWidthMax, widthLeft, targetRange.Width () );
-		var desiredWidth = RandomHelper.Range ( Settings.HorzObstacleWidthMin, maxWidth, Settings.HorzObstacleWidthStep );
+		float obstacleWidthMax;
+		PlatformKindFlags flags;
+		if ( wallCount < Settings.WallCountMax && UnityEngine.Random.value <= Settings.WallObstacleChance ) {
+			obstacleWidthMax = Settings.WallWidthMax;
+			flags = PlatformKindFlags.KillerObstacle | PlatformKindFlags.Wall;
+			if ( unpassableWallCount < Settings.UnpassableWallCountMax && UnityEngine.Random.value <= Settings.UnpassableWallObstacleChance )
+				flags |= PlatformKindFlags.Unpassable;
+		} else {
+			obstacleWidthMax = Settings.HorzObstacleWidthMax;
+			flags = PlatformKindFlags.KillerObstacle | PlatformKindFlags.Platform;
+		}
+
+		var maxWidth = Mathf.Min ( obstacleWidthMax, widthLeft, targetRange.Width () );
+		var desiredWidth = RandomHelper.Range ( Settings.ObstacleWidthMin, maxWidth, Settings.ObstacleWidthStep );
 		var prefab = PrefabDatabase
 			.Platforms
-			.MatchFlags ( PlatformKindFlags.KillerObstacle | PlatformKindFlags.Platform )
+			.MatchFlags ( flags )
 			.WidthBetween ( desiredWidth, desiredWidth )
 			.TakeRandomSingleOrDefault ();
 		if ( prefab == null ) {
@@ -295,8 +338,14 @@ public class LevelGenerator : MonoBehaviour {
 			return	false;
 		}
 
+		if ( ( flags & PlatformKindFlags.Wall ) != PlatformKindFlags.None ) {
+			wallCount++;
+			if ( ( flags & PlatformKindFlags.Unpassable ) != PlatformKindFlags.None )
+				unpassableWallCount++;
+		}
+
 		var actualWidth = prefab.AngleWidth;
-		var baseAngle = RandomHelper.Range ( targetRange.Start, targetRange.End - actualWidth, Settings.HorzObstacleWidthStep );
+		var baseAngle = RandomHelper.Range ( targetRange.Start, targetRange.End - actualWidth, Settings.ObstacleWidthStep );
 		var instance = InstantiatePlatform ( prefab, baseAngle, platformContainerTf );
 		occupiedRange = Range.Create ( baseAngle, baseAngle + actualWidth );
 		obstacleCircle.Add ( instance, occupiedRange );
@@ -304,7 +353,7 @@ public class LevelGenerator : MonoBehaviour {
 		return	true;
 	}
 
-	private void MakeObstaclesOverPlatformMoving () {
+	private void MakeHorzObstaclesOverPlatformsMoving () {
 		if ( obstacleCircle.Count == 0 )
 			return;
 
@@ -328,7 +377,16 @@ public class LevelGenerator : MonoBehaviour {
 				continue;
 			}
 
-			if ( UnityEngine.Random.value > Settings.ObstacleOverPlatformMovingChance )
+			float chance;
+			if ( ( platform.Kind & PlatformKindFlags.Wall ) != PlatformKindFlags.None ) {
+				if ( ( platform.Kind & PlatformKindFlags.Unpassable ) != PlatformKindFlags.None )
+					chance = Settings.UnpassableWallOverPlatformMovingChance;
+				else
+					chance = Settings.WallOverPlatformMovingChance;
+			} else
+				chance = Settings.HorzObstacleOverPlatformMovingChance;
+
+			if ( UnityEngine.Random.value > chance )
 				continue;
 
 			var range = fragment.Range;

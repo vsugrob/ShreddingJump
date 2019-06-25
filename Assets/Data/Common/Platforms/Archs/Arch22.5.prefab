@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4437237944040262066}
   - component: {fileID: 4437237944040262065}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Arch22.5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -62,7 +62,7 @@ GameObject:
   - component: {fileID: 4437237945898304860}
   - component: {fileID: 4437237945898304861}
   - component: {fileID: 4437237945898304862}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Arch
   m_TagString: Untagged
   m_Icon: {fileID: 0}

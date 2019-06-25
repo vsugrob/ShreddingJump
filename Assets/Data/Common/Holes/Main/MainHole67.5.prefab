@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5860491401460384222}
   - component: {fileID: 5860491401460384223}
   - component: {fileID: 5860491401460384216}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Arch67.5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3078,8 +3078,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5860491402507696765}
   - component: {fileID: 1499255}
-  m_Layer: 0
-  m_Name: Hole67.5
+  m_Layer: 13
+  m_Name: MainHole67.5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

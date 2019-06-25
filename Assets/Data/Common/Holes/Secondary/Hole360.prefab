@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5281196727569534325}
   - component: {fileID: 1759789645}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Hole360
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -62,7 +62,7 @@ GameObject:
   - component: {fileID: 5281196727740850499}
   - component: {fileID: 5281196727740850496}
   - component: {fileID: 5281196727740850497}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Arch360
   m_TagString: Untagged
   m_Icon: {fileID: 0}

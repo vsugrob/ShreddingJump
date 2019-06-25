@@ -31,8 +31,37 @@
 		}
 
 		public static Range <float> Grow ( this Range <float> range, float delta ) {
-			range.Start -= delta;
-			range.End += delta;
+			if ( delta < 0 )
+				return	range.Shrink ( -delta );
+
+			if ( range.IsOrdered ) {
+				range.Start -= delta;
+				range.End += delta;
+			} else {
+				range.Start += delta;
+				range.End -= delta;
+			}
+
+			return	range;
+		}
+
+		public static Range <float> Shrink ( this Range <float> range, float delta ) {
+			if ( delta < 0 )
+				return	range.Grow ( -delta );
+
+			var width = range.Width ();
+			var widthAbs = Math.Abs ( width );
+			if ( widthAbs <= delta * 2 )
+				delta = widthAbs / 2;
+
+			if ( width >= 0 ) {
+				range.Start += delta;
+				range.End -= delta;
+			} else {
+				range.Start -= delta;
+				range.End += delta;
+			}
+
 			return	range;
 		}
 	}
