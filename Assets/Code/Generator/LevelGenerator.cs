@@ -214,18 +214,51 @@ public class LevelGenerator : MonoBehaviour {
 		if ( obstaclesLeft == 0 )
 			return;
 
-		// TODO: generate horizontal obstacles over holes.
 		totalObstacleWidthLeft = Settings.TotalObstacleWidthMax;
 		wallCount = 0;
 		unpassableWallCount = 0;
-		var platformRanges = platformCircle
-			.Where ( f => ( f.Element.Kind & PlatformKindFlags.Platform ) == PlatformKindFlags.Platform )
+		GenerateObstaclesOverFilteredPlatforms (
+			k => ( k & PlatformKindFlags.Hole ) != PlatformKindFlags.None,
+			minRangeWidth : Settings.ObstacleOverHoleMinHoleWidth,
+			obstacleOverRangeChance : Settings.ObstacleOverHoleChance,
+			oneObstaclePerRange : true
+		);
+		GenerateObstaclesOverFilteredPlatforms (
+			k => k == PlatformKindFlags.Platform,
+			minRangeWidth : Settings.ObstacleWidthMin
+		);
+		/* TODO: remove "OverPlatforms" logic. Set free space to merged ranges before they're reduced by obstacle generation algorithm.
+		 * First invoke it for holes, then invoke it for platforms.
+		 * Add setting that won't allow walls to spawn over holes. */
+		//MakeHorzObstaclesOverPlatformsMoving ();
+	}
+
+	private void GenerateObstaclesOverFilteredPlatforms (
+		Func <PlatformKindFlags, bool> predicate,
+		float minRangeWidth,
+		float obstacleOverRangeChance = 1,
+		bool oneObstaclePerRange = false
+	) {
+		if ( obstaclesLeft <= 0 || totalObstacleWidthLeft < Settings.ObstacleWidthMin )
+			return;
+
+		var ranges = platformCircle
+			.Where ( f => predicate ( f.Element.Kind ) )
 			.Select ( f => f.Range )
 			.ToList ();
-		Range.MergeAdjacentRanges ( platformRanges );
-		CutRangesUnderPreviousFloorHoles ( platformRanges );
-		GenerateObstaclesOverPlatforms ( platformRanges );
-		MakeHorzObstaclesOverPlatformsMoving ();
+		for ( int i = 0 ; i < ranges.Count ; ) {
+			var range = ranges [i];
+			/* TODO: minRangeWidth is not enough. It must be guaranteed that hole won't be covered completely.
+			 * We'll have to restrict obstacle width to be not greater than holeWidth-MinHoleResidualWidth. */
+			if ( range.Width () < minRangeWidth || UnityEngine.Random.value > obstacleOverRangeChance )
+				ranges.RemoveAt ( i );
+			else
+				i++;
+		}
+
+		Range.MergeAdjacentRanges ( ranges );
+		CutRangesUnderPreviousFloorHoles ( ranges );
+		GenerateObstaclesInAllowedRanges ( ranges, oneObstaclePerRange );
 	}
 
 	private void CutRangesUnderPreviousFloorHoles ( List <Range <float>> platformRanges ) {
@@ -284,7 +317,7 @@ public class LevelGenerator : MonoBehaviour {
 		return	hole;
 	}
 
-	private void GenerateObstaclesOverPlatforms ( List <Range <float>> allowedRanges ) {
+	private void GenerateObstaclesInAllowedRanges ( List <Range <float>> allowedRanges, bool oneObstaclePerRange ) {
 		while ( obstaclesLeft-- > 0 && allowedRanges.Count > 0 && totalObstacleWidthLeft > 0 ) {
 			int index = UnityEngine.Random.Range ( 0, allowedRanges.Count );
 			var range = allowedRanges [index];
@@ -301,9 +334,11 @@ public class LevelGenerator : MonoBehaviour {
 			}
 
 			occupiedRange = occupiedRange.Grow ( Settings.MinSpaceBetweenObstacles );
-			Range.SubtractOrdered ( range, occupiedRange, out var r1, out var r2 );
-			if ( r2.HasValue ) allowedRanges.Insert ( index, r2.Value );
-			if ( r1.HasValue ) allowedRanges.Insert ( index, r1.Value );
+			if ( !oneObstaclePerRange ) {
+				Range.SubtractOrdered ( range, occupiedRange, out var r1, out var r2 );
+				if ( r2.HasValue ) allowedRanges.Insert ( index, r2.Value );
+				if ( r1.HasValue ) allowedRanges.Insert ( index, r1.Value );
+			}
 		}
 	}
 

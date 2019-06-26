@@ -85,6 +85,12 @@ public class LevelGeneratorSettings : ScriptableObject {
 	[SerializeField]
 	private int _unpassableWallCountMax = 1;
 	public int UnpassableWallCountMax => _unpassableWallCountMax;
+	[SerializeField]
+	private float _obstacleOverHoleChance = 0.3f;
+	public float ObstacleOverHoleChance => _obstacleOverHoleChance;
+	[SerializeField]
+	private float _obstacleOverHoleMinHoleWidth = 45;
+	public float ObstacleOverHoleMinHoleWidth => _obstacleOverHoleMinHoleWidth;
 	[Header ( "Safe Zone" )]
 	[SerializeField]
 	private float _safeZoneShrinkMin = 0;
