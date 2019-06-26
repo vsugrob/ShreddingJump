@@ -20,6 +20,8 @@ public class LevelGenerator : MonoBehaviour {
 	private PlatformCircle platformCircle, obstacleCircle;
 	private float floorHeight, floorY;
 	private Transform floorTf, platformContainerTf;
+	private float totalObstacleWidthLeft;
+	private int obstacleCount, wallCount, unpassableWallCount;
 
 	public IEnumerable <FloorInfo> Generate ( FloorInfo prevFloorInfo, int nextFloorIndex = 0 ) {
 		this.prevFloorInfo = prevFloorInfo;
@@ -209,16 +211,16 @@ public class LevelGenerator : MonoBehaviour {
 	}
 
 	private void GenerateObstacles ( List <Range <float>> platformRanges ) {
-		var obstacleCount = UnityEngine.Random.Range ( Settings.ObstacleCountMin, Settings.ObstacleCountMax + 1 );
+		obstacleCount = UnityEngine.Random.Range ( Settings.ObstacleCountMin, Settings.ObstacleCountMax + 1 );
 		if ( obstacleCount == 0 )
 			return;
 
 		CutRangesUnderPreviousFloorHoles ( platformRanges );
 		// TODO: generate horizontal obstacles over holes.
-		var widthLeft = Settings.TotalObstacleWidthMax;
-		var wallCount = 0;
-		var unpassableWallCount = 0;
-		GenerateObstaclesOverPlatforms ( platformRanges, ref obstacleCount, ref wallCount, ref unpassableWallCount, ref widthLeft );
+		totalObstacleWidthLeft = Settings.TotalObstacleWidthMax;
+		wallCount = 0;
+		unpassableWallCount = 0;
+		GenerateObstaclesOverPlatforms ( platformRanges );
 		MakeHorzObstaclesOverPlatformsMoving ();
 	}
 
@@ -278,11 +280,8 @@ public class LevelGenerator : MonoBehaviour {
 		return	hole;
 	}
 
-	private void GenerateObstaclesOverPlatforms (
-		List <Range <float>> allowedRanges,
-		ref int obstacleCount, ref int wallCount, ref int unpassableWallCount, ref float widthLeft
-	) {
-		while ( obstacleCount-- > 0 && allowedRanges.Count > 0 && widthLeft > 0 ) {
+	private void GenerateObstaclesOverPlatforms ( List <Range <float>> allowedRanges ) {
+		while ( obstacleCount-- > 0 && allowedRanges.Count > 0 && totalObstacleWidthLeft > 0 ) {
 			int index = UnityEngine.Random.Range ( 0, allowedRanges.Count );
 			var range = allowedRanges [index];
 			allowedRanges.RemoveAt ( index );
@@ -291,11 +290,7 @@ public class LevelGenerator : MonoBehaviour {
 				continue;
 			}
 
-			if ( !RandomlyInsertObstacle (
-				range,
-				ref wallCount, ref unpassableWallCount,
-				ref widthLeft, out var occupiedRange
-			) ) {
+			if ( !RandomlyInsertObstacle ( range, out var occupiedRange ) ) {
 				/* By some reason we wasn't able to instantiate obstacle at the given range.
 				 * Remove it to avoid infinite loop. */
 				continue;
@@ -308,12 +303,7 @@ public class LevelGenerator : MonoBehaviour {
 		}
 	}
 
-	private bool RandomlyInsertObstacle (
-		Range <float> targetRange,
-		ref int wallCount, ref int unpassableWallCount,
-		ref float widthLeft,
-		out Range <float> occupiedRange
-	) {
+	private bool RandomlyInsertObstacle ( Range <float> targetRange, out Range <float> occupiedRange ) {
 		float obstacleWidthMax;
 		PlatformKindFlags flags;
 		if ( wallCount < Settings.WallCountMax && UnityEngine.Random.value <= Settings.WallObstacleChance ) {
@@ -326,7 +316,7 @@ public class LevelGenerator : MonoBehaviour {
 			flags = PlatformKindFlags.KillerObstacle | PlatformKindFlags.Platform;
 		}
 
-		var maxWidth = Mathf.Min ( obstacleWidthMax, widthLeft, targetRange.Width () );
+		var maxWidth = Mathf.Min ( obstacleWidthMax, totalObstacleWidthLeft, targetRange.Width () );
 		var desiredWidth = RandomHelper.Range ( Settings.ObstacleWidthMin, maxWidth, Settings.ObstacleWidthStep );
 		var prefab = PrefabDatabase
 			.Platforms
@@ -349,7 +339,7 @@ public class LevelGenerator : MonoBehaviour {
 		var instance = InstantiatePlatform ( prefab, baseAngle, platformContainerTf );
 		occupiedRange = Range.Create ( baseAngle, baseAngle + actualWidth );
 		obstacleCircle.Add ( instance, occupiedRange );
-		widthLeft -= actualWidth;
+		totalObstacleWidthLeft -= actualWidth;
 		return	true;
 	}
 
