@@ -1,4 +1,6 @@
-﻿namespace System {
+﻿using System.Collections.Generic;
+
+namespace System {
 	public static class Range {
 		public static Range <T> Create <T> ( T start, T end )
 			where T : IComparable <T>
@@ -96,6 +98,21 @@
 					else										// a.e > b.e
 						r1 = Create ( b.End, a.End );			// { b.s, a.s, b.e, a.e }
 				}
+			}
+		}
+
+		public static void MergeAdjacentRanges <T> ( List <Range <T>> ranges )
+			where T : IComparable <T>
+		{
+			for ( int i = 0 ; i < ranges.Count - 1 ; ) {
+				var r0 = ranges [i];
+				var i1 = i + 1;
+				var r1 = ranges [i1];
+				if ( r0.End.Equals ( r1.Start ) ) {
+					ranges [i] = Create ( r0.Start, r1.End );
+					ranges.RemoveAt ( i1 );
+				} else
+					i++;
 			}
 		}
 	}

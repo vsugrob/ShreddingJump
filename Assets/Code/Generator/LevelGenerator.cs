@@ -58,10 +58,9 @@ public class LevelGenerator : MonoBehaviour {
 	private void GenerateFloor () {
 		platformCircle = new PlatformCircle ();
 		GenerateHoles ();
-		var holeInversionRanges = platformCircle.GetAllEmptyRanges ();
 		GeneratePlatforms ();
 		obstacleCircle = new PlatformCircle ();
-		GenerateObstacles ( holeInversionRanges );
+		GenerateObstacles ();
 		GenerateColumn ();
 	}
 
@@ -210,16 +209,21 @@ public class LevelGenerator : MonoBehaviour {
 		return	platform;
 	}
 
-	private void GenerateObstacles ( List <Range <float>> platformRanges ) {
+	private void GenerateObstacles () {
 		obstaclesLeft = UnityEngine.Random.Range ( Settings.ObstacleCountMin, Settings.ObstacleCountMax + 1 );
 		if ( obstaclesLeft == 0 )
 			return;
 
-		CutRangesUnderPreviousFloorHoles ( platformRanges );
 		// TODO: generate horizontal obstacles over holes.
 		totalObstacleWidthLeft = Settings.TotalObstacleWidthMax;
 		wallCount = 0;
 		unpassableWallCount = 0;
+		var platformRanges = platformCircle
+			.Where ( f => ( f.Element.Kind & PlatformKindFlags.Platform ) == PlatformKindFlags.Platform )
+			.Select ( f => f.Range )
+			.ToList ();
+		Range.MergeAdjacentRanges ( platformRanges );
+		CutRangesUnderPreviousFloorHoles ( platformRanges );
 		GenerateObstaclesOverPlatforms ( platformRanges );
 		MakeHorzObstaclesOverPlatformsMoving ();
 	}
