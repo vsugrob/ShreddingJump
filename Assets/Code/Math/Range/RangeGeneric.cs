@@ -180,6 +180,18 @@ namespace System {
 			return	point.CompareTo ( range.Start ) >= 0 &&
 					point.CompareTo ( range.End ) >= 0;
 		}
+
+		public static bool operator == ( Range <T> r1, Range <T> r2 ) {
+			return	r1.IsValid && r2.IsValid &&
+					r1.Start.Equals ( r2.Start ) &&
+					r1.End.Equals ( r2.End );
+		}
+
+		public static bool operator != ( Range <T> r1, Range <T> r2 ) {
+			return	!r1.IsValid || !r2.IsValid ||
+					!r1.Start.Equals ( r2.Start ) ||
+					!r1.End.Equals ( r2.End );
+		}
 		#endregion Operators
 
 		public int CompareOrderedTo ( T point ) {
