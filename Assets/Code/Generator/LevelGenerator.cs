@@ -21,7 +21,7 @@ public class LevelGenerator : MonoBehaviour {
 	private float floorHeight, floorY;
 	private Transform floorTf, platformContainerTf;
 	private float totalObstacleWidthLeft;
-	private int obstacleCount, wallCount, unpassableWallCount;
+	private int obstaclesLeft, wallCount, unpassableWallCount;
 
 	public IEnumerable <FloorInfo> Generate ( FloorInfo prevFloorInfo, int nextFloorIndex = 0 ) {
 		this.prevFloorInfo = prevFloorInfo;
@@ -211,8 +211,8 @@ public class LevelGenerator : MonoBehaviour {
 	}
 
 	private void GenerateObstacles ( List <Range <float>> platformRanges ) {
-		obstacleCount = UnityEngine.Random.Range ( Settings.ObstacleCountMin, Settings.ObstacleCountMax + 1 );
-		if ( obstacleCount == 0 )
+		obstaclesLeft = UnityEngine.Random.Range ( Settings.ObstacleCountMin, Settings.ObstacleCountMax + 1 );
+		if ( obstaclesLeft == 0 )
 			return;
 
 		CutRangesUnderPreviousFloorHoles ( platformRanges );
@@ -281,7 +281,7 @@ public class LevelGenerator : MonoBehaviour {
 	}
 
 	private void GenerateObstaclesOverPlatforms ( List <Range <float>> allowedRanges ) {
-		while ( obstacleCount-- > 0 && allowedRanges.Count > 0 && totalObstacleWidthLeft > 0 ) {
+		while ( obstaclesLeft-- > 0 && allowedRanges.Count > 0 && totalObstacleWidthLeft > 0 ) {
 			int index = UnityEngine.Random.Range ( 0, allowedRanges.Count );
 			var range = allowedRanges [index];
 			allowedRanges.RemoveAt ( index );
