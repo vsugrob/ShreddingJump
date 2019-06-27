@@ -308,7 +308,7 @@ public class LevelGenerator : MonoBehaviour {
 		List <Range <float>> allowedRanges,
 		float obstacleOverRangeChance, bool oneObstaclePerRange, float minRangeResidualWidth
 	) {
-		while ( obstaclesLeft-- > 0 && allowedRanges.Count > 0 && totalObstacleWidthLeft > 0 ) {
+		while ( obstaclesLeft > 0 && allowedRanges.Count > 0 && totalObstacleWidthLeft > 0 ) {
 			int index = UnityEngine.Random.Range ( 0, allowedRanges.Count );
 			var range = allowedRanges [index];
 			allowedRanges.RemoveAt ( index );
@@ -327,6 +327,8 @@ public class LevelGenerator : MonoBehaviour {
 				if ( r2.HasValue ) allowedRanges.Insert ( index, r2.Value );
 				if ( r1.HasValue ) allowedRanges.Insert ( index, r1.Value );
 			}
+
+			obstaclesLeft--;
 		}
 	}
 
