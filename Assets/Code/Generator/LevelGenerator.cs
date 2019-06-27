@@ -220,7 +220,8 @@ public class LevelGenerator : MonoBehaviour {
 		GenerateObstaclesOverFilteredPlatforms (
 			k => ( k & PlatformKindFlags.Hole ) != PlatformKindFlags.None,
 			obstacleOverRangeChance : Settings.ObstacleOverHoleChance,
-			oneObstaclePerRange : true
+			oneObstaclePerRange : true,
+			Settings.ObstacleOverHoleMinHoleResidualWidth
 		);
 		GenerateObstaclesOverFilteredPlatforms ( k => k == PlatformKindFlags.Platform );
 		/* TODO: remove "OverPlatforms" logic. Set free space to merged ranges before they're reduced by obstacle generation algorithm.
@@ -232,7 +233,8 @@ public class LevelGenerator : MonoBehaviour {
 	private void GenerateObstaclesOverFilteredPlatforms (
 		Func <PlatformKindFlags, bool> predicate,
 		float obstacleOverRangeChance = 1,
-		bool oneObstaclePerRange = false
+		bool oneObstaclePerRange = false,
+		float minRangeResidualWidth = 0
 	) {
 		if ( obstaclesLeft <= 0 || totalObstacleWidthLeft < Settings.ObstacleWidthMin )
 			return;
@@ -243,7 +245,7 @@ public class LevelGenerator : MonoBehaviour {
 			.ToList ();
 		Range.MergeAdjacentRanges ( ranges );
 		CutRangesUnderPreviousFloorHoles ( ranges );
-		GenerateObstaclesInAllowedRanges ( ranges, obstacleOverRangeChance, oneObstaclePerRange );
+		GenerateObstaclesInAllowedRanges ( ranges, obstacleOverRangeChance, oneObstaclePerRange, minRangeResidualWidth );
 	}
 
 	private void CutRangesUnderPreviousFloorHoles ( List <Range <float>> platformRanges ) {
@@ -302,7 +304,10 @@ public class LevelGenerator : MonoBehaviour {
 		return	hole;
 	}
 
-	private void GenerateObstaclesInAllowedRanges ( List <Range <float>> allowedRanges, float obstacleOverRangeChance, bool oneObstaclePerRange ) {
+	private void GenerateObstaclesInAllowedRanges (
+		List <Range <float>> allowedRanges,
+		float obstacleOverRangeChance, bool oneObstaclePerRange, float minRangeResidualWidth
+	) {
 		while ( obstaclesLeft-- > 0 && allowedRanges.Count > 0 && totalObstacleWidthLeft > 0 ) {
 			int index = UnityEngine.Random.Range ( 0, allowedRanges.Count );
 			var range = allowedRanges [index];
@@ -310,7 +315,7 @@ public class LevelGenerator : MonoBehaviour {
 			if ( range.Width () < Settings.ObstacleWidthMin || UnityEngine.Random.value > obstacleOverRangeChance )
 				continue;
 
-			if ( !RandomlyInsertObstacle ( range, out var occupiedRange ) ) {
+			if ( !RandomlyInsertObstacle ( range, minRangeResidualWidth, out var occupiedRange ) ) {
 				/* By some reason we wasn't able to instantiate obstacle at the given range.
 				 * Remove it to avoid infinite loop. */
 				continue;
@@ -325,7 +330,7 @@ public class LevelGenerator : MonoBehaviour {
 		}
 	}
 
-	private bool RandomlyInsertObstacle ( Range <float> targetRange, out Range <float> occupiedRange ) {
+	private bool RandomlyInsertObstacle ( Range <float> targetRange, float minRangeResidualWidth, out Range <float> occupiedRange ) {
 		float obstacleWidthMax;
 		PlatformKindFlags flags;
 		if ( wallCount < Settings.WallCountMax && UnityEngine.Random.value <= Settings.WallObstacleChance ) {
@@ -338,7 +343,13 @@ public class LevelGenerator : MonoBehaviour {
 			flags = PlatformKindFlags.KillerObstacle | PlatformKindFlags.Platform;
 		}
 
-		var maxWidth = Mathf.Min ( obstacleWidthMax, totalObstacleWidthLeft, targetRange.Width () );
+		var targetRangeWidth = targetRange.Width ();
+		var maxWidth = Mathf.Min ( obstacleWidthMax, totalObstacleWidthLeft, targetRangeWidth - minRangeResidualWidth );
+		if ( maxWidth < Settings.ObstacleWidthMin ) {
+			occupiedRange = default;
+			return	false;
+		}
+
 		var desiredWidth = RandomHelper.Range ( Settings.ObstacleWidthMin, maxWidth, Settings.ObstacleWidthStep );
 		var prefab = PrefabDatabase
 			.Platforms
