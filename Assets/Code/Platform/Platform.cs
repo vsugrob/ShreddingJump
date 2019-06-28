@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 [SelectionBase]
 public class Platform : MonoBehaviour {
@@ -41,6 +42,8 @@ public class Platform : MonoBehaviour {
 		get => EndAngle + transform.RoundedEulerY ();
 		set => transform.eulerAngles = new Vector3 ( 0, value - EndAngle, 0 );
 	}
+	public Range <float> RangeWorld => Range.Create ( StartAngleWorld, EndAngleWorld );
+	public Range <float> RangeWorldClosestBase => CircleMath.ShiftToClosestCircleBase ( RangeWorld, 360 );
 	public float StartAngleLocal {
 		get => StartAngle + transform.RoundedLocalEulerY ();
 		set => transform.localEulerAngles = new Vector3 ( 0, value - StartAngle, 0 );
@@ -57,6 +60,8 @@ public class Platform : MonoBehaviour {
 			transform.localEulerAngles = euler;
 		}
 	}
+	public Range <float> RangeLocal => Range.Create ( StartAngleLocal, EndAngleLocal );
+	public Range <float> RangeLocalClosestBase => CircleMath.ShiftToClosestCircleBase ( RangeLocal, 360 );
 
 	private void Start () {
 		MathHelper.SortMinMax ( ref _startAngle, ref _endAngle );
