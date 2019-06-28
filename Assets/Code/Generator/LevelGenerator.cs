@@ -314,12 +314,12 @@ public class LevelGenerator : MonoBehaviour {
 		return	hole;
 	}
 
-	private List <Platform> GenerateObstaclesInAllowedRanges (
+	private List <LineFragment <Platform, float>> GenerateObstaclesInAllowedRanges (
 		List <Range <float>> allowedRanges,
 		float obstacleOverRangeChance, bool oneObstaclePerRange, float minRangeResidualWidth,
 		bool allowWalls
 	) {
-		var generatedObstacles = new List <Platform> ();
+		var generatedObstacles = new List <LineFragment <Platform, float>> ();
 		while ( obstaclesLeft > 0 && allowedRanges.Count > 0 && totalObstacleWidthLeft > 0 ) {
 			int index = UnityEngine.Random.Range ( 0, allowedRanges.Count );
 			var range = allowedRanges [index];
@@ -333,7 +333,7 @@ public class LevelGenerator : MonoBehaviour {
 				continue;
 			}
 
-			generatedObstacles.Add ( platform );
+			generatedObstacles.Add ( LineFragment.Create ( platform, occupiedRange ) );
 			occupiedRange = occupiedRange.Grow ( Settings.MinSpaceBetweenObstacles );
 			if ( !oneObstaclePerRange ) {
 				Range.SubtractOrdered ( range, occupiedRange, out var r1, out var r2 );
