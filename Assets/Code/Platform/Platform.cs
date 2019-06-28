@@ -34,23 +34,23 @@ public class Platform : MonoBehaviour {
 	}
 	public float AngleWidth => Mathf.Abs ( EndAngle - StartAngle );
 	public float StartAngleWorld {
-		get => StartAngle + transform.eulerAngles.y;
+		get => StartAngle + transform.RoundedEulerY ();
 		set => transform.eulerAngles = new Vector3 ( 0, value - StartAngle, 0 );
 	}
 	public float EndAngleWorld {
-		get => EndAngle + transform.eulerAngles.y;
+		get => EndAngle + transform.RoundedEulerY ();
 		set => transform.eulerAngles = new Vector3 ( 0, value - EndAngle, 0 );
 	}
 	public float StartAngleLocal {
-		get => StartAngle + transform.localEulerAngles.y;
+		get => StartAngle + transform.RoundedLocalEulerY ();
 		set => transform.localEulerAngles = new Vector3 ( 0, value - StartAngle, 0 );
 	}
 	public float EndAngleLocal {
-		get => EndAngle + transform.localEulerAngles.y;
+		get => EndAngle + transform.RoundedLocalEulerY ();
 		set => transform.localEulerAngles = new Vector3 ( 0, value - EndAngle, 0 );
 	}
 	public float AngleLocal {
-		get => transform.localEulerAngles.y;
+		get => transform.RoundedLocalEulerY ();
 		set {
 			var euler = transform.localEulerAngles;
 			euler.y = value;

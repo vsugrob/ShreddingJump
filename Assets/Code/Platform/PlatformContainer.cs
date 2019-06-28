@@ -2,7 +2,7 @@
 
 public class PlatformContainer : MonoBehaviour {
 	public float AngleLocal {
-		get => transform.localEulerAngles.y;
+		get => transform.RoundedLocalEulerY ();
 		set {
 			var euler = transform.localEulerAngles;
 			euler.y = value;
