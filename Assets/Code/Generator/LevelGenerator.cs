@@ -247,7 +247,10 @@ public class LevelGenerator : MonoBehaviour {
 			.ToList ();
 		Range.MergeAdjacentRanges ( ranges );
 		CutRangesUnderPreviousFloorHoles ( ranges );
-		GenerateObstaclesInAllowedRanges ( ranges, obstacleOverRangeChance, oneObstaclePerRange, minRangeResidualWidth, allowWalls );
+		var obstacles = GenerateObstaclesInAllowedRanges (
+			ranges, obstacleOverRangeChance, oneObstaclePerRange, minRangeResidualWidth,
+			allowWalls
+		);
 	}
 
 	private void CutRangesUnderPreviousFloorHoles ( List <Range <float>> platformRanges ) {
@@ -306,11 +309,12 @@ public class LevelGenerator : MonoBehaviour {
 		return	hole;
 	}
 
-	private void GenerateObstaclesInAllowedRanges (
+	private List <Platform> GenerateObstaclesInAllowedRanges (
 		List <Range <float>> allowedRanges,
 		float obstacleOverRangeChance, bool oneObstaclePerRange, float minRangeResidualWidth,
 		bool allowWalls
 	) {
+		var generatedObstacles = new List <Platform> ();
 		while ( obstaclesLeft > 0 && allowedRanges.Count > 0 && totalObstacleWidthLeft > 0 ) {
 			int index = UnityEngine.Random.Range ( 0, allowedRanges.Count );
 			var range = allowedRanges [index];
@@ -318,12 +322,13 @@ public class LevelGenerator : MonoBehaviour {
 			if ( range.Width () < Settings.ObstacleWidthMin || UnityEngine.Random.value > obstacleOverRangeChance )
 				continue;
 
-			if ( !RandomlyInsertObstacle ( range, minRangeResidualWidth, allowWalls, out var occupiedRange ) ) {
+			if ( !RandomlyInsertObstacle ( range, minRangeResidualWidth, allowWalls, out var occupiedRange, out var platform ) ) {
 				/* By some reason we wasn't able to instantiate obstacle at the given range.
-				 * Remove it to avoid infinite loop. */
+				 * This range is removed, it won't be reexamined. Proceed to the next. */
 				continue;
 			}
 
+			generatedObstacles.Add ( platform );
 			occupiedRange = occupiedRange.Grow ( Settings.MinSpaceBetweenObstacles );
 			if ( !oneObstaclePerRange ) {
 				Range.SubtractOrdered ( range, occupiedRange, out var r1, out var r2 );
@@ -333,9 +338,16 @@ public class LevelGenerator : MonoBehaviour {
 
 			obstaclesLeft--;
 		}
+
+		return	generatedObstacles;
 	}
 
-	private bool RandomlyInsertObstacle ( Range <float> targetRange, float minRangeResidualWidth, bool allowWalls, out Range <float> occupiedRange ) {
+	private bool RandomlyInsertObstacle (
+		Range <float> targetRange, float minRangeResidualWidth, bool allowWalls,
+		out Range <float> occupiedRange, out Platform platform
+	) {
+		occupiedRange = default;
+		platform = null;
 		float obstacleWidthMax;
 		PlatformKindFlags flags;
 		if ( allowWalls && wallCount < Settings.WallCountMax && UnityEngine.Random.value <= Settings.WallObstacleChance ) {
@@ -350,10 +362,8 @@ public class LevelGenerator : MonoBehaviour {
 
 		var targetRangeWidth = targetRange.Width ();
 		var maxWidth = Mathf.Min ( obstacleWidthMax, totalObstacleWidthLeft, targetRangeWidth - minRangeResidualWidth );
-		if ( maxWidth < Settings.ObstacleWidthMin ) {
-			occupiedRange = default;
+		if ( maxWidth < Settings.ObstacleWidthMin )
 			return	false;
-		}
 
 		var desiredWidth = RandomHelper.Range ( Settings.ObstacleWidthMin, maxWidth, Settings.ObstacleWidthStep );
 		var prefab = PrefabDatabase
@@ -361,10 +371,8 @@ public class LevelGenerator : MonoBehaviour {
 			.MatchFlags ( flags )
 			.WidthBetween ( desiredWidth, desiredWidth )
 			.TakeRandomSingleOrDefault ();
-		if ( prefab == null ) {
-			occupiedRange = default;
+		if ( prefab == null )
 			return	false;
-		}
 
 		if ( ( flags & PlatformKindFlags.Wall ) != PlatformKindFlags.None ) {
 			wallCount++;
@@ -374,9 +382,9 @@ public class LevelGenerator : MonoBehaviour {
 
 		var actualWidth = prefab.AngleWidth;
 		var baseAngle = RandomHelper.Range ( targetRange.Start, targetRange.End - actualWidth, Settings.ObstacleWidthStep );
-		var instance = InstantiatePlatform ( prefab, baseAngle, platformContainerTf );
+		platform = InstantiatePlatform ( prefab, baseAngle, platformContainerTf );
 		occupiedRange = Range.Create ( baseAngle, baseAngle + actualWidth );
-		obstacleCircle.Add ( instance, occupiedRange );
+		obstacleCircle.Add ( platform, occupiedRange );
 		totalObstacleWidthLeft -= actualWidth;
 		return	true;
 	}
