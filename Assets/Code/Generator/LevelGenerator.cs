@@ -76,21 +76,25 @@ public class LevelGenerator : MonoBehaviour {
 	}
 
 	private int AddHoles ( int holeCount ) {
-		var totalWidth = Settings.TotalHoleWidthMax;
+		var widthLeft = Settings.TotalHoleWidthMax;
 		// Add main hole.
 		var holeBaseAngle = 0f;
-		AddHole ( ref holeBaseAngle, ref totalWidth, Settings.MainHoleWidthMin, Settings.MainHoleWidthMax, isMain : true );
+		AddHole ( holeBaseAngle, widthLeft, Settings.MainHoleWidthMin, Settings.MainHoleWidthMax, isMain : true, out var holeWidth );
+		holeBaseAngle += holeWidth;
+		widthLeft -= holeWidth;
 		// Add secondary holes.
 		int actualCount = 1;
 		var holesLeft = holeCount;
 		while ( --holesLeft > 0 ) {
 			// Reserve some width for the rest of the holes.
 			var minTotalWidthForOtherHoles = ( holesLeft - 1 ) * Settings.SecondaryHoleWidthMin;
-			var maxWidth = totalWidth - minTotalWidthForOtherHoles;
+			var maxWidth = widthLeft - minTotalWidthForOtherHoles;
 			if ( maxWidth < Settings.SecondaryHoleWidthMin )
 				continue;	// Too many holes, it's not possible to fit them all.
 
-			AddHole ( ref holeBaseAngle, ref totalWidth, Settings.SecondaryHoleWidthMin, maxWidth, isMain : false );
+			AddHole ( holeBaseAngle, widthLeft, Settings.SecondaryHoleWidthMin, maxWidth, isMain : false, out holeWidth );
+			holeBaseAngle += holeWidth;
+			widthLeft -= holeWidth;
 			actualCount++;
 		}
 
@@ -98,13 +102,14 @@ public class LevelGenerator : MonoBehaviour {
 	}
 
 	private bool AddHole (
-		ref float baseAngle, ref float totalWidth,
+		float startAngle, float widthLeft,
 		float minWidth, float maxWidth,
-		bool isMain
+		bool isMain,
+		out float holeWidth
 	) {
 		var desiredWidth = RandomHelper.Range ( minWidth, maxWidth, Settings.HoleWidthStep );
-		if ( desiredWidth > totalWidth )
-			desiredWidth = totalWidth;
+		if ( desiredWidth > widthLeft )
+			desiredWidth = widthLeft;
 
 		var flags = PlatformKindFlags.Hole;
 		if ( isMain )
@@ -114,14 +119,14 @@ public class LevelGenerator : MonoBehaviour {
 			.MatchFlags ( flags )
 			.WidthBetween ( desiredWidth, desiredWidth )
 			.TakeRandomSingleOrDefault ();
-		if ( holePrefab == null )
+		if ( holePrefab == null ) {
+			holeWidth = 0;
 			return	false;
+		}
 
-		var hole = InstantiatePlatform ( holePrefab, baseAngle, platformContainerTf );
-		var actualWidth = hole.AngleWidth;
-		platformCircle.Add ( hole, baseAngle, baseAngle + actualWidth );
-		baseAngle += actualWidth;
-		totalWidth -= actualWidth;
+		var hole = InstantiatePlatform ( holePrefab, startAngle, platformContainerTf );
+		holeWidth = hole.AngleWidth;
+		platformCircle.Add ( hole, startAngle, startAngle + holeWidth );
 		return	true;
 	}
 
@@ -381,9 +386,9 @@ public class LevelGenerator : MonoBehaviour {
 		}
 
 		var actualWidth = prefab.AngleWidth;
-		var baseAngle = RandomHelper.Range ( targetRange.Start, targetRange.End - actualWidth, Settings.ObstacleWidthStep );
-		platform = InstantiatePlatform ( prefab, baseAngle, platformContainerTf );
-		occupiedRange = Range.Create ( baseAngle, baseAngle + actualWidth );
+		var startAngle = RandomHelper.Range ( targetRange.Start, targetRange.End - actualWidth, Settings.ObstacleWidthStep );
+		platform = InstantiatePlatform ( prefab, startAngle, platformContainerTf );
+		occupiedRange = Range.Create ( startAngle, startAngle + actualWidth );
 		obstacleCircle.Add ( platform, occupiedRange );
 		totalObstacleWidthLeft -= actualWidth;
 		return	true;
