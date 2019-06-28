@@ -89,8 +89,8 @@ public class LevelGeneratorSettings : ScriptableObject {
 	private float _obstacleOverHoleChance = 0.3f;
 	public float ObstacleOverHoleChance => _obstacleOverHoleChance;
 	[SerializeField]
-	private float _obstacleOverHoleMinHoleResidualWidth = 22.5f;
-	public float ObstacleOverHoleMinHoleResidualWidth => _obstacleOverHoleMinHoleResidualWidth;
+	private float _obstacleOverHoleMinResidualWidth = 22.5f;
+	public float ObstacleOverHoleMinResidualWidth => _obstacleOverHoleMinResidualWidth;
 	[Header ( "Safe Zone" )]
 	[SerializeField]
 	private float _safeZoneShrinkMin = 0;

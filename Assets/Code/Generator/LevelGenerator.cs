@@ -221,7 +221,7 @@ public class LevelGenerator : MonoBehaviour {
 			k => ( k & PlatformKindFlags.Hole ) != PlatformKindFlags.None,
 			obstacleOverRangeChance : Settings.ObstacleOverHoleChance,
 			oneObstaclePerRange : true,
-			Settings.ObstacleOverHoleMinHoleResidualWidth,
+			Settings.ObstacleOverHoleMinResidualWidth,
 			allowWalls : false
 		);
 		GenerateObstaclesOverFilteredPlatforms ( k => k == PlatformKindFlags.Platform );
