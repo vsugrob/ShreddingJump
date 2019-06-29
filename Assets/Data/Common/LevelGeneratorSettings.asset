@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68d7984394d1d3f48adb1c51dcd0f871, type: 3}
+  m_Name: LevelGeneratorSettings
+  m_EditorClassIdentifier: 
+  _floorHeightMin: 3.75
+  _floorHeightMax: 4.5
+  _platformWidthMin: 22.5
+  _mainHoleWidthMin: 22.5
+  _mainHoleWidthMax: 67.5
+  _secondaryHoleWidthMin: 22.5
+  _spaceBetweenHolesMin: 22.5
+  _totalHoleWidthMax: 112.5
+  _holeWidthStep: 22.5
+  _holeCountMin: 1
+  _holeCountMax: 4
+  _baseAngleOffsetMin: -67.5
+  _baseAngleOffsetMax: 67.5
+  _baseAngleOffsetStep: 22.5
+  _obstacleWidthMin: 22.5
+  _obstacleWidthStep: 22.5
+  _horzObstacleWidthMax: 45
+  _wallWidthMax: 22.5
+  _totalObstacleWidthMax: 135
+  _minSpaceBetweenObstacles: 22.5
+  _obstacleCountMin: 0
+  _obstacleCountMax: 4
+  _wallObstacleChance: 0.3
+  _wallCountMax: 3
+  _unpassableWallObstacleChance: 0.2
+  _unpassableWallCountMax: 1
+  _obstacleOverHoleChance: 1
+  _obstacleOverHoleMinResidualWidth: 45
+  _safeZoneShrinkMin: 0
+  _safeZoneShrinkMax: 0
+  _safeZoneShrinkStep: 22.5
+  _safeZoneMinWidth: 22.5
+  _horzObstacleOverPlatformMovingChance: 0.5
+  _wallOverPlatformMovingChance: 0.05
+  _unpassableWallOverPlatformMovingChance: 0
+  _movingObstacleAngularSpeedMin: 20
+  _movingObstacleAngularSpeedMax: 60
+  _movingObstacleMotionCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _movingObstacleMinOscillationTime: 0.5

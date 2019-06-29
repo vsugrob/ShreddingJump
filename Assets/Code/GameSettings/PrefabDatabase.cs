@@ -1,30 +1,34 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu]
 public class PrefabDatabase : ScriptableObject {
 	[SerializeField]
-	private GameObject _character;
-	public GameObject Character {
+	private BouncingBallCharacter _character;
+	public BouncingBallCharacter Character {
 		get => _character;
 		set => _character = value;
 	}
 	[SerializeField]
-	private List <GameObject> _platforms = new List <GameObject> ();
-	public List <GameObject> Platforms {
-		get => _platforms;
-		set => _platforms = value;
+	private GameObject _floorCompleteTrigger;
+	public GameObject FloorCompleteTrigger {
+		get => _floorCompleteTrigger;
+		set => _floorCompleteTrigger = value;
 	}
 	[SerializeField]
-	private List <GameObject> _walls = new List <GameObject> ();
-	public List <GameObject> Walls {
-		get => _walls;
-		set => _walls = value;
+	private List <Platform> _predefinedPlatforms = new List <Platform> ();
+	public List <Platform> PredefinedPlatforms {
+		get => _predefinedPlatforms;
+		set => _predefinedPlatforms = value;
 	}
+	public IEnumerable <Platform> Platforms => PredefinedPlatforms.Where ( p => p != null );
 	[SerializeField]
-	private List <GameObject> _platformObstacles = new List <GameObject> ();
-	public List <GameObject> PlatformObstacles {
-		get => _platformObstacles;
-		set => _platformObstacles = value;
+	private List <Column> _predefinedColumns = new List <Column> ();
+	public List <Column> PredefinedColumns {
+		get => _predefinedColumns;
+		set => _predefinedColumns = value;
 	}
 }

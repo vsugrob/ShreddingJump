@@ -57,6 +57,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7251e5dcbb8e3fa49b5db32848ced09a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _kind: 12
   _startAngle: -5
   _endAngle: 5
   _height: 1.75

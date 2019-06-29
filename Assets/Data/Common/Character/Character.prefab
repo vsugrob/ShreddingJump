@@ -89,7 +89,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inputPlaneWidth: 7
-  _fullSwipeRotationDeg: 180
+  _fullSwipeRotationDeg: 360
 --- !u!1 &5764573675329494205
 GameObject:
   m_ObjectHideFlags: 0
@@ -154,7 +154,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 7991
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
