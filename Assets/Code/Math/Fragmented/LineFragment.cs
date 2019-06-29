@@ -1,17 +1,9 @@
 ﻿namespace System.Collections.Generic {
-	public class LineFragment <TElement, TLimit>
-		where TLimit : IComparable <TLimit>
-	{
-		public TElement Element { get; set; }
-		public Range <TLimit> Range { get; private set; }
-
-		public LineFragment ( TElement element, Range <TLimit> range ) {
-			this.Element = element;
-			this.Range = range;
-		}
-
-		public override string ToString () {
-			return	$"(Element: {Element}, Range: {Range})";
+	public static class LineFragment {
+		public static LineFragment <TElement, TLimit> Create <TElement, TLimit> ( TElement element, Range <TLimit> range )
+			where TLimit : IComparable <TLimit>
+		{
+			return	new LineFragment <TElement, TLimit> ( element, range );
 		}
 	}
 }

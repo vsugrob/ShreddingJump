@@ -56,8 +56,11 @@ public class LevelGeneratorSettings : ScriptableObject {
 	private float _obstacleWidthStep = 22.5f;
 	public float ObstacleWidthStep => _obstacleWidthStep;
 	[SerializeField]
-	private float _horzObstacleWidthMax = 45;
-	public float HorzObstacleWidthMax => _horzObstacleWidthMax;
+	private float _horzObstacleOverPlatformWidthMax = 45;
+	public float HorzObstacleOverPlatformWidthMax => _horzObstacleOverPlatformWidthMax;
+	[SerializeField]
+	private float _horzObstacleOverHoleWidthMax = 22.5f;
+	public float HorzObstacleOverHoleWidthMax => _horzObstacleOverHoleWidthMax;
 	[SerializeField]
 	private float _wallWidthMax = 22.5f;
 	public float WallWidthMax => _wallWidthMax;
@@ -85,6 +88,12 @@ public class LevelGeneratorSettings : ScriptableObject {
 	[SerializeField]
 	private int _unpassableWallCountMax = 1;
 	public int UnpassableWallCountMax => _unpassableWallCountMax;
+	[SerializeField]
+	private float _obstacleOverHoleChance = 0.3f;
+	public float ObstacleOverHoleChance => _obstacleOverHoleChance;
+	[SerializeField]
+	private float _obstacleOverHoleMinResidualWidth = 22.5f;
+	public float ObstacleOverHoleMinResidualWidth => _obstacleOverHoleMinResidualWidth;
 	[Header ( "Safe Zone" )]
 	[SerializeField]
 	private float _safeZoneShrinkMin = 0;
@@ -102,6 +111,9 @@ public class LevelGeneratorSettings : ScriptableObject {
 	[SerializeField]
 	private float _horzObstacleOverPlatformMovingChance = 0.5f;
 	public float HorzObstacleOverPlatformMovingChance => _horzObstacleOverPlatformMovingChance;
+	[SerializeField]
+	private float _horzObstacleOverHoleMovingChance = 1;
+	public float HorzObstacleOverHoleMovingChance => _horzObstacleOverHoleMovingChance;
 	[SerializeField]
 	private float _wallOverPlatformMovingChance = 0.05f;
 	public float WallOverPlatformMovingChance => _wallOverPlatformMovingChance;
@@ -126,7 +138,4 @@ public class LevelGeneratorSettings : ScriptableObject {
 		get => _movingObstacleMinOscillationTime;
 		set => _movingObstacleMinOscillationTime = value;
 	}
-	[SerializeField]
-	private bool _allowObstaclesMoveUnderHoles = false;
-	public bool AllowObstaclesMoveUnderHoles => _allowObstaclesMoveUnderHoles;
 }

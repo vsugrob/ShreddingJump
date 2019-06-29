@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 [SelectionBase]
 public class Platform : MonoBehaviour {
@@ -34,29 +35,33 @@ public class Platform : MonoBehaviour {
 	}
 	public float AngleWidth => Mathf.Abs ( EndAngle - StartAngle );
 	public float StartAngleWorld {
-		get => StartAngle + transform.eulerAngles.y;
+		get => StartAngle + transform.RoundedEulerY ();
 		set => transform.eulerAngles = new Vector3 ( 0, value - StartAngle, 0 );
 	}
 	public float EndAngleWorld {
-		get => EndAngle + transform.eulerAngles.y;
+		get => EndAngle + transform.RoundedEulerY ();
 		set => transform.eulerAngles = new Vector3 ( 0, value - EndAngle, 0 );
 	}
+	public Range <float> RangeWorld => Range.Create ( StartAngleWorld, EndAngleWorld );
+	public Range <float> RangeWorldClosestBase => CircleMath.ShiftToClosestCircleBase ( RangeWorld, 360 );
 	public float StartAngleLocal {
-		get => StartAngle + transform.localEulerAngles.y;
+		get => StartAngle + transform.RoundedLocalEulerY ();
 		set => transform.localEulerAngles = new Vector3 ( 0, value - StartAngle, 0 );
 	}
 	public float EndAngleLocal {
-		get => EndAngle + transform.localEulerAngles.y;
+		get => EndAngle + transform.RoundedLocalEulerY ();
 		set => transform.localEulerAngles = new Vector3 ( 0, value - EndAngle, 0 );
 	}
 	public float AngleLocal {
-		get => transform.localEulerAngles.y;
+		get => transform.RoundedLocalEulerY ();
 		set {
 			var euler = transform.localEulerAngles;
 			euler.y = value;
 			transform.localEulerAngles = euler;
 		}
 	}
+	public Range <float> RangeLocal => Range.Create ( StartAngleLocal, EndAngleLocal );
+	public Range <float> RangeLocalClosestBase => CircleMath.ShiftToClosestCircleBase ( RangeLocal, 360 );
 
 	private void Start () {
 		MathHelper.SortMinMax ( ref _startAngle, ref _endAngle );

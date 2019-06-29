@@ -17,7 +17,7 @@ public class LevelGenerator : MonoBehaviour {
 		set => _prefabDatabase = value;
 	}
 	private FloorInfo prevFloorInfo;
-	private PlatformCircle platformCircle, obstacleCircle;
+	private PlatformCircle floorPlatformCircle, floorObstacleCircle;
 	private float floorHeight, floorY;
 	private Transform floorTf, platformContainerTf;
 	private float totalObstacleWidthLeft;
@@ -40,7 +40,7 @@ public class LevelGenerator : MonoBehaviour {
 			GenerateFloor ();
 			var floorCompleteTriggerGo = Instantiate ( PrefabDatabase.FloorCompleteTrigger, floorTf );
 			floorCompleteTriggerGo.transform.localPosition = Vector3.zero;
-			this.prevFloorInfo = new FloorInfo ( floorRoot, baseAngle, platformCircle, obstacleCircle );
+			this.prevFloorInfo = new FloorInfo ( floorRoot, baseAngle, floorPlatformCircle, floorObstacleCircle );
 			floorY -= floorHeight;
 			baseAngle += RandomHelper.Range ( Settings.BaseAngleOffsetMin, Settings.BaseAngleOffsetMax, Settings.BaseAngleOffsetStep );
 			nextFloorIndex++;
@@ -56,10 +56,10 @@ public class LevelGenerator : MonoBehaviour {
 	}
 
 	private void GenerateFloor () {
-		platformCircle = new PlatformCircle ();
+		floorPlatformCircle = new PlatformCircle ();
 		GenerateHoles ();
 		GeneratePlatforms ();
-		obstacleCircle = new PlatformCircle ();
+		floorObstacleCircle = new PlatformCircle ();
 		GenerateObstacles ();
 		GenerateColumn ();
 	}
@@ -76,21 +76,25 @@ public class LevelGenerator : MonoBehaviour {
 	}
 
 	private int AddHoles ( int holeCount ) {
-		var totalWidth = Settings.TotalHoleWidthMax;
+		var widthLeft = Settings.TotalHoleWidthMax;
 		// Add main hole.
 		var holeBaseAngle = 0f;
-		AddHole ( ref holeBaseAngle, ref totalWidth, Settings.MainHoleWidthMin, Settings.MainHoleWidthMax, isMain : true );
+		AddHole ( holeBaseAngle, widthLeft, Settings.MainHoleWidthMin, Settings.MainHoleWidthMax, isMain : true, out var holeWidth );
+		holeBaseAngle += holeWidth;
+		widthLeft -= holeWidth;
 		// Add secondary holes.
 		int actualCount = 1;
 		var holesLeft = holeCount;
 		while ( --holesLeft > 0 ) {
 			// Reserve some width for the rest of the holes.
 			var minTotalWidthForOtherHoles = ( holesLeft - 1 ) * Settings.SecondaryHoleWidthMin;
-			var maxWidth = totalWidth - minTotalWidthForOtherHoles;
+			var maxWidth = widthLeft - minTotalWidthForOtherHoles;
 			if ( maxWidth < Settings.SecondaryHoleWidthMin )
 				continue;	// Too many holes, it's not possible to fit them all.
 
-			AddHole ( ref holeBaseAngle, ref totalWidth, Settings.SecondaryHoleWidthMin, maxWidth, isMain : false );
+			AddHole ( holeBaseAngle, widthLeft, Settings.SecondaryHoleWidthMin, maxWidth, isMain : false, out holeWidth );
+			holeBaseAngle += holeWidth;
+			widthLeft -= holeWidth;
 			actualCount++;
 		}
 
@@ -98,13 +102,14 @@ public class LevelGenerator : MonoBehaviour {
 	}
 
 	private bool AddHole (
-		ref float baseAngle, ref float totalWidth,
+		float startAngle, float widthLeft,
 		float minWidth, float maxWidth,
-		bool isMain
+		bool isMain,
+		out float holeWidth
 	) {
 		var desiredWidth = RandomHelper.Range ( minWidth, maxWidth, Settings.HoleWidthStep );
-		if ( desiredWidth > totalWidth )
-			desiredWidth = totalWidth;
+		if ( desiredWidth > widthLeft )
+			desiredWidth = widthLeft;
 
 		var flags = PlatformKindFlags.Hole;
 		if ( isMain )
@@ -114,23 +119,23 @@ public class LevelGenerator : MonoBehaviour {
 			.MatchFlags ( flags )
 			.WidthBetween ( desiredWidth, desiredWidth )
 			.TakeRandomSingleOrDefault ();
-		if ( holePrefab == null )
+		if ( holePrefab == null ) {
+			holeWidth = 0;
 			return	false;
+		}
 
-		var hole = InstantiatePlatform ( holePrefab, baseAngle, platformContainerTf );
-		var actualWidth = hole.AngleWidth;
-		platformCircle.Add ( hole, baseAngle, baseAngle + actualWidth );
-		baseAngle += actualWidth;
-		totalWidth -= actualWidth;
+		var hole = InstantiatePlatform ( holePrefab, startAngle, platformContainerTf );
+		holeWidth = hole.AngleWidth;
+		floorPlatformCircle.Add ( hole, startAngle, startAngle + holeWidth );
 		return	true;
 	}
 
 	private void SeparateHoles () {
-		if ( platformCircle.Count < 2 )
+		if ( floorPlatformCircle.Count < 2 )
 			return;
 
-		var holeFragments = platformCircle.ToArray ();
-		platformCircle.Clear ();
+		var holeFragments = floorPlatformCircle.ToArray ();
+		floorPlatformCircle.Clear ();
 		var lastFragment = holeFragments [holeFragments.Length - 1];
 		var spaceLeft = 360 - lastFragment.Range.End;
 		var offset = 0f;
@@ -145,13 +150,13 @@ public class LevelGenerator : MonoBehaviour {
 			holeFragments [i] = new LineFragment <Platform, float> ( fragment.Element, range );
 		}
 
-		platformCircle.AddRange ( holeFragments );
+		floorPlatformCircle.AddRange ( holeFragments );
 	}
 
 	private void ShakeHoles () {
 		// Randomly "shake" hole positions.
 		var nextStart = 360f;
-		var holeFragments = platformCircle.ToArray ();
+		var holeFragments = floorPlatformCircle.ToArray ();
 		for ( int i = holeFragments.Length - 1 ; i >= 1 ; i-- ) {
 			nextStart -= Settings.SpaceBetweenHolesMin;
 			var fragment = holeFragments [i];
@@ -165,9 +170,9 @@ public class LevelGenerator : MonoBehaviour {
 
 			var newStart = RandomHelper.Range ( start, maxStart, Settings.SecondaryHoleWidthMin );
 			if ( newStart != start ) {
-				platformCircle.Remove ( start );
+				floorPlatformCircle.Remove ( start );
 				range = range.Shift ( newStart - start );
-				platformCircle.Add ( fragment.Element, range );
+				floorPlatformCircle.Add ( fragment.Element, range );
 			}
 
 			nextStart = range.Start;
@@ -175,14 +180,14 @@ public class LevelGenerator : MonoBehaviour {
 	}
 
 	private void SyncHoleAngles () {
-		foreach ( var fragment in platformCircle ) {
+		foreach ( var fragment in floorPlatformCircle ) {
 			var hole = fragment.Element;
 			hole.StartAngleLocal = fragment.Range.Start;
 		}
 	}
 
 	private void GeneratePlatforms () {
-		while ( platformCircle.TryFindEmptyRange ( out var emptyRange ) ) {
+		while ( floorPlatformCircle.TryFindEmptyRange ( out var emptyRange ) ) {
 			var start = emptyRange.Start;
 			var platformPrefab = PrefabDatabase
 				.Platforms
@@ -193,12 +198,12 @@ public class LevelGenerator : MonoBehaviour {
 			if ( platformPrefab == null ) {
 				Debug.LogWarning ( $"No suitable platform was found for the range {emptyRange} at {platformContainerTf.name}." );
 				// Fill whole range to not revisit it in the next iteration.
-				platformCircle.Add ( null, emptyRange );
+				floorPlatformCircle.Add ( null, emptyRange );
 				continue;
 			}
 
 			var platform = InstantiatePlatform ( platformPrefab, start, platformContainerTf );
-			platformCircle.Add ( platform, start, start + platform.AngleWidth );
+			floorPlatformCircle.Add ( platform, start, start + platform.AngleWidth );
 		}
 	}
 
@@ -214,18 +219,52 @@ public class LevelGenerator : MonoBehaviour {
 		if ( obstaclesLeft == 0 )
 			return;
 
-		// TODO: generate horizontal obstacles over holes.
 		totalObstacleWidthLeft = Settings.TotalObstacleWidthMax;
 		wallCount = 0;
 		unpassableWallCount = 0;
-		var platformRanges = platformCircle
-			.Where ( f => ( f.Element.Kind & PlatformKindFlags.Platform ) == PlatformKindFlags.Platform )
+		GenerateObstaclesOverFilteredPlatforms (
+			k => ( k & PlatformKindFlags.Hole ) != PlatformKindFlags.None,
+			Settings.HorzObstacleOverHoleWidthMax,
+			unpassableWallMovingChance : 0, wallMovingChance : 0, Settings.HorzObstacleOverHoleMovingChance,
+			obstacleOverRangeChance : Settings.ObstacleOverHoleChance,
+			oneObstaclePerRange : true,
+			Settings.ObstacleOverHoleMinResidualWidth,
+			allowWalls : false
+		);
+		GenerateObstaclesOverFilteredPlatforms (
+			k => k == PlatformKindFlags.Platform,
+			Settings.HorzObstacleOverPlatformWidthMax,
+			Settings.UnpassableWallOverPlatformMovingChance, Settings.WallOverPlatformMovingChance, Settings.HorzObstacleOverPlatformMovingChance
+		);
+	}
+
+	private void GenerateObstaclesOverFilteredPlatforms (
+		Func <PlatformKindFlags, bool> predicate,
+		float horzObstacleWidthMax,
+		float unpassableWallMovingChance, float wallMovingChance, float horzObstacleMovingChance,
+		float obstacleOverRangeChance = 1,
+		bool oneObstaclePerRange = false,
+		float minRangeResidualWidth = 0,
+		bool allowWalls = true
+	) {
+		if ( obstaclesLeft <= 0 || totalObstacleWidthLeft < Settings.ObstacleWidthMin )
+			return;
+
+		var allowedRanges = floorPlatformCircle
+			.Where ( f => predicate ( f.Element.Kind ) )
 			.Select ( f => f.Range )
 			.ToList ();
-		Range.MergeAdjacentRanges ( platformRanges );
-		CutRangesUnderPreviousFloorHoles ( platformRanges );
-		GenerateObstaclesOverPlatforms ( platformRanges );
-		MakeHorzObstaclesOverPlatformsMoving ();
+		Range.MergeAdjacentRanges ( allowedRanges );
+		CutRangesUnderPreviousFloorHoles ( allowedRanges );
+		var obstacles = GenerateObstaclesInAllowedRanges (
+			allowedRanges.ToList (),	// Method modifies list, while we need original contents after this operation.
+			obstacleOverRangeChance, oneObstaclePerRange, minRangeResidualWidth, horzObstacleWidthMax,
+			allowWalls
+		);
+		MakeObstaclesMoving (
+			obstacles, allowedRanges,
+			unpassableWallMovingChance, wallMovingChance, horzObstacleMovingChance
+		);
 	}
 
 	private void CutRangesUnderPreviousFloorHoles ( List <Range <float>> platformRanges ) {
@@ -284,53 +323,75 @@ public class LevelGenerator : MonoBehaviour {
 		return	hole;
 	}
 
-	private void GenerateObstaclesOverPlatforms ( List <Range <float>> allowedRanges ) {
-		while ( obstaclesLeft-- > 0 && allowedRanges.Count > 0 && totalObstacleWidthLeft > 0 ) {
+	private List <LineFragment <Platform, float>> GenerateObstaclesInAllowedRanges (
+		List <Range <float>> allowedRanges,
+		float obstacleOverRangeChance, bool oneObstaclePerRange, float minRangeResidualWidth, float horzObstacleWidthMax,
+		bool allowWalls
+	) {
+		var generatedObstacles = new List <LineFragment <Platform, float>> ();
+		while ( obstaclesLeft > 0 && allowedRanges.Count > 0 && totalObstacleWidthLeft > 0 ) {
 			int index = UnityEngine.Random.Range ( 0, allowedRanges.Count );
 			var range = allowedRanges [index];
 			allowedRanges.RemoveAt ( index );
-			if ( range.Width () < Settings.ObstacleWidthMin ) {
-				// Obstacle doesn't fit, this range is useless for us.
+			if ( range.Width () < Settings.ObstacleWidthMin || UnityEngine.Random.value > obstacleOverRangeChance )
 				continue;
-			}
 
-			if ( !RandomlyInsertObstacle ( range, out var occupiedRange ) ) {
+			if ( !RandomlyInsertObstacle (
+				range,
+				minRangeResidualWidth, allowWalls, horzObstacleWidthMax,
+				out var occupiedRange, out var platform
+			) ) {
 				/* By some reason we wasn't able to instantiate obstacle at the given range.
-				 * Remove it to avoid infinite loop. */
+				 * This range is removed, it won't be reexamined. Proceed to the next. */
 				continue;
 			}
 
+			generatedObstacles.Add ( LineFragment.Create ( platform, occupiedRange ) );
 			occupiedRange = occupiedRange.Grow ( Settings.MinSpaceBetweenObstacles );
-			Range.SubtractOrdered ( range, occupiedRange, out var r1, out var r2 );
-			if ( r2.HasValue ) allowedRanges.Insert ( index, r2.Value );
-			if ( r1.HasValue ) allowedRanges.Insert ( index, r1.Value );
+			if ( !oneObstaclePerRange ) {
+				Range.SubtractOrdered ( range, occupiedRange, out var r1, out var r2 );
+				if ( r2.HasValue ) allowedRanges.Insert ( index, r2.Value );
+				if ( r1.HasValue ) allowedRanges.Insert ( index, r1.Value );
+			}
+
+			obstaclesLeft--;
 		}
+
+		return	generatedObstacles;
 	}
 
-	private bool RandomlyInsertObstacle ( Range <float> targetRange, out Range <float> occupiedRange ) {
+	private bool RandomlyInsertObstacle (
+		Range <float> targetRange,
+		float minRangeResidualWidth, bool allowWalls, float horzObstacleWidthMax,
+		out Range <float> occupiedRange, out Platform platform
+	) {
+		occupiedRange = default;
+		platform = null;
 		float obstacleWidthMax;
 		PlatformKindFlags flags;
-		if ( wallCount < Settings.WallCountMax && UnityEngine.Random.value <= Settings.WallObstacleChance ) {
+		if ( allowWalls && wallCount < Settings.WallCountMax && UnityEngine.Random.value <= Settings.WallObstacleChance ) {
 			obstacleWidthMax = Settings.WallWidthMax;
 			flags = PlatformKindFlags.KillerObstacle | PlatformKindFlags.Wall;
 			if ( unpassableWallCount < Settings.UnpassableWallCountMax && UnityEngine.Random.value <= Settings.UnpassableWallObstacleChance )
 				flags |= PlatformKindFlags.Unpassable;
 		} else {
-			obstacleWidthMax = Settings.HorzObstacleWidthMax;
+			obstacleWidthMax = horzObstacleWidthMax;
 			flags = PlatformKindFlags.KillerObstacle | PlatformKindFlags.Platform;
 		}
 
-		var maxWidth = Mathf.Min ( obstacleWidthMax, totalObstacleWidthLeft, targetRange.Width () );
+		var targetRangeWidth = targetRange.Width ();
+		var maxWidth = Mathf.Min ( obstacleWidthMax, totalObstacleWidthLeft, targetRangeWidth - minRangeResidualWidth );
+		if ( maxWidth < Settings.ObstacleWidthMin )
+			return	false;
+
 		var desiredWidth = RandomHelper.Range ( Settings.ObstacleWidthMin, maxWidth, Settings.ObstacleWidthStep );
 		var prefab = PrefabDatabase
 			.Platforms
 			.MatchFlags ( flags )
 			.WidthBetween ( desiredWidth, desiredWidth )
 			.TakeRandomSingleOrDefault ();
-		if ( prefab == null ) {
-			occupiedRange = default;
+		if ( prefab == null )
 			return	false;
-		}
 
 		if ( ( flags & PlatformKindFlags.Wall ) != PlatformKindFlags.None ) {
 			wallCount++;
@@ -339,27 +400,32 @@ public class LevelGenerator : MonoBehaviour {
 		}
 
 		var actualWidth = prefab.AngleWidth;
-		var baseAngle = RandomHelper.Range ( targetRange.Start, targetRange.End - actualWidth, Settings.ObstacleWidthStep );
-		var instance = InstantiatePlatform ( prefab, baseAngle, platformContainerTf );
-		occupiedRange = Range.Create ( baseAngle, baseAngle + actualWidth );
-		obstacleCircle.Add ( instance, occupiedRange );
+		var startAngle = RandomHelper.Range ( targetRange.Start, targetRange.End - actualWidth, Settings.ObstacleWidthStep );
+		platform = InstantiatePlatform ( prefab, startAngle, platformContainerTf );
+		occupiedRange = Range.Create ( startAngle, startAngle + actualWidth );
+		floorObstacleCircle.Add ( platform, occupiedRange );
 		totalObstacleWidthLeft -= actualWidth;
 		return	true;
 	}
 
-	private void MakeHorzObstaclesOverPlatformsMoving () {
-		if ( obstacleCircle.Count == 0 )
+	private void MakeObstaclesMoving (
+		List <LineFragment <Platform, float>> obstacleFragments, List <Range <float>> allowedRanges,
+		float unpassableWallMovingChance, float wallMovingChance, float horzObstacleMovingChance
+	) {
+		if ( obstacleFragments.Count == 0 )
 			return;
 
-		var holeFrags = platformCircle.Where ( f => ( f.Element.Kind & PlatformKindFlags.Hole ) != PlatformKindFlags.None );
-		var holeCircle = FragmentedCircle.CreateDegrees <Platform> ();
-		holeCircle.AddRange ( holeFrags );
-		FragmentedCircle <Platform> prevFloorHoleCircle = null;
-		if ( !Settings.AllowObstaclesMoveUnderHoles ) {
-			prevFloorHoleCircle = FragmentedCircle.CreateDegrees <Platform> ();
-			holeFrags = prevFloorInfo.PlatformCircle
-				.Where ( f => ( f.Element.Kind & PlatformKindFlags.Hole ) != PlatformKindFlags.None );
-			prevFloorHoleCircle.AddRange ( holeFrags );
+		var obstacleCircle = FragmentedCircle.CreateDegrees ( obstacleFragments );
+		// Make circle of fragments where obstacles are disallowed to move.
+		var allowedRangesCircle = FragmentedCircle.CreateDegrees <Platform> ();
+		for ( int i = 0 ; i < allowedRanges.Count ; i++ ) {
+			allowedRangesCircle.Add ( element : null, allowedRanges [i] );
+		}
+
+		var disallowedRanges = allowedRangesCircle.GetAllEmptyRanges ();
+		var disallowedRangesCircle = FragmentedCircle.CreateDegrees <Platform> ();
+		for ( int i = 0 ; i < disallowedRanges.Count ; i++ ) {
+			disallowedRangesCircle.Add ( element : null, disallowedRanges [i] );
 		}
 
 		var movingFragments = new List <LineFragment <Platform, float>> ();
@@ -374,11 +440,11 @@ public class LevelGenerator : MonoBehaviour {
 			float chance;
 			if ( ( platform.Kind & PlatformKindFlags.Wall ) != PlatformKindFlags.None ) {
 				if ( ( platform.Kind & PlatformKindFlags.Unpassable ) != PlatformKindFlags.None )
-					chance = Settings.UnpassableWallOverPlatformMovingChance;
+					chance = unpassableWallMovingChance;
 				else
-					chance = Settings.WallOverPlatformMovingChance;
+					chance = wallMovingChance;
 			} else
-				chance = Settings.HorzObstacleOverPlatformMovingChance;
+				chance = horzObstacleMovingChance;
 
 			if ( UnityEngine.Random.value > chance )
 				continue;
@@ -400,17 +466,11 @@ public class LevelGenerator : MonoBehaviour {
 				}
 			}
 
-			// We don't want obstacles to behave unpredictably: they must not trespass boundaries between platforms and holes.
-			IntersectWithFreeSpaceArc ( holeCircle, range, ref minBound, ref maxBound, out var resultsInNoSpace );
+			/* We don't want obstacles to behave unpredictably: they must not trespass boundaries between platforms and holes.
+			 * Moving obstacles should not enter space under the holes of previous floor. */
+			IntersectWithFreeSpaceArc ( disallowedRangesCircle, range, ref minBound, ref maxBound, out var resultsInNoSpace );
 			if ( resultsInNoSpace )
 				continue;
-
-			if ( prevFloorHoleCircle != null ) {
-				// Moving obstacles should not enter space under the holes of previous floor.
-				IntersectWithFreeSpaceArc ( prevFloorHoleCircle, range, ref minBound, ref maxBound, out resultsInNoSpace );
-				if ( resultsInNoSpace )
-					continue;
-			}
 
 			var arc = CircleMath.ArcEndsToArc ( Range.Create ( minBound, maxBound ), dir : 1, pi2 : 360 );
 			minBound = arc.Start;
@@ -455,38 +515,37 @@ public class LevelGenerator : MonoBehaviour {
 		out bool resultsInNoSpace
 	) {
 		resultsInNoSpace = false;
-		if ( occlusionCircle.Count != 0 ) {
-			if ( occlusionCircle.Intersects ( platformRange, includeTouch : false ) ) {
-				resultsInNoSpace = true;
-				return	true;
-			}
+		if ( occlusionCircle.Count == 0 )
+			return	false;
 
-			occlusionCircle.SeekFragmentBoundary ( platformRange.Start, -1, out var minOccluderBound );
-			occlusionCircle.SeekFragmentBoundary ( platformRange.End  ,  1, out var maxOccluderBound );
-			CircleMath.IntersectArcs (
-				360,
-				Range.Create ( minBound, maxBound ), dir1 : 1,
-				Range.Create ( minOccluderBound, maxOccluderBound ), dir2 : 1,
-				out var intersectionArc1, out var intersectionArc2
-			);
-			// Both arcs grew up from the same point, therefore there is always at least one intersection.
-			if ( intersectionArc2.HasValue ) {
-				// There are two intersections. Only one of them contains initial range.
-				if ( intersectionArc2.Value.Contains ( platformRange ) )
-					intersectionArc1 = intersectionArc2;
-			}
-
-			minBound = intersectionArc1.Value.Start;
-			maxBound = intersectionArc1.Value.End;
-			if ( platformRange.Start == minBound && platformRange.End == maxBound ) {
-				// There's no space for oscillation.
-				resultsInNoSpace = true;
-			}
-
+		if ( occlusionCircle.Intersects ( platformRange, includeTouch : false ) ) {
+			resultsInNoSpace = true;
 			return	true;
 		}
 
-		return	false;
+		occlusionCircle.SeekFragmentBoundary ( platformRange.Start, dir : -1, out var minOccluderBound );
+		occlusionCircle.SeekFragmentBoundary ( platformRange.End  , dir :  1, out var maxOccluderBound );
+		CircleMath.IntersectArcs (
+			360,
+			Range.Create ( minBound, maxBound ), dir1 : 1,
+			Range.Create ( minOccluderBound, maxOccluderBound ), dir2 : 1,
+			out var intersectionArc1, out var intersectionArc2
+		);
+		// Both arcs grew up from the same point, therefore there is always at least one intersection.
+		if ( intersectionArc2.HasValue ) {
+			// There are two intersections. Only one of them contains initial range.
+			if ( intersectionArc2.Value.Contains ( platformRange ) )
+				intersectionArc1 = intersectionArc2;
+		}
+
+		minBound = intersectionArc1.Value.Start;
+		maxBound = intersectionArc1.Value.End;
+		if ( platformRange.Start == minBound && platformRange.End == maxBound ) {
+			// There's no space for oscillation.
+			resultsInNoSpace = true;
+		}
+
+		return	true;
 	}
 
 	private Column GenerateColumn () {

@@ -34,11 +34,19 @@ MonoBehaviour:
   _minSpaceBetweenObstacles: 22.5
   _obstacleCountMin: 0
   _obstacleCountMax: 4
-  _allowObstaclesUnderHoles: 0
   _wallObstacleChance: 0.3
   _wallCountMax: 3
+  _unpassableWallObstacleChance: 0.2
+  _unpassableWallCountMax: 1
+  _obstacleOverHoleChance: 1
+  _obstacleOverHoleMinResidualWidth: 45
+  _safeZoneShrinkMin: 0
+  _safeZoneShrinkMax: 0
+  _safeZoneShrinkStep: 22.5
+  _safeZoneMinWidth: 22.5
   _horzObstacleOverPlatformMovingChance: 0.5
   _wallOverPlatformMovingChance: 0.05
+  _unpassableWallOverPlatformMovingChance: 0
   _movingObstacleAngularSpeedMin: 20
   _movingObstacleAngularSpeedMax: 60
   _movingObstacleMotionCurve:
@@ -66,4 +74,3 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _movingObstacleMinOscillationTime: 0.5
-  _allowObstaclesMoveUnderHoles: 0
