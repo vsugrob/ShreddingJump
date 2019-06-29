@@ -409,14 +409,6 @@ public class LevelGenerator : MonoBehaviour {
 			disallowedRangesCircle.Add ( element : null, disallowedRanges [i] );
 		}
 
-		FragmentedCircle <Platform> prevFloorHoleCircle = null;
-		if ( !Settings.AllowObstaclesMoveUnderHoles ) {
-			prevFloorHoleCircle = FragmentedCircle.CreateDegrees <Platform> ();
-			var holeFrags = prevFloorInfo.PlatformCircle
-				.Where ( f => ( f.Element.Kind & PlatformKindFlags.Hole ) != PlatformKindFlags.None );
-			prevFloorHoleCircle.AddRange ( holeFrags );
-		}
-
 		var movingFragments = new List <LineFragment <Platform, float>> ();
 		for ( int i = 0 ; i < obstacleCircle.Count ; i++ ) {
 			var fragment = obstacleCircle [i];
@@ -455,17 +447,11 @@ public class LevelGenerator : MonoBehaviour {
 				}
 			}
 
-			// We don't want obstacles to behave unpredictably: they must not trespass boundaries between platforms and holes.
+			/* We don't want obstacles to behave unpredictably: they must not trespass boundaries between platforms and holes.
+			 * Moving obstacles should not enter space under the holes of previous floor. */
 			IntersectWithFreeSpaceArc ( disallowedRangesCircle, range, ref minBound, ref maxBound, out var resultsInNoSpace );
 			if ( resultsInNoSpace )
 				continue;
-
-			if ( prevFloorHoleCircle != null ) {
-				// Moving obstacles should not enter space under the holes of previous floor.
-				IntersectWithFreeSpaceArc ( prevFloorHoleCircle, range, ref minBound, ref maxBound, out resultsInNoSpace );
-				if ( resultsInNoSpace )
-					continue;
-			}
 
 			var arc = CircleMath.ArcEndsToArc ( Range.Create ( minBound, maxBound ), dir : 1, pi2 : 360 );
 			minBound = arc.Start;

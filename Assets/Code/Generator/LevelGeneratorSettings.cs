@@ -132,7 +132,4 @@ public class LevelGeneratorSettings : ScriptableObject {
 		get => _movingObstacleMinOscillationTime;
 		set => _movingObstacleMinOscillationTime = value;
 	}
-	[SerializeField]
-	private bool _allowObstaclesMoveUnderHoles = false;
-	public bool AllowObstaclesMoveUnderHoles => _allowObstaclesMoveUnderHoles;
 }
