@@ -56,8 +56,11 @@ public class LevelGeneratorSettings : ScriptableObject {
 	private float _obstacleWidthStep = 22.5f;
 	public float ObstacleWidthStep => _obstacleWidthStep;
 	[SerializeField]
-	private float _horzObstacleWidthMax = 45;
-	public float HorzObstacleWidthMax => _horzObstacleWidthMax;
+	private float _horzObstacleOverPlatformWidthMax = 45;
+	public float HorzObstacleOverPlatformWidthMax => _horzObstacleOverPlatformWidthMax;
+	[SerializeField]
+	private float _horzObstacleOverHoleWidthMax = 22.5f;
+	public float HorzObstacleOverHoleWidthMax => _horzObstacleOverHoleWidthMax;
 	[SerializeField]
 	private float _wallWidthMax = 22.5f;
 	public float WallWidthMax => _wallWidthMax;

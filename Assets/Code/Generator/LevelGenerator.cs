@@ -224,16 +224,21 @@ public class LevelGenerator : MonoBehaviour {
 		unpassableWallCount = 0;
 		GenerateObstaclesOverFilteredPlatforms (
 			k => ( k & PlatformKindFlags.Hole ) != PlatformKindFlags.None,
+			Settings.HorzObstacleOverHoleWidthMax,
 			obstacleOverRangeChance : Settings.ObstacleOverHoleChance,
 			oneObstaclePerRange : true,
 			Settings.ObstacleOverHoleMinResidualWidth,
 			allowWalls : false
 		);
-		GenerateObstaclesOverFilteredPlatforms ( k => k == PlatformKindFlags.Platform );
+		GenerateObstaclesOverFilteredPlatforms (
+			k => k == PlatformKindFlags.Platform,
+			Settings.HorzObstacleOverPlatformWidthMax
+		);
 	}
 
 	private void GenerateObstaclesOverFilteredPlatforms (
 		Func <PlatformKindFlags, bool> predicate,
+		float horzObstacleWidthMax,
 		float obstacleOverRangeChance = 1,
 		bool oneObstaclePerRange = false,
 		float minRangeResidualWidth = 0,
@@ -250,7 +255,7 @@ public class LevelGenerator : MonoBehaviour {
 		CutRangesUnderPreviousFloorHoles ( allowedRanges );
 		var obstacles = GenerateObstaclesInAllowedRanges (
 			allowedRanges.ToList (),	// Method modifies list, while we need original contents after this operation.
-			obstacleOverRangeChance, oneObstaclePerRange, minRangeResidualWidth,
+			obstacleOverRangeChance, oneObstaclePerRange, minRangeResidualWidth, horzObstacleWidthMax,
 			allowWalls
 		);
 		MakeObstaclesMoving ( obstacles, allowedRanges );
@@ -314,7 +319,7 @@ public class LevelGenerator : MonoBehaviour {
 
 	private List <LineFragment <Platform, float>> GenerateObstaclesInAllowedRanges (
 		List <Range <float>> allowedRanges,
-		float obstacleOverRangeChance, bool oneObstaclePerRange, float minRangeResidualWidth,
+		float obstacleOverRangeChance, bool oneObstaclePerRange, float minRangeResidualWidth, float horzObstacleWidthMax,
 		bool allowWalls
 	) {
 		var generatedObstacles = new List <LineFragment <Platform, float>> ();
@@ -325,7 +330,11 @@ public class LevelGenerator : MonoBehaviour {
 			if ( range.Width () < Settings.ObstacleWidthMin || UnityEngine.Random.value > obstacleOverRangeChance )
 				continue;
 
-			if ( !RandomlyInsertObstacle ( range, minRangeResidualWidth, allowWalls, out var occupiedRange, out var platform ) ) {
+			if ( !RandomlyInsertObstacle (
+				range,
+				minRangeResidualWidth, allowWalls, horzObstacleWidthMax,
+				out var occupiedRange, out var platform
+			) ) {
 				/* By some reason we wasn't able to instantiate obstacle at the given range.
 				 * This range is removed, it won't be reexamined. Proceed to the next. */
 				continue;
@@ -346,7 +355,8 @@ public class LevelGenerator : MonoBehaviour {
 	}
 
 	private bool RandomlyInsertObstacle (
-		Range <float> targetRange, float minRangeResidualWidth, bool allowWalls,
+		Range <float> targetRange,
+		float minRangeResidualWidth, bool allowWalls, float horzObstacleWidthMax,
 		out Range <float> occupiedRange, out Platform platform
 	) {
 		occupiedRange = default;
@@ -359,7 +369,7 @@ public class LevelGenerator : MonoBehaviour {
 			if ( unpassableWallCount < Settings.UnpassableWallCountMax && UnityEngine.Random.value <= Settings.UnpassableWallObstacleChance )
 				flags |= PlatformKindFlags.Unpassable;
 		} else {
-			obstacleWidthMax = Settings.HorzObstacleWidthMax;
+			obstacleWidthMax = horzObstacleWidthMax;
 			flags = PlatformKindFlags.KillerObstacle | PlatformKindFlags.Platform;
 		}
 
