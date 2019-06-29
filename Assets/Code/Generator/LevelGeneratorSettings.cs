@@ -112,6 +112,9 @@ public class LevelGeneratorSettings : ScriptableObject {
 	private float _horzObstacleOverPlatformMovingChance = 0.5f;
 	public float HorzObstacleOverPlatformMovingChance => _horzObstacleOverPlatformMovingChance;
 	[SerializeField]
+	private float _horzObstacleOverHoleMovingChance = 1;
+	public float HorzObstacleOverHoleMovingChance => _horzObstacleOverHoleMovingChance;
+	[SerializeField]
 	private float _wallOverPlatformMovingChance = 0.05f;
 	public float WallOverPlatformMovingChance => _wallOverPlatformMovingChance;
 	[SerializeField]

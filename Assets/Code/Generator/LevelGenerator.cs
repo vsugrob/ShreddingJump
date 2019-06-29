@@ -225,6 +225,7 @@ public class LevelGenerator : MonoBehaviour {
 		GenerateObstaclesOverFilteredPlatforms (
 			k => ( k & PlatformKindFlags.Hole ) != PlatformKindFlags.None,
 			Settings.HorzObstacleOverHoleWidthMax,
+			unpassableWallMovingChance : 0, wallMovingChance : 0, Settings.HorzObstacleOverHoleMovingChance,
 			obstacleOverRangeChance : Settings.ObstacleOverHoleChance,
 			oneObstaclePerRange : true,
 			Settings.ObstacleOverHoleMinResidualWidth,
@@ -232,13 +233,15 @@ public class LevelGenerator : MonoBehaviour {
 		);
 		GenerateObstaclesOverFilteredPlatforms (
 			k => k == PlatformKindFlags.Platform,
-			Settings.HorzObstacleOverPlatformWidthMax
+			Settings.HorzObstacleOverPlatformWidthMax,
+			Settings.UnpassableWallOverPlatformMovingChance, Settings.WallOverPlatformMovingChance, Settings.HorzObstacleOverPlatformMovingChance
 		);
 	}
 
 	private void GenerateObstaclesOverFilteredPlatforms (
 		Func <PlatformKindFlags, bool> predicate,
 		float horzObstacleWidthMax,
+		float unpassableWallMovingChance, float wallMovingChance, float horzObstacleMovingChance,
 		float obstacleOverRangeChance = 1,
 		bool oneObstaclePerRange = false,
 		float minRangeResidualWidth = 0,
@@ -258,7 +261,10 @@ public class LevelGenerator : MonoBehaviour {
 			obstacleOverRangeChance, oneObstaclePerRange, minRangeResidualWidth, horzObstacleWidthMax,
 			allowWalls
 		);
-		MakeObstaclesMoving ( obstacles, allowedRanges );
+		MakeObstaclesMoving (
+			obstacles, allowedRanges,
+			unpassableWallMovingChance, wallMovingChance, horzObstacleMovingChance
+		);
 	}
 
 	private void CutRangesUnderPreviousFloorHoles ( List <Range <float>> platformRanges ) {
@@ -402,7 +408,10 @@ public class LevelGenerator : MonoBehaviour {
 		return	true;
 	}
 
-	private void MakeObstaclesMoving ( List <LineFragment <Platform, float>> obstacleFragments, List <Range <float>> allowedRanges ) {
+	private void MakeObstaclesMoving (
+		List <LineFragment <Platform, float>> obstacleFragments, List <Range <float>> allowedRanges,
+		float unpassableWallMovingChance, float wallMovingChance, float horzObstacleMovingChance
+	) {
 		if ( obstacleFragments.Count == 0 )
 			return;
 
@@ -431,11 +440,11 @@ public class LevelGenerator : MonoBehaviour {
 			float chance;
 			if ( ( platform.Kind & PlatformKindFlags.Wall ) != PlatformKindFlags.None ) {
 				if ( ( platform.Kind & PlatformKindFlags.Unpassable ) != PlatformKindFlags.None )
-					chance = Settings.UnpassableWallOverPlatformMovingChance;
+					chance = unpassableWallMovingChance;
 				else
-					chance = Settings.WallOverPlatformMovingChance;
+					chance = wallMovingChance;
 			} else
-				chance = Settings.HorzObstacleOverPlatformMovingChance;
+				chance = horzObstacleMovingChance;
 
 			if ( UnityEngine.Random.value > chance )
 				continue;
