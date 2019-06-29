@@ -38,7 +38,7 @@ MonoBehaviour:
   _wallCountMax: 3
   _unpassableWallObstacleChance: 0.2
   _unpassableWallCountMax: 1
-  _obstacleOverHoleChance: 0.3
+  _obstacleOverHoleChance: 1
   _obstacleOverHoleMinResidualWidth: 45
   _safeZoneShrinkMin: 0
   _safeZoneShrinkMax: 0
