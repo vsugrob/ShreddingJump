@@ -502,14 +502,16 @@ public class LevelGenerator : MonoBehaviour {
 		out bool resultsInNoSpace
 	) {
 		resultsInNoSpace = false;
-		if ( occlusionCircle.Count != 0 ) {
+		if ( occlusionCircle.Count == 0 )
+			return	false;
+
 			if ( occlusionCircle.Intersects ( platformRange, includeTouch : false ) ) {
 				resultsInNoSpace = true;
 				return	true;
 			}
 
-			occlusionCircle.SeekFragmentBoundary ( platformRange.Start, -1, out var minOccluderBound );
-			occlusionCircle.SeekFragmentBoundary ( platformRange.End  ,  1, out var maxOccluderBound );
+		occlusionCircle.SeekFragmentBoundary ( platformRange.Start, dir : -1, out var minOccluderBound );
+		occlusionCircle.SeekFragmentBoundary ( platformRange.End  , dir :  1, out var maxOccluderBound );
 			CircleMath.IntersectArcs (
 				360,
 				Range.Create ( minBound, maxBound ), dir1 : 1,
@@ -532,9 +534,6 @@ public class LevelGenerator : MonoBehaviour {
 
 			return	true;
 		}
-
-		return	false;
-	}
 
 	private Column GenerateColumn () {
 		var columns = PrefabDatabase.PredefinedColumns;
