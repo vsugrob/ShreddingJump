@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
-public abstract class LevelGeneratorSettings : ScriptableObject {
+[CreateAssetMenu]
+public class LevelGeneratorSettings : ScriptableObject {
 	[Header ( "Floor" )]
 	[SerializeField]
 	private float _floorHeightMin = 3;
