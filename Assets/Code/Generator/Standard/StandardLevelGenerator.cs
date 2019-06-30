@@ -15,10 +15,8 @@ public class StandardLevelGenerator : LevelGenerator {
 	private int obstaclesLeft, wallCount, unpassableWallCount;
 
 	protected override void GenerateFloor () {
-		floorPlatformCircle = new PlatformCircle ();
 		GenerateHoles ();
 		GeneratePlatforms ();
-		floorObstacleCircle = new PlatformCircle ();
 		GenerateObstacles ();
 		GenerateColumn ();
 	}

@@ -29,6 +29,8 @@ public abstract class LevelGenerator : MonoBehaviour {
 			var platformsContainer = PlatformContainer.Create ( floorTf, baseAngle );
 			platformContainerTf = platformsContainer.transform;
 			ProcessPrevFloorInfo ( baseAngle );
+			floorPlatformCircle = new PlatformCircle ();
+			floorObstacleCircle = new PlatformCircle ();
 			GenerateFloor ();
 			var floorCompleteTriggerGo = Instantiate ( PrefabDatabase.FloorCompleteTrigger, floorTf );
 			floorCompleteTriggerGo.transform.localPosition = Vector3.zero;
