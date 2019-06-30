@@ -1,14 +1,7 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu]
-public class StandardLevelGeneratorSettings : ScriptableObject {
-	[Header ( "Floor" )]
-	[SerializeField]
-	private float _floorHeightMin = 3;
-	public float FloorHeightMin => _floorHeightMin;
-	[SerializeField]
-	private float _floorHeightMax = 4.5f;
-	public float FloorHeightMax => _floorHeightMax;
+public class StandardLevelGeneratorSettings : LevelGeneratorSettings {
 	[Header ( "Platforms" )]
 	[SerializeField]
 	private float _platformWidthMin = 22.5f;
@@ -38,16 +31,6 @@ public class StandardLevelGeneratorSettings : ScriptableObject {
 	[SerializeField]
 	private int _holeCountMax = 3;
 	public int HoleCountMax => _holeCountMax;
-	[Header ( "Base angle offset" )]
-	[SerializeField]
-	private float _baseAngleOffsetMin = -22.5f;
-	public float BaseAngleOffsetMin => _baseAngleOffsetMin;
-	[SerializeField]
-	private float _baseAngleOffsetMax = 22.5f;
-	public float BaseAngleOffsetMax => _baseAngleOffsetMax;
-	[SerializeField]
-	private float _baseAngleOffsetStep = 22.5f;
-	public float BaseAngleOffsetStep => _baseAngleOffsetStep;
 	[Header ( "Obstacles(horizontal and walls)" )]
 	[SerializeField]
 	private float _obstacleWidthMin = 22.5f;

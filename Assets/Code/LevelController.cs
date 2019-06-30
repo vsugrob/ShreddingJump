@@ -39,7 +39,7 @@ public class LevelController : MonoBehaviour {
 		var dummyFloorInfo = CreateDummyFloor ();
 		var generatorEn = generator
 			.Generate ( dummyFloorInfo )
-			.Take ( 100 );
+			.Take ( 3 );
 		foreach ( var floor in generatorEn ) {}
 	}
 	// TODO: move to HierarchyHelper or smth alike.

@@ -3,59 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class StandardLevelGenerator : MonoBehaviour {
+public class StandardLevelGenerator : LevelGenerator {
 	[SerializeField]
 	private StandardLevelGeneratorSettings _settings;
 	public StandardLevelGeneratorSettings Settings {
 		get => _settings ?? ( _settings = ScriptableObject.CreateInstance <StandardLevelGeneratorSettings> () );
 		set => _settings = value;
 	}
-	[SerializeField]
-	private PrefabDatabase _prefabDatabase;
-	public PrefabDatabase PrefabDatabase {
-		get => _prefabDatabase ?? ( _prefabDatabase = ScriptableObject.CreateInstance <PrefabDatabase> () );
-		set => _prefabDatabase = value;
-	}
-	private FloorInfo prevFloorInfo;
-	private PlatformCircle floorPlatformCircle, floorObstacleCircle;
-	private float floorHeight, floorY;
-	private Transform floorTf, platformContainerTf;
+	public override LevelGeneratorSettings BasicSettings => Settings;
 	private float totalObstacleWidthLeft;
 	private int obstaclesLeft, wallCount, unpassableWallCount;
 
-	public IEnumerable <FloorInfo> Generate ( FloorInfo prevFloorInfo, int nextFloorIndex = 0 ) {
-		this.prevFloorInfo = prevFloorInfo;
-		floorHeight = UnityEngine.Random.Range ( Settings.FloorHeightMin, Settings.FloorHeightMax );
-		Debug.Log ( $"floorHeight: {floorHeight}." );
-		var prevFloorTf = prevFloorInfo.FloorRoot.transform;
-		floorY = prevFloorTf.position.y - floorHeight;
-		var floorContainerTf = prevFloorTf.parent;
-		var baseAngle = 0f;
-		while ( true ) {
-			var floorRoot = FloorRoot.Create ( floorContainerTf, nextFloorIndex, floorY );
-			floorTf = floorRoot.transform;
-			var platformsContainer = PlatformContainer.Create ( floorTf, baseAngle );
-			platformContainerTf = platformsContainer.transform;
-			ProcessPrevFloorInfo ( baseAngle );
-			GenerateFloor ();
-			var floorCompleteTriggerGo = Instantiate ( PrefabDatabase.FloorCompleteTrigger, floorTf );
-			floorCompleteTriggerGo.transform.localPosition = Vector3.zero;
-			this.prevFloorInfo = new FloorInfo ( floorRoot, baseAngle, floorPlatformCircle, floorObstacleCircle );
-			floorY -= floorHeight;
-			baseAngle += RandomHelper.Range ( Settings.BaseAngleOffsetMin, Settings.BaseAngleOffsetMax, Settings.BaseAngleOffsetStep );
-			nextFloorIndex++;
-			yield return	this.prevFloorInfo;
-		}
-	}
-
-	private void ProcessPrevFloorInfo ( float baseAngle ) {
-		// Transform prev floor coordinates to match with current floor.
-		var invOffset = prevFloorInfo.BaseAngle - baseAngle;
-		prevFloorInfo.PlatformCircle.Shift ( invOffset );
-		prevFloorInfo.ObstacleCircle.Shift ( invOffset );
-	}
-
-	private void GenerateFloor () {
+	protected override void GenerateFloor () {
 		floorPlatformCircle = new PlatformCircle ();
 		GenerateHoles ();
 		GeneratePlatforms ();
@@ -546,22 +505,5 @@ public class StandardLevelGenerator : MonoBehaviour {
 		}
 
 		return	true;
-	}
-
-	private Column GenerateColumn () {
-		var columns = PrefabDatabase.PredefinedColumns;
-		if ( columns.Count == 0 ) {
-			Debug.LogWarning ( $"No suitable column was found at {floorTf.name}." );
-			return	null;
-		}
-
-		var prefab = columns [UnityEngine.Random.Range ( 0, columns.Count )];
-		var column = Instantiate ( prefab, floorTf );
-		var columnTf = column.transform;
-		columnTf.localPosition = Vector3.zero;
-		var scale = columnTf.localScale;
-		scale.y = floorHeight / column.InitialHeight;
-		columnTf.localScale = scale;
-		return	column;
 	}
 }
