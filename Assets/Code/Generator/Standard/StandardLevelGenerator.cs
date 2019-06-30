@@ -83,7 +83,7 @@ public class StandardLevelGenerator : LevelGenerator {
 			return	false;
 		}
 
-		var hole = InstantiatePlatform ( holePrefab, startAngle, platformContainerTf );
+		var hole = Platform.Instantiate ( holePrefab, startAngle, platformContainerTf );
 		holeWidth = hole.AngleWidth;
 		floorPlatformCircle.Add ( hole, startAngle, startAngle + holeWidth );
 		return	true;
@@ -161,16 +161,9 @@ public class StandardLevelGenerator : LevelGenerator {
 				continue;
 			}
 
-			var platform = InstantiatePlatform ( platformPrefab, start, platformContainerTf );
+			var platform = Platform.Instantiate ( platformPrefab, start, platformContainerTf );
 			floorPlatformCircle.Add ( platform, start, start + platform.AngleWidth );
 		}
-	}
-
-	private static Platform InstantiatePlatform ( Platform prefab, float startAngle, Transform parent ) {
-		var platform = Instantiate ( prefab, parent );
-		platform.transform.localPosition = Vector3.zero;
-		platform.StartAngleLocal = startAngle;
-		return	platform;
 	}
 
 	private void GenerateObstacles () {
@@ -360,7 +353,7 @@ public class StandardLevelGenerator : LevelGenerator {
 
 		var actualWidth = prefab.AngleWidth;
 		var startAngle = RandomHelper.Range ( targetRange.Start, targetRange.End - actualWidth, Settings.ObstacleWidthStep );
-		platform = InstantiatePlatform ( prefab, startAngle, platformContainerTf );
+		platform = Platform.Instantiate ( prefab, startAngle, platformContainerTf );
 		occupiedRange = Range.Create ( startAngle, startAngle + actualWidth );
 		floorObstacleCircle.Add ( platform, occupiedRange );
 		totalObstacleWidthLeft -= actualWidth;
