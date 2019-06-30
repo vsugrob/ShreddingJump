@@ -8,6 +8,9 @@ public class LevelController : MonoBehaviour {
 	[SerializeField]
 	private Transform _floorsContainer = null;
 	public Transform FloorsContainer => _floorsContainer;
+	[SerializeField]
+	private int _floorCount = 30;
+	public int FloorCount => _floorCount;
 
 	private void Start () {
 		Time.timeScale = 0;
@@ -59,11 +62,11 @@ public class LevelController : MonoBehaviour {
 		var dummyFloorInfo = CreateDummyFloor ();
 		var genEn = stdGen
 			.Generate ( dummyFloorInfo )
-			.Take ( 3 );
+			.Take ( FloorCount - 1 );
 		var finishGen = GetComponent <FinishLineGenerator> ();
 		if ( finishGen != null )
 			genEn = finishGen.Generate ( genEn )
-				.Take ( 4 );
+				.Take ( FloorCount );
 
 		genEn.Consume ();
 	}
