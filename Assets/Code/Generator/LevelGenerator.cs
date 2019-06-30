@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public abstract class LevelGenerator : MonoBehaviour {
@@ -15,9 +17,27 @@ public abstract class LevelGenerator : MonoBehaviour {
 	protected float floorHeight, floorY;
 	protected Transform floorTf, platformContainerTf;
 
+	public virtual IEnumerable <FloorInfo> Generate ( IEnumerable <FloorInfo> prevGeneratorOutput ) {
+		if ( prevGeneratorOutput is null )
+			throw new ArgumentNullException ( nameof ( prevGeneratorOutput ) );
+
+		FloorInfo lastFloorInfo = null;
+		foreach ( var floorInfo in prevGeneratorOutput ) {
+			yield return	floorInfo;
+			lastFloorInfo = floorInfo;
+		}
+
+		if ( lastFloorInfo is null )
+			throw new InvalidOperationException ( "Previous level generator returned empty sequence of floors." );
+
+		foreach ( var floorInfo in Generate ( lastFloorInfo ) ) {
+			yield return	floorInfo;
+		}
+	}
+
 	public virtual IEnumerable <FloorInfo> Generate ( FloorInfo prevFloorInfo, int nextFloorIndex = 0 ) {
 		this.prevFloorInfo = prevFloorInfo;
-		floorHeight = Random.Range ( BasicSettings.FloorHeightMin, BasicSettings.FloorHeightMax );
+		floorHeight = UnityEngine.Random.Range ( BasicSettings.FloorHeightMin, BasicSettings.FloorHeightMax );
 		Debug.Log ( $"floorHeight: {floorHeight}." );
 		var prevFloorTf = prevFloorInfo.FloorRoot.transform;
 		floorY = prevFloorTf.position.y - floorHeight;

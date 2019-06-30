@@ -31,16 +31,21 @@ public class LevelController : MonoBehaviour {
 	}
 
 	private void GenerateLevel () {
-		var generator = GetComponent <StandardLevelGenerator> ();
-		if ( generator == null )
+		var stdGen = GetComponent <StandardLevelGenerator> ();
+		if ( stdGen == null )
 			return;
 
 		DestroyChildren ( FloorsContainer );
 		var dummyFloorInfo = CreateDummyFloor ();
-		var generatorEn = generator
+		var genEn = stdGen
 			.Generate ( dummyFloorInfo )
 			.Take ( 3 );
-		foreach ( var floor in generatorEn ) {}
+		var finishGen = GetComponent <FinishLineGenerator> ();
+		if ( finishGen != null )
+			genEn = finishGen.Generate ( genEn )
+				.Take ( 4 );
+
+		genEn.Consume ();
 	}
 	// TODO: move to HierarchyHelper or smth alike.
 	private static void DestroyChildren ( Transform rootTf ) {
