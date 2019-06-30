@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class LevelGenerator : MonoBehaviour {
+public class StandardLevelGenerator : MonoBehaviour {
 	[SerializeField]
-	private LevelGeneratorSettings _settings;
-	public LevelGeneratorSettings Settings {
-		get => _settings ?? ( _settings = ScriptableObject.CreateInstance <LevelGeneratorSettings> () );
+	private StandardLevelGeneratorSettings _settings;
+	public StandardLevelGeneratorSettings Settings {
+		get => _settings ?? ( _settings = ScriptableObject.CreateInstance <StandardLevelGeneratorSettings> () );
 		set => _settings = value;
 	}
 	[SerializeField]

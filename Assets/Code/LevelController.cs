@@ -31,7 +31,7 @@ public class LevelController : MonoBehaviour {
 	}
 
 	private void GenerateLevel () {
-		var generator = GetComponent <LevelGenerator> ();
+		var generator = GetComponent <StandardLevelGenerator> ();
 		if ( generator == null )
 			return;
 
