@@ -29,7 +29,8 @@ sysinfo.txt
 /*.user
 *.unityproj
 *.booproj
-packages/
+# Packages are now important.
+#packages/
 bin/
 obj/
 *.Designer.cs
