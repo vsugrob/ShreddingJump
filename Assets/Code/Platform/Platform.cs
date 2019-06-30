@@ -66,4 +66,11 @@ public class Platform : MonoBehaviour {
 	private void Start () {
 		MathHelper.SortMinMax ( ref _startAngle, ref _endAngle );
 	}
+
+	public static Platform Instantiate ( Platform prefab, float startAngle, Transform parent ) {
+		var platform = Instantiate ( prefab, parent );
+		platform.transform.localPosition = Vector3.zero;
+		platform.StartAngleLocal = startAngle;
+		return	platform;
+	}
 }

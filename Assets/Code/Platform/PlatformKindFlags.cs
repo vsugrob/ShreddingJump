@@ -18,5 +18,7 @@ public enum PlatformKindFlags {
 	/// or it triggers some action that kills character.
 	/// </summary>
 	Unpassable		= 1 << 5,
+	/// <summary>Bumping into this platform finishes level.</summary>
+	FinishLine		= 1 << 6,
 	All				= -1,
 }
