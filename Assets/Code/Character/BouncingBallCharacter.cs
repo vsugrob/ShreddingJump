@@ -105,6 +105,14 @@ public class BouncingBallCharacter : MonoBehaviour {
 		initialDistFromCenter = vFromCenterHorz.magnitude;
 	}
 
+	public void Restart () {
+		VerticalVelocity = 0;
+		InputHorizontalRotationDeg = 0;
+		FloorStreak = 0;
+		lastJumpTime = float.NegativeInfinity;
+		Start ();
+	}
+
 	private void FixedUpdate () {
 		PerformVerticalMotion ();
 		PerformRotationMotion ();

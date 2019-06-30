@@ -30,6 +30,7 @@ public class LevelController : MonoBehaviour {
 	private void LevelStartPanel_StartLevel () {
 		LevelStartPanel.gameObject.SetActive ( false );
 		GenerateLevel ();
+		Character.Restart ();
 		Time.timeScale = 1;
 	}
 
