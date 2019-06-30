@@ -5,6 +5,9 @@ public class GameSettings : MonoBehaviour {
 	private int _meteorFloorStreak = 3;
 	public int MeteorFloorStreak => _meteorFloorStreak;
 	[SerializeField]
+	private AudioClip _finishLevelSound;
+	public AudioClip FinishLevelSound => _finishLevelSound;
+	[SerializeField]
 	private ObjectRemoverSettings _floorCompletion = new ObjectRemoverSettings ();
 	public ObjectRemoverSettings FloorCompletion => _floorCompletion;
 

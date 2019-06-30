@@ -11,6 +11,7 @@ public class LevelController : MonoBehaviour {
 	private void Start () {
 		Character = FindObjectOfType <BouncingBallCharacter> ();
 		Character.KillerObstacleHit += Character_KillerObstacleHit;
+		Character.FinishLineHit += Character_FinishLineHit;
 		var seed = UnityEngine.Random.Range ( int.MinValue, int.MaxValue );
 		seed = 1821742774;
 		UnityEngine.Random.InitState ( seed );
@@ -22,6 +23,11 @@ public class LevelController : MonoBehaviour {
 
 	private void Character_KillerObstacleHit ( BouncingBallCharacter character, KillerObstacle obstacle ) {
 		//Time.timeScale = 0;
+	}
+
+	private void Character_FinishLineHit ( BouncingBallCharacter character, FinishLine finishLine ) {
+		// TODO: implement.
+		//GameSettings.Singleton.FinishLevelSound.PlayOneShot ( someAudioSource );
 	}
 
 	private void GenerateLevel () {

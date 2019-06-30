@@ -2,6 +2,7 @@
 using UnityEngine;
 
 public delegate void KillerObstacleHit ( BouncingBallCharacter character, KillerObstacle obstacle );
+public delegate void FinishLineHit ( BouncingBallCharacter character, FinishLine finishLine );
 
 [SelectionBase]
 [RequireComponent ( typeof ( CharacterController ) )]
@@ -37,6 +38,7 @@ public class BouncingBallCharacter : MonoBehaviour {
 	private AudioClip _floorCompleteSound;
 	public AudioClip FloorCompleteSound => _floorCompleteSound;
 	public event KillerObstacleHit KillerObstacleHit;
+	public event FinishLineHit FinishLineHit;
 	public float JumpAscencionTime {
 		get {
 			/* System of equations:
@@ -161,6 +163,12 @@ public class BouncingBallCharacter : MonoBehaviour {
 		lastContactPoint = hit.point;
 		lastContactNormal = hit.normal;
 		var gameObject = hit.gameObject;
+		var finishLine = gameObject.GetComponentInParent <FinishLine> ();
+		if ( finishLine != null ) {
+			FinishLineHit?.Invoke ( this, finishLine );
+			return;
+		}
+
 		if ( IsMeteor ) {
 			// Meteor crushes floor it hits.
 			CrushSound.PlayOneShot ( audioSource );
