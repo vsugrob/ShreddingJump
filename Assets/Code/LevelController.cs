@@ -4,30 +4,49 @@ using System;
 
 public class LevelController : MonoBehaviour {
 	public BouncingBallCharacter Character { get; private set; }
+	public LevelStartMenu LevelStartPanel { get; private set; }
 	[SerializeField]
 	private Transform _floorsContainer = null;
 	public Transform FloorsContainer => _floorsContainer;
 
 	private void Start () {
+		Time.timeScale = 0;
+		// Setup Character.
 		Character = FindObjectOfType <BouncingBallCharacter> ();
 		Character.KillerObstacleHit += Character_KillerObstacleHit;
 		Character.FinishLineHit += Character_FinishLineHit;
+		// Setup ui.
+		LevelStartPanel = FindObjectOfType <LevelStartMenu> ();
+		LevelStartPanel.StartLevel += LevelStartPanel_StartLevel;
+		// Setup random seed.
 		var seed = UnityEngine.Random.Range ( int.MinValue, int.MaxValue );
 		seed = 1821742774;
 		UnityEngine.Random.InitState ( seed );
 #pragma warning disable CS0618 // Type or member is obsolete
 		Debug.Log ( $"Random seed: {UnityEngine.Random.seed}" );
 #pragma warning restore CS0618 // Type or member is obsolete
+	}
+
+	private void LevelStartPanel_StartLevel () {
+		LevelStartPanel.gameObject.SetActive ( false );
 		GenerateLevel ();
+		Time.timeScale = 1;
 	}
 
 	private void Character_KillerObstacleHit ( BouncingBallCharacter character, KillerObstacle obstacle ) {
-		//Time.timeScale = 0;
+		Time.timeScale = 0;
+		ShowLevelStartWindow ();
 	}
 
 	private void Character_FinishLineHit ( BouncingBallCharacter character, FinishLine finishLine ) {
+		Time.timeScale = 0;
 		// TODO: implement.
 		//GameSettings.Singleton.FinishLevelSound.PlayOneShot ( someAudioSource );
+		ShowLevelStartWindow ();
+	}
+
+	private void ShowLevelStartWindow () {
+		LevelStartPanel.gameObject.SetActive ( true );
 	}
 
 	private void GenerateLevel () {
