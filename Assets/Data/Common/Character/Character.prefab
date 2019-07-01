@@ -66,7 +66,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc050c8d0d94b584389d6d11ddb99bd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxVelocity: 20
+  _maxVelocity: 15
   _jumpMaxPlatformHitAngleDeg: 70
   _jumpHeight: 2
   _minJumpInterval: 0.2
