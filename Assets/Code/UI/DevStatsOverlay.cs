@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,15 +9,21 @@ public class DevStatsOverlay : MonoBehaviour {
 	private Text fpsText;
 	public Text FpsText => fpsText;
 	private FpsCounterComponent fpsCounter;
+	[SerializeField]
+	private Text characterVerticalVelocityText;
+	public Text CharacterVerticalVelocityText => characterVerticalVelocityText;
+	private BouncingBallCharacter character;
 
 	private void Start () {
 		fpsCounter = GetComponent <FpsCounterComponent> ();
+		character = FindObjectOfType <BouncingBallCharacter> ();
 	}
 
 	private void Update () {
-		if ( fpsText == null )
-			return;
+		if ( FpsText != null )
+			FpsText.text = fpsCounter.Fps.ToString ( "0.0", CultureInfo.InvariantCulture );
 
-		fpsText.text = fpsCounter.Fps.ToString ( "0.0", CultureInfo.InvariantCulture );
+		if ( CharacterVerticalVelocityText != null && character != null )
+			CharacterVerticalVelocityText.text = $"Vert. Vel: {character.VerticalVelocity:0.0}".ToString ( CultureInfo.InvariantCulture );
 	}
 }
