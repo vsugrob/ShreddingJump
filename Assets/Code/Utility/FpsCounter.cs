@@ -71,6 +71,6 @@ public class FpsCounter {
 
 		var count1 = samples.Count - 1;
 		var windowInterval = samples [count1] - samples [0];
-		Fps = windowInterval / count1;
+		Fps = count1 / windowInterval;
 	}
 }
