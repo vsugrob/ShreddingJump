@@ -50,7 +50,7 @@ public struct HsvColor {
 		return	Mathf.Sqrt ( DistanceSq ( c1, c2, s ) );
 	}
 
-	#region operators
+	#region Operators
 	public static HsvColor operator * ( HsvColor c, float s ) {
 		return	new HsvColor ( c.H * s, c.S * s, c.V * s );
 	}
@@ -70,7 +70,25 @@ public struct HsvColor {
 	public static bool operator != ( HsvColor c1, HsvColor c2 ) {
 		return	c1.H != c2.H || c1.S != c2.S || c1.V != c2.V;
 	}
-	#endregion operators
+	#endregion Operators
+
+	#region Conversion
+	public static explicit operator Color ( HsvColor c ) {
+		return	c.ToRgb ();
+	}
+
+	public static explicit operator HsvColor ( Color c ) {
+		return	FromRgb ( c );
+	}
+
+	public static implicit operator Vector3 ( HsvColor c ) {
+		return	new Vector3 ( c.H, c.S, c.V );
+	}
+
+	public static implicit operator HsvColor ( Vector3 v ) {
+		return	new HsvColor ( v.x, v.y, v.z );
+	}
+	#endregion Conversion
 
 	public override bool Equals ( object obj ) {
 		if ( obj is null )
