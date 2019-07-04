@@ -5,6 +5,22 @@ public struct HsvColor {
 	public float S;
 	public float V;
 	public HsvColor Norm => new HsvColor ( H % 1, Mathf.Clamp01 ( S ), Mathf.Clamp01 ( V ) );
+	/// <summary>
+	/// 3d-position in bounds of HSV color cone https://commons.wikimedia.org/wiki/File:HSV_color_solid_cone_chroma_gray.png.
+	/// Basic principles of HSV: https://en.wikipedia.org/wiki/HSL_and_HSV#Basic_principle.
+	/// </summary>
+	public Vector3 ConePosition {
+		get {
+			var a = H * Mathf.PI * 2;
+			var v = Mathf.Clamp01 ( V );
+			var sv = Mathf.Clamp01 ( S ) * v;
+			return	new Vector3 (
+				Mathf.Cos ( a ) * sv,
+				Mathf.Sin ( a ) * sv,
+				v
+			);
+		}
+	}
 
 	public HsvColor ( float h, float s, float v ) {
 		this.H = h;
@@ -25,29 +41,17 @@ public struct HsvColor {
 		return	Color.HSVToRGB ( H, S, V, hdr );
 	}
 
-	public static float DistanceSq ( HsvColor c1, HsvColor c2 ) {
-		// Hue is circular.
-		var dh = Mathf.Abs ( c2.H % 1 - c1.H % 1 );
-		if ( dh > 0.5f ) dh = 1 - 0.5f;
-		var ds = c2.S - c1.S;
-		var dv = c2.V - c1.V;
-		return	dh * dh + ds * ds + dv * dv;
+	public static float DistanceInColorConeSq ( HsvColor c1, HsvColor c2 ) {
+		var p1 = c1.ConePosition;
+		var p2 = c2.ConePosition;
+		var dx = p2.x - p1.x;
+		var dy = p2.y - p1.y;
+		var dz = p2.z - p1.z;
+		return	dx * dx + dy * dy + dz * dz;
 	}
 
-	public static float Distance ( HsvColor c1, HsvColor c2 ) {
-		return	Mathf.Sqrt ( DistanceSq ( c1, c2 ) );
-	}
-
-	public static float DistanceSq ( HsvColor c1, HsvColor c2, HsvColor s ) {
-		var dh = Mathf.Abs ( ( c2.H - c1.H ) * s.H );
-		if ( dh > 0.5f ) dh = 1 - 0.5f;
-		var ds = ( c2.S - c1.S ) * s.S;
-		var dv = ( c2.V - c1.V ) * s.V;
-		return	dh * dh + ds * ds + dv * dv;
-	}
-
-	public static float Distance ( HsvColor c1, HsvColor c2, HsvColor s ) {
-		return	Mathf.Sqrt ( DistanceSq ( c1, c2, s ) );
+	public static float DistanceInColorCone ( HsvColor c1, HsvColor c2 ) {
+		return	Mathf.Sqrt ( DistanceInColorConeSq ( c1, c2 ) );
 	}
 
 	#region Operators
