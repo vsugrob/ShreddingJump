@@ -21,6 +21,7 @@ public struct HsvColor {
 			);
 		}
 	}
+	public static HsvColor Random => new HsvColor ( UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value );
 
 	public HsvColor ( float h, float s, float v ) {
 		this.H = h;
