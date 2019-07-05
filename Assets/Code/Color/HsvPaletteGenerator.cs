@@ -71,7 +71,7 @@ public class HsvPaletteGenerator <TKey> {
 
 		newColor = generateColorFunc ();
 		if ( palette.Count == 0 ) {
-			bestDistance = minDistance;
+			bestDistance = float.PositiveInfinity;
 			palette.Add ( key, newColor );
 			return;
 		}
@@ -109,7 +109,7 @@ public class HsvPaletteGenerator <TKey> {
 	}
 
 	private float FindMinDistanceSqToExistingColors ( HsvColor color, float valueComponentScale ) {
-		var minDistanceSq = float.MaxValue;
+		var minDistanceSq = float.PositiveInfinity;
 		foreach ( var existingColor in palette.Values ) {
 			var distanceSq = HsvColor.DistanceInColorConeSq ( color, existingColor, valueComponentScale );
 			if ( distanceSq < minDistanceSq )
