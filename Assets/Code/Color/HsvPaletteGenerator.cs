@@ -51,6 +51,17 @@ public class HsvPaletteGenerator <TKey> {
 	/// </para>
 	/// <para>Coerced to be not less than 1.</para>
 	/// </param>
+	/// <param name="valueComponentScale">
+	/// Scale less than 1 forces generator to think that darker colors are closer to each other.
+	/// </param>
+	/// <param name="saturationExponent">
+	/// Saturation component of generated color is transformed with pow() function with given exponent.
+	/// Values less than 1 results in more saturated colors.
+	/// </param>
+	/// <param name="valueExponent">
+	/// Value component of generated color is transformed with pow() function with given exponent.
+	/// Values less than 1 results in lighter colors.
+	/// </param>
 	public void Add (
 		TKey key,
 		out HsvColor newColor, out float bestDistance,
