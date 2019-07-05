@@ -24,9 +24,10 @@ namespace Tests {
 			const float MinDistance = 0.4f;
 			const int ProbeIterations = 40;
 			const float ValueComponentScale = 0.5f;
+			const float RandomTemperatureExponent = 2;
 			const float RandomSaturationExponent = 0.5f;
 			const float RandomValueExponent = 0.5f;
-			HsvColor generateColorFunc () => HsvColor.GenerateRandom ( RandomSaturationExponent, RandomValueExponent );
+			HsvColor generateColorFunc () => HsvColor.GenerateRandom ( RandomTemperatureExponent, RandomSaturationExponent, RandomValueExponent );
 			generator.AddColor ( Obstacle, HsvColors.Red );
 			for ( int i = 0 ; i < Keys.Length ; i++ ) {
 				var key = Keys [i];

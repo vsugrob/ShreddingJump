@@ -4,10 +4,7 @@ public struct HsvColor {
 	public float H;
 	public float S;
 	public float V;
-	public HsvColor Norm => new HsvColor (
-		H >= 0 ? H % 1 : 1 - H % 1,
-		Mathf.Clamp01 ( S ), Mathf.Clamp01 ( V )
-	);
+	public HsvColor Norm => new HsvColor ( NormalizeHue ( H ), Mathf.Clamp01 ( S ), Mathf.Clamp01 ( V ) );
 	/// <summary>
 	/// 3d-position in bounds of HSV color cone https://commons.wikimedia.org/wiki/File:HSV_color_solid_cone_chroma_gray.png.
 	/// Basic principles of HSV: https://en.wikipedia.org/wiki/HSL_and_HSV#Basic_principle.
@@ -63,6 +60,10 @@ public struct HsvColor {
 		return	Mathf.Sqrt ( DistanceInColorConeSq ( c1, c2, valueComponentScale ) );
 	}
 
+	/// <param name="temperatureExponent">
+	/// Hue component of generated color is transformed with pow() function around zero (red color) with given exponent.
+	/// Higher values produce warmer colors.
+	/// </param>
 	/// <param name="saturationExponent">
 	/// Saturation component of generated color is transformed with pow() function with given exponent.
 	/// Values less than 1 results in more saturated colors.
@@ -71,11 +72,22 @@ public struct HsvColor {
 	/// Value component of generated color is transformed with pow() function with given exponent.
 	/// Values less than 1 results in lighter colors.
 	/// </param>
-	public static HsvColor GenerateRandom ( float saturationExponent, float valueExponent ) => new HsvColor (
-		UnityEngine.Random.value,
-		Mathf.Pow ( UnityEngine.Random.value, saturationExponent ),
-		Mathf.Pow ( UnityEngine.Random.value, valueExponent )
-	);
+	public static HsvColor GenerateRandom ( float temperatureExponent, float saturationExponent, float valueExponent ) {
+		var r = UnityEngine.Random.value * 2 - 1;
+		return	new HsvColor (
+			NormalizeHue ( Mathf.Pow ( Mathf.Abs ( r ), temperatureExponent ) * 0.5f * Mathf.Sign ( r ) ),
+			Mathf.Pow ( UnityEngine.Random.value, saturationExponent ),
+			Mathf.Pow ( UnityEngine.Random.value, valueExponent )
+		);
+	}
+
+	public static float NormalizeHue ( float hue ) {
+		hue %= 1;
+		if ( hue < 0 )
+			hue = 1 + hue;
+
+		return	hue;
+	}
 
 	#region Operators
 	public static HsvColor operator * ( HsvColor c, float s ) {
