@@ -22,6 +22,18 @@ public class HsvPaletteGenerator <TKey> {
 		this.Palette = new ReadOnlyDictionary <TKey, HsvColor> ( palette );
 	}
 
+	public void AddColor ( TKey key, HsvColor newColor ) {
+		palette.Add ( key, newColor );
+	}
+
+	public bool ContainsColor ( TKey key ) {
+		return	palette.ContainsKey ( key );
+	}
+
+	public bool RemoveColor ( TKey key ) {
+		return	palette.Remove ( key );
+	}
+
 	/// <summary>
 	/// Perform series of color generation operations, pick the best result according to <paramref name="minDistance"/> parameter.
 	/// </summary>
