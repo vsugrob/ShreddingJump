@@ -4,7 +4,10 @@ public struct HsvColor {
 	public float H;
 	public float S;
 	public float V;
-	public HsvColor Norm => new HsvColor ( H % 1, Mathf.Clamp01 ( S ), Mathf.Clamp01 ( V ) );
+	public HsvColor Norm => new HsvColor (
+		H >= 0 ? H % 1 : 1 - H % 1,
+		Mathf.Clamp01 ( S ), Mathf.Clamp01 ( V )
+	);
 	/// <summary>
 	/// 3d-position in bounds of HSV color cone https://commons.wikimedia.org/wiki/File:HSV_color_solid_cone_chroma_gray.png.
 	/// Basic principles of HSV: https://en.wikipedia.org/wiki/HSL_and_HSV#Basic_principle.
