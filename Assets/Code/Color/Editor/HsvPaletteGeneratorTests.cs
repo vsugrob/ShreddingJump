@@ -27,8 +27,12 @@ namespace Tests {
 			const float RandomSaturationExponent = 0.5f;
 			const float RandomValueExponent = 0.5f;
 			HsvColor generateColorFunc () => HsvColor.GenerateRandom ( RandomSaturationExponent, RandomValueExponent );
+			generator.AddColor ( Obstacle, HsvColors.Red );
 			for ( int i = 0 ; i < Keys.Length ; i++ ) {
 				var key = Keys [i];
+				if ( generator.ContainsColor ( key ) )
+					continue;
+
 				generator.AddRandomColor (
 					key,
 					out var hsvColor, out var bestDistance,
