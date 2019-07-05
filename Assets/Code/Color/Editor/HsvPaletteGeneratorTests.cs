@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -26,7 +27,6 @@ namespace Tests {
 			const float RandomSaturationExponent = 0.5f;
 			const float RandomValueExponent = 0.5f;
 			HsvColor generateColorFunc () => HsvColor.GenerateRandom ( RandomSaturationExponent, RandomValueExponent );
-			var colors = new List <HsvColor> ();
 			for ( int i = 0 ; i < Keys.Length ; i++ ) {
 				var key = Keys [i];
 				generator.AddRandomColor (
@@ -36,18 +36,18 @@ namespace Tests {
 					ValueComponentScale,
 					generateColorFunc
 				);
-				colors.Add ( hsvColor );
 			}
 
+			var colors = generator.Palette.Values.ToArray ();
 			using ( var sw = new System.IO.StreamWriter ( @"c:\Temp\palette.html" ) ) {
 				sw.WriteLine ( "<table>" );
-				for ( int y = 0 ; y < colors.Count ; y++ ) {
+				for ( int y = 0 ; y < colors.Length ; y++ ) {
 					var hsv1 = colors [y];
 					var rgb1Hex = ColorUtility.ToHtmlStringRGB ( hsv1.ToRgb () );
 					// Write header row.
 					if ( y == 0 ) {
 						sw.Write ( "<tr><th>&nbsp;</th>" );
-						for ( int x = 0 ; x < colors.Count ; x++ ) {
+						for ( int x = 0 ; x < colors.Length ; x++ ) {
 							var hsv2 = colors [x];
 							var rgb2Hex = ColorUtility.ToHtmlStringRGB ( hsv2.ToRgb () );
 							sw.Write ( $"<th style=\"background-color : #{rgb2Hex};\">#{rgb2Hex}</th>" );
@@ -57,7 +57,7 @@ namespace Tests {
 					}
 
 					sw.WriteLine ( "<tr>" );
-					for ( int x = 0 ; x < colors.Count ; x++ ) {
+					for ( int x = 0 ; x < colors.Length ; x++ ) {
 						var hsv2 = colors [x];
 						// Write header cell.
 						if ( x == 0 )
