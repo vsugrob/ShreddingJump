@@ -50,9 +50,6 @@ public class HsvPaletteGenerator <TKey> {
 	/// B) <paramref name="probeIterations"/> number is not enough to sample distinct color,
 	/// C) random wasn't lucky for us.
 	/// </para>
-	/// <para>
-	/// Parameter value coerced to fall in range from 0 to <see cref="MinDistanceMax"/>.
-	/// </para>
 	/// </param>
 	/// <param name="probeIterations">
 	/// <para>
@@ -74,13 +71,8 @@ public class HsvPaletteGenerator <TKey> {
 		float valueComponentScale = 1,
 		Func <HsvColor> generateColorFunc = null
 	) {
-		if ( generateColorFunc == null )
-			generateColorFunc = () => HsvColor.Random;
-
-		minDistance = Mathf.Clamp ( minDistance, 0, MinDistanceMax );
-		if ( probeIterations < 1 )
-			probeIterations = 1;
-
+		if ( probeIterations < 1 ) probeIterations = 1;
+		if ( generateColorFunc == null ) generateColorFunc = () => HsvColor.Random;
 		newColor = generateColorFunc ();
 		if ( palette.Count == 0 ) {
 			bestDistance = float.PositiveInfinity;
