@@ -29,7 +29,7 @@ namespace Tests {
 			var colors = new List <HsvColor> ();
 			for ( int i = 0 ; i < Keys.Length ; i++ ) {
 				var key = Keys [i];
-				generator.Add (
+				generator.AddRandomColor (
 					key,
 					out var hsvColor, out var bestDistance,
 					MinDistance, ProbeIterations, useAllIterations : false,

@@ -23,11 +23,11 @@ public class HsvPaletteGenerator <TKey> {
 	}
 
 	/// <summary>
-	/// 
+	/// Perform series of color generation operations, pick the best result according to <paramref name="minDistance"/> parameter.
 	/// </summary>
-	/// <param name="key"></param>
-	/// <param name="newColor"></param>
-	/// <param name="actualMinDistance"></param>
+	/// <param name="key">Mark of generated color that allows to distinct it from other samples.</param>
+	/// <param name="newColor">Resulting color that evaluated in best results according to given parameters.</param>
+	/// <param name="bestDistance">Distance from the closest color in the palette.</param>
 	/// <param name="minDistance">
 	/// <para>
 	/// Minimum distance between newly generated and existing colors.
@@ -55,7 +55,7 @@ public class HsvPaletteGenerator <TKey> {
 	/// <param name="valueComponentScale">
 	/// Scale less than 1 forces generator to think that darker colors are closer to each other.
 	/// </param>
-	public void Add (
+	public void AddRandomColor (
 		TKey key,
 		out HsvColor newColor, out float bestDistance,
 		float minDistance = 0.25f, int probeIterations = 20, bool useAllIterations = false,
