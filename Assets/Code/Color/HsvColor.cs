@@ -9,18 +9,7 @@ public struct HsvColor {
 	/// 3d-position in bounds of HSV color cone https://commons.wikimedia.org/wiki/File:HSV_color_solid_cone_chroma_gray.png.
 	/// Basic principles of HSV: https://en.wikipedia.org/wiki/HSL_and_HSV#Basic_principle.
 	/// </summary>
-	public Vector3 ConePosition {
-		get {
-			var a = H * Mathf.PI * 2;
-			var v = Mathf.Clamp01 ( V );
-			var sv = Mathf.Clamp01 ( S ) * v;
-			return	new Vector3 (
-				Mathf.Cos ( a ) * sv,
-				Mathf.Sin ( a ) * sv,
-				v
-			);
-		}
-	}
+	public Vector3 PositionInColorCone => GetPositionInColorCone ();
 	public static HsvColor Random => new HsvColor ( UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value );
 
 	public HsvColor ( float h, float s, float v ) {
@@ -42,17 +31,33 @@ public struct HsvColor {
 		return	Color.HSVToRGB ( H, S, V, hdr );
 	}
 
-	public static float DistanceInColorConeSq ( HsvColor c1, HsvColor c2 ) {
-		var p1 = c1.ConePosition;
-		var p2 = c2.ConePosition;
+	/// <summary>
+	/// 3d-position in bounds of HSV color cone https://commons.wikimedia.org/wiki/File:HSV_color_solid_cone_chroma_gray.png.
+	/// Basic principles of HSV: https://en.wikipedia.org/wiki/HSL_and_HSV#Basic_principle.
+	/// </summary>
+	/// <param name="valueComponentScale">Scale less than 1 makes dark colors closer to each other.</param>
+	public Vector3 GetPositionInColorCone ( float valueComponentScale = 1 ) {
+		var a = H * Mathf.PI * 2;
+		var v = Mathf.Clamp01 ( V );
+		var sv = Mathf.Clamp01 ( S ) * v;
+		return	new Vector3 (
+			Mathf.Cos ( a ) * sv,
+			Mathf.Sin ( a ) * sv,
+			( v - 1 ) * valueComponentScale
+		);
+	}
+
+	public static float DistanceInColorConeSq ( HsvColor c1, HsvColor c2, float valueComponentScale = 1 ) {
+		var p1 = c1.GetPositionInColorCone ( valueComponentScale );
+		var p2 = c2.GetPositionInColorCone ( valueComponentScale );
 		var dx = p2.x - p1.x;
 		var dy = p2.y - p1.y;
 		var dz = p2.z - p1.z;
 		return	dx * dx + dy * dy + dz * dz;
 	}
 
-	public static float DistanceInColorCone ( HsvColor c1, HsvColor c2 ) {
-		return	Mathf.Sqrt ( DistanceInColorConeSq ( c1, c2 ) );
+	public static float DistanceInColorCone ( HsvColor c1, HsvColor c2, float valueComponentScale = 1 ) {
+		return	Mathf.Sqrt ( DistanceInColorConeSq ( c1, c2, valueComponentScale ) );
 	}
 
 	#region Operators

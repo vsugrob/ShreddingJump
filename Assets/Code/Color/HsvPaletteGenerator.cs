@@ -54,7 +54,8 @@ public class HsvPaletteGenerator <TKey> {
 	public void Add (
 		TKey key,
 		out HsvColor newColor, out float bestDistance,
-		float minDistance = 0.25f, int probeIterations = 20, bool useAllIterations = false
+		float minDistance = 0.25f, int probeIterations = 20, bool useAllIterations = false,
+		float valueComponentScale = 1
 	) {
 		minDistance = Mathf.Clamp ( minDistance, 0, MinDistanceMax );
 		if ( probeIterations < 1 )
@@ -71,7 +72,7 @@ public class HsvPaletteGenerator <TKey> {
 		var bestMinDistanceSq = float.NaN;
 		var minDistanceSq = minDistance * minDistance;
 		for ( int i = 0 ; i < probeIterations ; i++ ) {
-			var newMinDistanceSq = FindMinDistanceSqToExistingColors ( newColor );
+			var newMinDistanceSq = FindMinDistanceSqToExistingColors ( newColor, valueComponentScale );
 			if ( i == 0 || CheckNewMinDistanceIsBetter ( newMinDistanceSq, bestMinDistanceSq, minDistanceSq ) ) {
 				bestColor = newColor;
 				bestMinDistanceSq = newMinDistanceSq;
@@ -99,10 +100,10 @@ public class HsvPaletteGenerator <TKey> {
 		}
 	}
 
-	private float FindMinDistanceSqToExistingColors ( HsvColor color ) {
+	private float FindMinDistanceSqToExistingColors ( HsvColor color, float valueComponentScale ) {
 		var minDistanceSq = float.MaxValue;
 		foreach ( var existingColor in palette.Values ) {
-			var distanceSq = HsvColor.DistanceInColorConeSq ( color, existingColor );
+			var distanceSq = HsvColor.DistanceInColorConeSq ( color, existingColor, valueComponentScale );
 			if ( distanceSq < minDistanceSq )
 				minDistanceSq = distanceSq;
 		}

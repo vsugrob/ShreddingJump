@@ -22,10 +22,11 @@ namespace Tests {
 		public void HsvPaletteGenerator_Add () {
 			const float MinDistance = 0.25f;
 			const int ProbeIterations = 40;
+			const float ValueComponentScale = 0.5f;
 			var colors = new List <HsvColor> ();
 			for ( int i = 0 ; i < Keys.Length ; i++ ) {
 				var key = Keys [i];
-				generator.Add ( key, out var hsvColor, out var bestDistance, MinDistance, ProbeIterations );
+				generator.Add ( key, out var hsvColor, out var bestDistance, MinDistance, ProbeIterations, useAllIterations : false, ValueComponentScale );
 				colors.Add ( hsvColor );
 			}
 
@@ -53,7 +54,7 @@ namespace Tests {
 						if ( x == 0 )
 							sw.Write ( $"<th style=\"background-color : #{rgb1Hex};\">#{rgb1Hex}</th>" );
 
-						var d = HsvColor.DistanceInColorCone ( hsv1, hsv2 );
+						var d = HsvColor.DistanceInColorCone ( hsv1, hsv2, ValueComponentScale );
 						string style = d < MinDistance && x != y ? "background-color : red;" : "";
 						sw.Write ( $"<td style=\"{style}\">{d:0.##}</td>" );
 					}
