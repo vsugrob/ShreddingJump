@@ -84,6 +84,7 @@ public class HsvPaletteGenerator <TKey> {
 
 		newColor = bestColor;
 		bestDistance = Mathf.Sqrt ( bestMinDistanceSq );
+		palette.Add ( key, newColor );
 	}
 
 	private static bool CheckNewMinDistanceIsBetter ( float newMinDistanceSq, float bestMinDistanceSq, float desiredMinDistanceSq ) {
