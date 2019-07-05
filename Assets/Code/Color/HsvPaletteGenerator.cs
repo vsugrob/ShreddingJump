@@ -55,13 +55,13 @@ public class HsvPaletteGenerator <TKey> {
 		TKey key,
 		out HsvColor newColor, out float bestDistance,
 		float minDistance = 0.25f, int probeIterations = 20, bool useAllIterations = false,
-		float valueComponentScale = 1
+		float valueComponentScale = 1, float saturationExponent = 1, float valueExponent = 1
 	) {
 		minDistance = Mathf.Clamp ( minDistance, 0, MinDistanceMax );
 		if ( probeIterations < 1 )
 			probeIterations = 1;
 
-		newColor = HsvColor.Random;
+		newColor = HsvColor.GenerateRandom ( saturationExponent, valueExponent );
 		if ( palette.Count == 0 ) {
 			bestDistance = minDistance;
 			palette.Add ( key, newColor );
@@ -80,7 +80,7 @@ public class HsvPaletteGenerator <TKey> {
 					break;
 			}
 
-			newColor = HsvColor.Random;
+			newColor = HsvColor.GenerateRandom ( saturationExponent, valueExponent );
 		}
 
 		newColor = bestColor;

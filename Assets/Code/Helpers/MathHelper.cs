@@ -20,6 +20,10 @@ public static class MathHelper {
 		return	false;
 	}
 
+	public static float LerpPow ( float a, float b, float t, float tPower ) {
+		return	Mathf.Lerp ( a, b, Mathf.Pow ( t, tPower ) );
+	}
+
 	public static float ToNormAngle ( float angle ) {
 		angle = angle % Pi2;
 		if ( angle < 0 )

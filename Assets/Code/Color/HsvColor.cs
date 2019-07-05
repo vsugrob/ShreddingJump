@@ -60,6 +60,12 @@ public struct HsvColor {
 		return	Mathf.Sqrt ( DistanceInColorConeSq ( c1, c2, valueComponentScale ) );
 	}
 
+	public static HsvColor GenerateRandom ( float sPow, float vPow ) => new HsvColor (
+		UnityEngine.Random.value,
+		Mathf.Pow ( UnityEngine.Random.value, sPow ),
+		Mathf.Pow ( UnityEngine.Random.value, vPow )
+	);
+
 	#region Operators
 	public static HsvColor operator * ( HsvColor c, float s ) {
 		return	new HsvColor ( c.H * s, c.S * s, c.V * s );

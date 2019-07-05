@@ -20,13 +20,20 @@ namespace Tests {
 
 		[Test]
 		public void HsvPaletteGenerator_Add () {
-			const float MinDistance = 0.25f;
+			const float MinDistance = 0.4f;
 			const int ProbeIterations = 40;
 			const float ValueComponentScale = 0.5f;
+			const float RandomSaturationExponent = 0.5f;
+			const float RandomValueExponent = 0.5f;
 			var colors = new List <HsvColor> ();
 			for ( int i = 0 ; i < Keys.Length ; i++ ) {
 				var key = Keys [i];
-				generator.Add ( key, out var hsvColor, out var bestDistance, MinDistance, ProbeIterations, useAllIterations : false, ValueComponentScale );
+				generator.Add (
+					key,
+					out var hsvColor, out var bestDistance,
+					MinDistance, ProbeIterations, useAllIterations : false,
+					ValueComponentScale, RandomSaturationExponent, RandomValueExponent
+				);
 				colors.Add ( hsvColor );
 			}
 
