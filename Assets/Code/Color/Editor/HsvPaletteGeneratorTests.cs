@@ -25,6 +25,7 @@ namespace Tests {
 			const float ValueComponentScale = 0.5f;
 			const float RandomSaturationExponent = 0.5f;
 			const float RandomValueExponent = 0.5f;
+			HsvColor generateColorFunc () => HsvColor.GenerateRandom ( RandomSaturationExponent, RandomValueExponent );
 			var colors = new List <HsvColor> ();
 			for ( int i = 0 ; i < Keys.Length ; i++ ) {
 				var key = Keys [i];
@@ -32,7 +33,8 @@ namespace Tests {
 					key,
 					out var hsvColor, out var bestDistance,
 					MinDistance, ProbeIterations, useAllIterations : false,
-					ValueComponentScale, RandomSaturationExponent, RandomValueExponent
+					ValueComponentScale,
+					generateColorFunc
 				);
 				colors.Add ( hsvColor );
 			}

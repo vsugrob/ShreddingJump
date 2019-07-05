@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using UnityEngine;
@@ -54,25 +55,21 @@ public class HsvPaletteGenerator <TKey> {
 	/// <param name="valueComponentScale">
 	/// Scale less than 1 forces generator to think that darker colors are closer to each other.
 	/// </param>
-	/// <param name="saturationExponent">
-	/// Saturation component of generated color is transformed with pow() function with given exponent.
-	/// Values less than 1 results in more saturated colors.
-	/// </param>
-	/// <param name="valueExponent">
-	/// Value component of generated color is transformed with pow() function with given exponent.
-	/// Values less than 1 results in lighter colors.
-	/// </param>
 	public void Add (
 		TKey key,
 		out HsvColor newColor, out float bestDistance,
 		float minDistance = 0.25f, int probeIterations = 20, bool useAllIterations = false,
-		float valueComponentScale = 1, float saturationExponent = 1, float valueExponent = 1
+		float valueComponentScale = 1,
+		Func <HsvColor> generateColorFunc = null
 	) {
+		if ( generateColorFunc == null )
+			generateColorFunc = () => HsvColor.Random;
+
 		minDistance = Mathf.Clamp ( minDistance, 0, MinDistanceMax );
 		if ( probeIterations < 1 )
 			probeIterations = 1;
 
-		newColor = HsvColor.GenerateRandom ( saturationExponent, valueExponent );
+		newColor = generateColorFunc ();
 		if ( palette.Count == 0 ) {
 			bestDistance = minDistance;
 			palette.Add ( key, newColor );
@@ -91,7 +88,7 @@ public class HsvPaletteGenerator <TKey> {
 					break;
 			}
 
-			newColor = HsvColor.GenerateRandom ( saturationExponent, valueExponent );
+			newColor = generateColorFunc ();
 		}
 
 		newColor = bestColor;

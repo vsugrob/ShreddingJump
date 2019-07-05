@@ -60,10 +60,18 @@ public struct HsvColor {
 		return	Mathf.Sqrt ( DistanceInColorConeSq ( c1, c2, valueComponentScale ) );
 	}
 
-	public static HsvColor GenerateRandom ( float sPow, float vPow ) => new HsvColor (
+	/// <param name="saturationExponent">
+	/// Saturation component of generated color is transformed with pow() function with given exponent.
+	/// Values less than 1 results in more saturated colors.
+	/// </param>
+	/// <param name="valueExponent">
+	/// Value component of generated color is transformed with pow() function with given exponent.
+	/// Values less than 1 results in lighter colors.
+	/// </param>
+	public static HsvColor GenerateRandom ( float saturationExponent, float valueExponent ) => new HsvColor (
 		UnityEngine.Random.value,
-		Mathf.Pow ( UnityEngine.Random.value, sPow ),
-		Mathf.Pow ( UnityEngine.Random.value, vPow )
+		Mathf.Pow ( UnityEngine.Random.value, saturationExponent ),
+		Mathf.Pow ( UnityEngine.Random.value, valueExponent )
 	);
 
 	#region Operators
