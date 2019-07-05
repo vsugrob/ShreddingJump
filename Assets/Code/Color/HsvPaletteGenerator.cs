@@ -51,7 +51,11 @@ public class HsvPaletteGenerator <TKey> {
 	/// </para>
 	/// <para>Coerced to be not less than 1.</para>
 	/// </param>
-	public void Add ( TKey key, out HsvColor newColor, out float bestDistance, float minDistance = 0.25f, int probeIterations = 20 ) {
+	public void Add (
+		TKey key,
+		out HsvColor newColor, out float bestDistance,
+		float minDistance = 0.25f, int probeIterations = 20, bool useAllIterations = false
+	) {
 		minDistance = Mathf.Clamp ( minDistance, 0, MinDistanceMax );
 		if ( probeIterations < 1 )
 			probeIterations = 1;
@@ -68,9 +72,13 @@ public class HsvPaletteGenerator <TKey> {
 		var minDistanceSq = minDistance * minDistance;
 		for ( int i = 0 ; i < probeIterations ; i++ ) {
 			var newMinDistanceSq = FindMinDistanceToExistingColors ( newColor );
-			if ( i == 0 || Mathf.Abs ( newMinDistanceSq - minDistanceSq ) < Mathf.Abs ( bestDistanceSq - minDistanceSq ) ) {
+			if ( i == 0 ||
+				Mathf.Abs ( newMinDistanceSq - minDistanceSq ) < Mathf.Abs ( bestDistanceSq - minDistanceSq )
+			) {
 				bestColor = newColor;
 				bestDistanceSq = newMinDistanceSq;
+				if ( !useAllIterations && bestDistanceSq > minDistanceSq )
+					break;
 			}
 
 			newColor = HsvColor.Random;
