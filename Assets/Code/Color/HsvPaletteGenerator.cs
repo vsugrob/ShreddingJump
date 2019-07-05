@@ -68,16 +68,14 @@ public class HsvPaletteGenerator <TKey> {
 		}
 
 		var bestColor = default ( HsvColor );
-		var bestDistanceSq = float.NaN;
+		var bestMinDistanceSq = float.NaN;
 		var minDistanceSq = minDistance * minDistance;
 		for ( int i = 0 ; i < probeIterations ; i++ ) {
-			var newMinDistanceSq = FindMinDistanceToExistingColors ( newColor );
-			if ( i == 0 ||
-				Mathf.Abs ( newMinDistanceSq - minDistanceSq ) < Mathf.Abs ( bestDistanceSq - minDistanceSq )
-			) {
+			var newMinDistanceSq = FindMinDistanceSqToExistingColors ( newColor );
+			if ( i == 0 || CheckNewMinDistanceIsBetter ( newMinDistanceSq, bestMinDistanceSq, minDistanceSq ) ) {
 				bestColor = newColor;
-				bestDistanceSq = newMinDistanceSq;
-				if ( !useAllIterations && bestDistanceSq > minDistanceSq )
+				bestMinDistanceSq = newMinDistanceSq;
+				if ( !useAllIterations && bestMinDistanceSq > minDistanceSq )
 					break;
 			}
 
@@ -85,10 +83,22 @@ public class HsvPaletteGenerator <TKey> {
 		}
 
 		newColor = bestColor;
-		bestDistance = Mathf.Sqrt ( bestDistanceSq );
+		bestDistance = Mathf.Sqrt ( bestMinDistanceSq );
 	}
 
-	private float FindMinDistanceToExistingColors ( HsvColor color ) {
+	private static bool CheckNewMinDistanceIsBetter ( float newMinDistanceSq, float bestMinDistanceSq, float desiredMinDistanceSq ) {
+		var bestVsDesiredDiff = bestMinDistanceSq - desiredMinDistanceSq;
+		var newVsDesiredDiff = newMinDistanceSq - desiredMinDistanceSq;
+		if ( bestVsDesiredDiff < 0 ) {
+			// New distance wins when it's positive or, at least, closer to desired min distance.
+			return	newVsDesiredDiff >= 0 || newVsDesiredDiff > bestVsDesiredDiff;
+		} else {
+			// Best distance was positive. New distance wins only when it's positive and closer to desired min distance.
+			return	newVsDesiredDiff >= 0 && newVsDesiredDiff < bestVsDesiredDiff;
+		}
+	}
+
+	private float FindMinDistanceSqToExistingColors ( HsvColor color ) {
 		var minDistanceSq = float.MaxValue;
 		foreach ( var existingColor in palette.Values ) {
 			var distanceSq = HsvColor.DistanceInColorConeSq ( color, existingColor );
