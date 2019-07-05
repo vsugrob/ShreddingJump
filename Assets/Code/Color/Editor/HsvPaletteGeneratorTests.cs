@@ -23,6 +23,7 @@ namespace Tests {
 		public void HsvPaletteGenerator_Add () {
 			const float MinDistance = 0.4f;
 			const int ProbeIterations = 40;
+			const bool UseAllIterations = false;
 			const float ValueComponentScale = 0.5f;
 			const float RandomTemperatureExponent = 2;
 			const float RandomSaturationExponent = 0.5f;
@@ -37,7 +38,7 @@ namespace Tests {
 				generator.AddRandomColor (
 					key,
 					out var hsvColor, out var bestDistance,
-					MinDistance, ProbeIterations, useAllIterations : false,
+					MinDistance, ProbeIterations, UseAllIterations,
 					ValueComponentScale,
 					generateColorFunc
 				);
@@ -45,6 +46,14 @@ namespace Tests {
 
 			var colors = generator.Palette.Values.ToArray ();
 			using ( var sw = new System.IO.StreamWriter ( @"c:\Temp\palette.html" ) ) {
+				sw.WriteLine ( $"<div>MinDistance: {MinDistance}</div>" );
+				sw.WriteLine ( $"<div>ProbeIterations per color: {ProbeIterations}</div>" );
+				sw.WriteLine ( $"<div>UseAllIterations: {UseAllIterations}</div>" );
+				sw.WriteLine ( $"<div>ValueComponentScale: {ValueComponentScale}</div>" );
+				sw.WriteLine ( $"<div>RandomTemperatureExponent: {RandomTemperatureExponent}</div>" );
+				sw.WriteLine ( $"<div>RandomSaturationExponent: {RandomSaturationExponent}</div>" );
+				sw.WriteLine ( $"<div>RandomValueExponent: {RandomValueExponent}</div>" );
+				sw.WriteLine ( $"<div>ProbeIterationCount: {generator.ProbeIterationCount}</div>" );
 				sw.WriteLine ( "<table>" );
 				for ( int y = 0 ; y < colors.Length ; y++ ) {
 					var hsv1 = colors [y];

@@ -17,9 +17,18 @@ public class HsvPaletteGenerator <TKey> {
 	/// Calculated as distance between opposite points on top circle of HSV color cone.
 	/// </summary>
 	public const float MinDistanceMax = 2;
+	/// <summary>
+	/// Total iteration count since construction of this object or last reset.
+	/// </summary>
+	public int ProbeIterationCount { get; private set; }
 
 	public HsvPaletteGenerator () {
 		this.Palette = new ReadOnlyDictionary <TKey, HsvColor> ( palette );
+	}
+
+	public void Reset () {
+		palette.Clear ();
+		ProbeIterationCount = 0;
 	}
 
 	public void AddColor ( TKey key, HsvColor newColor ) {
@@ -77,6 +86,7 @@ public class HsvPaletteGenerator <TKey> {
 		if ( palette.Count == 0 ) {
 			bestDistance = float.PositiveInfinity;
 			palette.Add ( key, newColor );
+			ProbeIterationCount++;
 			return;
 		}
 
@@ -84,6 +94,7 @@ public class HsvPaletteGenerator <TKey> {
 		var bestMinDistanceSq = float.NaN;
 		var minDistanceSq = minDistance * minDistance;
 		for ( int i = 0 ; i < probeIterations ; i++ ) {
+			ProbeIterationCount++;
 			var newMinDistanceSq = FindMinDistanceSqToExistingColors ( newColor, valueComponentScale );
 			if ( i == 0 || CheckNewMinDistanceIsBetter ( newMinDistanceSq, bestMinDistanceSq, minDistanceSq ) ) {
 				bestColor = newColor;
