@@ -71,7 +71,7 @@ namespace Tests {
 							PrintColorTableHeader ( rgb2Hex );
 						}
 
-						sw.WriteLine ( "</tr>" );
+						sw.WriteLine ( "<th>HSV</th></tr>" );
 					}
 
 					sw.WriteLine ( "<tr>" );
@@ -86,6 +86,7 @@ namespace Tests {
 						sw.Write ( $"<td style=\"{style}\">{d:0.##}</td>" );
 					}
 
+					sw.Write ( $"<th>{hsv1}</th>" );
 					sw.WriteLine ( "</tr>" );
 				}
 
