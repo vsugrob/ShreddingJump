@@ -44,7 +44,6 @@ namespace Tests {
 						}
 
 						sw.WriteLine ( "</tr>" );
-						continue;
 					}
 
 					sw.WriteLine ( "<tr>" );
