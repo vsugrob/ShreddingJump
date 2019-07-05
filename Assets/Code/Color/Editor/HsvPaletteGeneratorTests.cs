@@ -54,6 +54,10 @@ namespace Tests {
 				sw.WriteLine ( $"<div>RandomSaturationExponent: {RandomSaturationExponent}</div>" );
 				sw.WriteLine ( $"<div>RandomValueExponent: {RandomValueExponent}</div>" );
 				sw.WriteLine ( $"<div>ProbeIterationCount: {generator.ProbeIterationCount}</div>" );
+				void PrintColorTableHeader ( string hexColor ) {
+					sw.Write ( $"<th style=\"background-color : #{hexColor};\">#{hexColor}</th>" );
+				}
+
 				sw.WriteLine ( "<table>" );
 				for ( int y = 0 ; y < colors.Length ; y++ ) {
 					var hsv1 = colors [y];
@@ -64,7 +68,7 @@ namespace Tests {
 						for ( int x = 0 ; x < colors.Length ; x++ ) {
 							var hsv2 = colors [x];
 							var rgb2Hex = ColorUtility.ToHtmlStringRGB ( hsv2.ToRgb () );
-							sw.Write ( $"<th style=\"background-color : #{rgb2Hex};\">#{rgb2Hex}</th>" );
+							PrintColorTableHeader ( rgb2Hex );
 						}
 
 						sw.WriteLine ( "</tr>" );
@@ -75,7 +79,7 @@ namespace Tests {
 						var hsv2 = colors [x];
 						// Write header cell.
 						if ( x == 0 )
-							sw.Write ( $"<th style=\"background-color : #{rgb1Hex};\">#{rgb1Hex}</th>" );
+							PrintColorTableHeader ( rgb1Hex );
 
 						var d = HsvColor.DistanceInColorCone ( hsv1, hsv2, ValueComponentScale );
 						string style = d < MinDistance && x != y ? "background-color : red;" : "";
