@@ -79,6 +79,7 @@ public class LevelController : MonoBehaviour {
 		var palette = GeneratePalette ();
 		// Colorize level.
 		RendererColorizer.SetColors ( FloorsContainer, palette, RuntimeObjectsContainer );
+		RendererColorizer.SetColors ( Character.transform, palette, RuntimeObjectsContainer );
 	}
 	// TODO: move to HierarchyHelper or smth alike.
 	private static void DestroyChildren ( Transform rootTf ) {
