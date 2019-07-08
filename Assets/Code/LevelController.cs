@@ -116,13 +116,14 @@ public class LevelController : MonoBehaviour {
 		const float ValueComponentScale = 0.5f;
 		const float TargetHue = 0;
 		const float TargetHueExponent = 2;
-		const float RandomSaturationExponent = 0.5f;
-		const float RandomValueExponent = 0.5f;
+		const float RandomSaturationExponent = 1;
+		const float RandomValueExponent = 1;
 		HsvColor generateColorFunc () {
 			return HsvColor.GenerateRandom ( TargetHue, TargetHueExponent, RandomSaturationExponent, RandomValueExponent );
 		}
 
-		generator.AddColor ( ColorRole.Obstacle, HsvColors.Red );
+		ColorUtility.TryParseHtmlString ( "#E92F2F", out var obstacleColor );
+		generator.AddColor ( ColorRole.Obstacle, ( HsvColor ) obstacleColor );
 		for ( int i = 0 ; i < roles.Length ; i++ ) {
 			var role = roles [i];
 			if ( role == ColorRole.Unknown || generator.ContainsColor ( role ) )
