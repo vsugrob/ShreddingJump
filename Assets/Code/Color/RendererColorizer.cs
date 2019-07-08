@@ -30,6 +30,7 @@ public class RendererColorizer : MonoBehaviour {
 			return	false;
 		material = cache.GetMaterial ( material );
 		material.color = color;
+		renderer.sharedMaterial = material;
 		return	true;
 	}
 
