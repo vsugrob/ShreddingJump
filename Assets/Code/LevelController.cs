@@ -124,7 +124,7 @@ public class LevelController : MonoBehaviour {
 		generator.AddColor ( ColorRole.Obstacle, HsvColors.Red );
 		for ( int i = 0 ; i < roles.Length ; i++ ) {
 			var role = roles [i];
-			if ( generator.ContainsColor ( role ) )
+			if ( role == ColorRole.Unknown || generator.ContainsColor ( role ) )
 				continue;
 
 			generator.AddRandomColor (
