@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Linq;
 using System;
+using System.Collections.Generic;
 
 public class LevelController : MonoBehaviour {
 	public BouncingBallCharacter Character { get; private set; }
@@ -8,6 +9,9 @@ public class LevelController : MonoBehaviour {
 	[SerializeField]
 	private Transform _floorsContainer = null;
 	public Transform FloorsContainer => _floorsContainer;
+	[SerializeField]
+	private Transform _runtimeObjectsContainer = null;
+	public Transform RuntimeObjectsContainer => _runtimeObjectsContainer;
 	[SerializeField]
 	private int _floorCount = 30;
 	public int FloorCount => _floorCount;
@@ -57,8 +61,10 @@ public class LevelController : MonoBehaviour {
 		var stdGen = GetComponent <StandardLevelGenerator> ();
 		if ( stdGen == null )
 			return;
-
+		// Cleanup existing objects.
 		DestroyChildren ( FloorsContainer );
+		DestroyChildren ( RuntimeObjectsContainer );
+		// Generate level.
 		var dummyFloorInfo = CreateDummyFloor ();
 		var genEn = stdGen
 			.Generate ( dummyFloorInfo )
@@ -69,6 +75,10 @@ public class LevelController : MonoBehaviour {
 				.Take ( FloorCount );
 
 		genEn.Consume ();
+		// Generate palette.
+		var palette = GeneratePalette ();
+		// Colorize level.
+		RendererColorizer.SetColors ( FloorsContainer, palette, RuntimeObjectsContainer );
 	}
 	// TODO: move to HierarchyHelper or smth alike.
 	private static void DestroyChildren ( Transform rootTf ) {
@@ -93,5 +103,39 @@ public class LevelController : MonoBehaviour {
 		holePlatform.transform.SetParent ( platformsContainer.transform, worldPositionStays : false );
 		platformCircle.Add ( holePlatform, Range.Create ( 0, 360f ) );
 		return	new FloorInfo ( floorRoot, baseAngle, platformCircle, new PlatformCircle () );
+	}
+	// TODO: move to level generator? Or separate component "LevelColorizer"?
+	private IReadOnlyDictionary <ColorRole, HsvColor> GeneratePalette () {
+		var generator = new HsvPaletteGenerator <ColorRole> ();
+		var roles = ( ColorRole [] ) Enum.GetValues ( typeof ( ColorRole ) );
+		// TODO: move to settings.
+		const float MinDistance = 0.4f;
+		const int ProbeIterations = 40;
+		const bool UseAllIterations = false;
+		const float ValueComponentScale = 0.5f;
+		const float TargetHue = 0;
+		const float TargetHueExponent = 2;
+		const float RandomSaturationExponent = 0.5f;
+		const float RandomValueExponent = 0.5f;
+		HsvColor generateColorFunc () {
+			return HsvColor.GenerateRandom ( TargetHue, TargetHueExponent, RandomSaturationExponent, RandomValueExponent );
+		}
+
+		generator.AddColor ( ColorRole.Obstacle, HsvColors.Red );
+		for ( int i = 0 ; i < roles.Length ; i++ ) {
+			var role = roles [i];
+			if ( generator.ContainsColor ( role ) )
+				continue;
+
+			generator.AddRandomColor (
+				role,
+				out var hsvColor, out var bestDistance,
+				MinDistance, ProbeIterations, UseAllIterations,
+				ValueComponentScale,
+				generateColorFunc
+			);
+		}
+
+		return	generator.Palette;
 	}
 }

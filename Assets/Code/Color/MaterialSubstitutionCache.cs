@@ -13,9 +13,11 @@ public class MaterialSubstitutionCache : MonoBehaviour {
 		return	replacement;
 	}
 
-	public static MaterialSubstitutionCache GetInstance ( GameObject container ) {
-		var cache = container.GetComponent <MaterialSubstitutionCache> ();
+	public static MaterialSubstitutionCache GetInstance ( Transform containerParentTf ) {
+		var cache = containerParentTf.GetComponentInChildren <MaterialSubstitutionCache> ();
 		if ( cache != null ) return	cache;
+		var container = new GameObject ( nameof ( MaterialSubstitutionCache ) );
+		container.transform.SetParent ( containerParentTf, worldPositionStays : true );
 		cache = container.AddComponent <MaterialSubstitutionCache> ();
 		return	cache;
 	}

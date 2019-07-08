@@ -42,8 +42,8 @@ public class RendererColorizer : MonoBehaviour {
 		colorizers.Clear ();
 	}
 
-	public static void SetColors ( Transform rootTransform, IReadOnlyDictionary <ColorRole, HsvColor> palette, GameObject materialCacheContainer ) {
-		var cache = MaterialSubstitutionCache.GetInstance ( materialCacheContainer );
+	public static void SetColors ( Transform rootTransform, IReadOnlyDictionary <ColorRole, HsvColor> palette, Transform materialCacheContainerParentTf ) {
+		var cache = MaterialSubstitutionCache.GetInstance ( materialCacheContainerParentTf );
 		SetColors ( rootTransform, palette, cache );
 	}
 }
