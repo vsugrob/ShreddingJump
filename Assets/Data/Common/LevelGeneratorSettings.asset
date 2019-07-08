@@ -14,21 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _floorHeightMin: 3.75
   _floorHeightMax: 4.5
-  _platformWidthMin: 22.5
-  _mainHoleWidthMin: 22.5
-  _mainHoleWidthMax: 67.5
-  _secondaryHoleWidthMin: 22.5
-  _spaceBetweenHolesMin: 22.5
-  _totalHoleWidthMax: 112.5
-  _holeWidthStep: 22.5
-  _holeCountMin: 1
-  _holeCountMax: 4
   _baseAngleOffsetMin: -67.5
   _baseAngleOffsetMax: 67.5
   _baseAngleOffsetStep: 22.5
+  _platformWidthMin: 22.5
+  _mainHoleWidthMin: 45
+  _mainHoleWidthMax: 67.5
+  _secondaryHoleWidthMin: 45
+  _spaceBetweenHolesMin: 22.5
+  _totalHoleWidthMax: 135
+  _holeWidthStep: 22.5
+  _holeCountMin: 1
+  _holeCountMax: 4
   _obstacleWidthMin: 22.5
   _obstacleWidthStep: 22.5
-  _horzObstacleWidthMax: 45
+  _horzObstacleOverPlatformWidthMax: 45
+  _horzObstacleOverHoleWidthMax: 22.5
   _wallWidthMax: 22.5
   _totalObstacleWidthMax: 135
   _minSpaceBetweenObstacles: 22.5
@@ -45,6 +46,7 @@ MonoBehaviour:
   _safeZoneShrinkStep: 22.5
   _safeZoneMinWidth: 22.5
   _horzObstacleOverPlatformMovingChance: 0.5
+  _horzObstacleOverHoleMovingChance: 1
   _wallOverPlatformMovingChance: 0.05
   _unpassableWallOverPlatformMovingChance: 0
   _movingObstacleAngularSpeedMin: 20
