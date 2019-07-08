@@ -25,10 +25,11 @@ namespace Tests {
 			const int ProbeIterations = 40;
 			const bool UseAllIterations = false;
 			const float ValueComponentScale = 0.5f;
-			const float RandomTemperatureExponent = 2;
+			const float TargetHue = 0;
+			const float TargetHueExponent = 2;
 			const float RandomSaturationExponent = 0.5f;
 			const float RandomValueExponent = 0.5f;
-			HsvColor generateColorFunc () => HsvColor.GenerateRandom ( RandomTemperatureExponent, RandomSaturationExponent, RandomValueExponent );
+			HsvColor generateColorFunc () => HsvColor.GenerateRandom ( TargetHue, TargetHueExponent, RandomSaturationExponent, RandomValueExponent );
 			generator.AddColor ( Obstacle, HsvColors.Red );
 			for ( int i = 0 ; i < Keys.Length ; i++ ) {
 				var key = Keys [i];
@@ -50,7 +51,8 @@ namespace Tests {
 				sw.WriteLine ( $"<div>ProbeIterations per color: {ProbeIterations}</div>" );
 				sw.WriteLine ( $"<div>UseAllIterations: {UseAllIterations}</div>" );
 				sw.WriteLine ( $"<div>ValueComponentScale: {ValueComponentScale}</div>" );
-				sw.WriteLine ( $"<div>RandomTemperatureExponent: {RandomTemperatureExponent}</div>" );
+				sw.WriteLine ( $"<div>TargetHue: {TargetHue}</div>" );
+				sw.WriteLine ( $"<div>TargetHueExponent: {TargetHueExponent}</div>" );
 				sw.WriteLine ( $"<div>RandomSaturationExponent: {RandomSaturationExponent}</div>" );
 				sw.WriteLine ( $"<div>RandomValueExponent: {RandomValueExponent}</div>" );
 				sw.WriteLine ( $"<div>ProbeIterationCount: {generator.ProbeIterationCount}</div>" );

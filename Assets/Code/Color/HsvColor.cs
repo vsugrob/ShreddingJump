@@ -73,9 +73,29 @@ public struct HsvColor {
 	/// Values less than 1 results in lighter colors.
 	/// </param>
 	public static HsvColor GenerateRandom ( float temperatureExponent, float saturationExponent, float valueExponent ) {
+		return	GenerateRandom ( targetHue : 0, temperatureExponent, saturationExponent, valueExponent );
+	}
+
+	/// <param name="targetHue">
+	/// Hue value serving as a base for randomization. Values of <paramref name="targetHueExponent"/> greater than 1
+	/// are making randomizer produce colors closer to <paramref name="targetHue"/> more often than other hues.
+	/// </param>
+	/// <param name="targetHueExponent">
+	/// Hue component of generated color is transformed with pow() function around <paramref name="targetHueExponent"/> with given exponent.
+	/// Higher values produce colors close to <paramref name="targetHue"/> more often.
+	/// </param>
+	/// <param name="saturationExponent">
+	/// Saturation component of generated color is transformed with pow() function with given exponent.
+	/// Values less than 1 results in more saturated colors.
+	/// </param>
+	/// <param name="valueExponent">
+	/// Value component of generated color is transformed with pow() function with given exponent.
+	/// Values less than 1 results in lighter colors.
+	/// </param>
+	public static HsvColor GenerateRandom ( float targetHue, float targetHueExponent, float saturationExponent, float valueExponent ) {
 		var r = UnityEngine.Random.value * 2 - 1;
 		return	new HsvColor (
-			NormalizeHue ( Mathf.Pow ( Mathf.Abs ( r ), temperatureExponent ) * 0.5f * Mathf.Sign ( r ) ),
+			NormalizeHue ( targetHue + Mathf.Pow ( Mathf.Abs ( r ), targetHueExponent ) * 0.5f * Mathf.Sign ( r ) ),
 			Mathf.Pow ( UnityEngine.Random.value, saturationExponent ),
 			Mathf.Pow ( UnityEngine.Random.value, valueExponent )
 		);
