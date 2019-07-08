@@ -80,6 +80,11 @@ public class LevelController : MonoBehaviour {
 		// Colorize level.
 		RendererColorizer.SetColors ( FloorsContainer, palette, RuntimeObjectsContainer );
 		RendererColorizer.SetColors ( Character.transform, palette, RuntimeObjectsContainer );
+		var camera = Camera.main;
+		if ( camera != null ) {
+			camera.backgroundColor = ( Color ) palette [ColorRole.Background];
+			camera.clearFlags = CameraClearFlags.SolidColor;
+		}
 	}
 	// TODO: move to HierarchyHelper or smth alike.
 	private static void DestroyChildren ( Transform rootTf ) {
