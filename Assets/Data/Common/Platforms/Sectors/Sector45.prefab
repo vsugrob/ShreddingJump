@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7251e5dcbb8e3fa49b5db32848ced09a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _kind: 1
   _startAngle: -45
   _endAngle: 0
   _height: 0.4
@@ -61,6 +62,7 @@ GameObject:
   - component: {fileID: 3239507561225203626}
   - component: {fileID: 6759260708347089359}
   - component: {fileID: 6768490960635924162}
+  - component: {fileID: 4650560404121627871}
   m_Layer: 10
   m_Name: Arch
   m_TagString: Untagged
@@ -174,3 +176,16 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 14
   m_Mesh: {fileID: 0}
+--- !u!114 &4650560404121627871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8388509974827169415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 591764fa0dcb3fb4aa37d377686c7400, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _role: 3
