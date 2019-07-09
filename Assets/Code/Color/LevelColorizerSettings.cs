@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 [CreateAssetMenu]
 public class LevelColorizerSettings : ScriptableObject {
@@ -10,51 +11,37 @@ public class LevelColorizerSettings : ScriptableObject {
 		set => _obstacleColor = value;
 	}
 	[SerializeField]
-	private float _minColorDistance = 0.4f;
-	public float MinColorDistance {
-		get => _minColorDistance;
-		set => _minColorDistance = value;
+	private ColorRandomizerSettings _column = new ColorRandomizerSettings ();
+	public ColorRandomizerSettings Column {
+		get => _column;
+		set => _column = value;
 	}
 	[SerializeField]
-	private int _probeIterations = 40;
-	public int ProbeIterations {
-		get => _probeIterations;
-		set => _probeIterations = value;
+	private ColorRandomizerSettings _platform = new ColorRandomizerSettings ();
+	public ColorRandomizerSettings Platform {
+		get => _platform;
+		set => _platform = value;
 	}
 	[SerializeField]
-	private bool _useAllIterations = false;
-	public bool UseAllIterations {
-		get => _useAllIterations;
-		set => _useAllIterations = value;
+	private ColorRandomizerSettings _background = new ColorRandomizerSettings ();
+	public ColorRandomizerSettings Background {
+		get => _background;
+		set => _background = value;
 	}
 	[SerializeField]
-	private float _valueComponentScale = 0.5f;
-	public float ValueComponentScale {
-		get => _valueComponentScale;
-		set => _valueComponentScale = value;
+	private ColorRandomizerSettings _character = new ColorRandomizerSettings ();
+	public ColorRandomizerSettings Character {
+		get => _character;
+		set => _character = value;
 	}
-	[SerializeField]
-	private float _targetHue = 0;
-	public float TargetHue {
-		get => _targetHue;
-		set => _targetHue = value;
-	}
-	[SerializeField]
-	private float _targetHueExponent = 2;
-	public float TargetHueExponent {
-		get => _targetHueExponent;
-		set => _targetHueExponent = value;
-	}
-	[SerializeField]
-	private float _randomSaturationExponent = 1;
-	public float RandomSaturationExponent {
-		get => _randomSaturationExponent;
-		set => _randomSaturationExponent = value;
-	}
-	[SerializeField]
-	private float _randomValueExponent = 1;
-	public float RandomValueExponent {
-		get => _randomValueExponent;
-		set => _randomValueExponent = value;
+
+	public ColorRandomizerSettings GetColorRandomizerSettings ( ColorRole role ) {
+		switch ( role ) {
+		case ColorRole.Column: return	Column;
+		case ColorRole.Platform: return	Platform;
+		case ColorRole.Background: return	Background;
+		case ColorRole.Character: return	Character;
+		default: throw new ArgumentException ( $"Unknown color role {role}.", nameof ( role ) );
+		}
 	}
 }
