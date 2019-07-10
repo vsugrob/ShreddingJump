@@ -22,27 +22,29 @@ public class LevelColorizer : MonoBehaviour {
 
 	private IReadOnlyDictionary <ColorRole, HsvColor> GeneratePalette () {
 		var generator = new HsvPaletteGenerator <ColorRole> ();
-		var roles = ( ColorRole [] ) Enum.GetValues ( typeof ( ColorRole ) );
 		generator.AddColor ( ColorRole.Obstacle, ( HsvColor ) Settings.ObstacleColor );
-		for ( int i = 0 ; i < roles.Length ; i++ ) {
-			var role = roles [i];
-			if ( role == ColorRole.Unknown || generator.ContainsColor ( role ) )
-				continue;
-
-			var colorSettings = Settings.GetColorRandomizerSettings ( role );
-			HsvColor generateColorFunc () => HsvColor.GenerateRandom (
-				colorSettings.TargetHue, colorSettings.TargetHueExponent,
-				colorSettings.RandomSaturationExponent, colorSettings.RandomValueExponent
-			);
-			generator.AddRandomColor (
-				role,
-				out var hsvColor, out var bestDistance,
-				colorSettings.MinColorDistance, colorSettings.ProbeIterations, colorSettings.UseAllIterations,
-				colorSettings.ValueComponentScale,
-				generateColorFunc
-			);
-		}
-
+		AddColor ( ColorRole.Background, generator );
+		AddColor ( ColorRole.Column, generator );
+		AddColor ( ColorRole.Platform, generator );
+		AddColor ( ColorRole.Character, generator );
 		return	generator.Palette;
+	}
+
+	private void AddColor ( ColorRole role, HsvPaletteGenerator <ColorRole> generator ) {
+		if ( role == ColorRole.Unknown || generator.ContainsColor ( role ) )
+			return;
+
+		var colorSettings = Settings.GetColorRandomizerSettings ( role );
+		HsvColor generateColorFunc () => HsvColor.GenerateRandom (
+			colorSettings.TargetHue, colorSettings.TargetHueExponent,
+			colorSettings.RandomSaturationExponent, colorSettings.RandomValueExponent
+		);
+		generator.AddRandomColor (
+			role,
+			out var hsvColor, out var bestDistance,
+			colorSettings.MinColorDistance, colorSettings.ProbeIterations, colorSettings.UseAllIterations,
+			colorSettings.ValueComponentScale,
+			generateColorFunc
+		);
 	}
 }
