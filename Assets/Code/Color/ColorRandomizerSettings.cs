@@ -63,13 +63,13 @@ public class ColorRandomizerSettings {
 	}
 	[SerializeField]
 	private float _valueMin = 0;
-	public float valueMin {
+	public float ValueMin {
 		get => _valueMin;
 		set => _valueMin = value;
 	}
 	[SerializeField]
 	private float _valueMax = 1;
-	public float valueMax {
+	public float ValueMax {
 		get => _valueMax;
 		set => _valueMax = value;
 	}

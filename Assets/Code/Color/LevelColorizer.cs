@@ -39,7 +39,7 @@ public class LevelColorizer : MonoBehaviour {
 			cs.TargetHue, cs.TargetHueExponent,
 			cs.RandomSaturationExponent, cs.RandomValueExponent,
 			cs.SaturationMin, cs.SaturationMax,
-			cs.valueMin, cs.valueMax
+			cs.ValueMin, cs.ValueMax
 		);
 		generator.AddRandomColor (
 			role,
