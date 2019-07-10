@@ -13,11 +13,55 @@ MonoBehaviour:
   m_Name: LevelColorizerSettings
   m_EditorClassIdentifier: 
   _obstacleColor: {r: 0.9137255, g: 0.18431373, b: 0.18431373, a: 1}
-  _minColorDistance: 0.4
-  _probeIterations: 40
-  _useAllIterations: 0
-  _valueComponentScale: 0.5
-  _targetHue: 0
-  _targetHueExponent: 2
-  _randomSaturationExponent: 1
-  _randomValueExponent: 1
+  _column:
+    _minColorDistance: 0.4
+    _probeIterations: 40
+    _useAllIterations: 0
+    _targetHue: 0
+    _targetHueExponent: 2
+    _randomSaturationExponent: 1
+    _saturationMin: 0
+    _saturationMax: 0.8
+    _randomValueExponent: 1
+    _valueMin: 0
+    _valueMax: 0.9
+    _valueComponentScale: 0.5
+  _platform:
+    _minColorDistance: 0.4
+    _probeIterations: 40
+    _useAllIterations: 0
+    _targetHue: 0
+    _targetHueExponent: 2
+    _randomSaturationExponent: 1
+    _saturationMin: 0
+    _saturationMax: 0.8
+    _randomValueExponent: 1
+    _valueMin: 0
+    _valueMax: 0.9
+    _valueComponentScale: 0.5
+  _background:
+    _minColorDistance: 0.4
+    _probeIterations: 40
+    _useAllIterations: 0
+    _targetHue: 0
+    _targetHueExponent: 2
+    _randomSaturationExponent: 1
+    _saturationMin: 0.3
+    _saturationMax: 0.7
+    _randomValueExponent: 1
+    _valueMin: 0.15
+    _valueMax: 0.8
+    _valueComponentScale: 0.5
+  _character:
+    _minColorDistance: 0.4
+    _probeIterations: 40
+    _useAllIterations: 0
+    _targetHue: 0
+    _targetHueExponent: 2
+    _randomSaturationExponent: 1
+    _saturationMin: 0
+    _saturationMax: 1
+    _randomValueExponent: 1
+    _valueMin: 0
+    _valueMax: 1
+    _valueComponentScale: 0.5
