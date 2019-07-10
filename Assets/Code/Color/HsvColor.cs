@@ -92,12 +92,18 @@ public struct HsvColor {
 	/// Value component of generated color is transformed with pow() function with given exponent.
 	/// Values less than 1 results in lighter colors.
 	/// </param>
-	public static HsvColor GenerateRandom ( float targetHue, float targetHueExponent, float saturationExponent, float valueExponent ) {
+	public static HsvColor GenerateRandom (
+		float targetHue, float targetHueExponent,
+		float saturationExponent,
+		float valueExponent,
+		float saturationMin = 0, float saturationMax = 1,
+		float valueMin = 0, float valueMax = 1
+	) {
 		var r = UnityEngine.Random.value * 2 - 1;
 		return	new HsvColor (
 			NormalizeHue ( targetHue + Mathf.Pow ( Mathf.Abs ( r ), targetHueExponent ) * 0.5f * Mathf.Sign ( r ) ),
-			Mathf.Pow ( UnityEngine.Random.value, saturationExponent ),
-			Mathf.Pow ( UnityEngine.Random.value, valueExponent )
+			Mathf.Lerp ( Mathf.Clamp01 ( saturationMin ), Mathf.Clamp01 ( saturationMax ), Mathf.Pow ( UnityEngine.Random.value, saturationExponent ) ),
+			Mathf.Lerp ( Mathf.Clamp01 ( valueMin ), Mathf.Clamp01 ( valueMax ), Mathf.Pow ( UnityEngine.Random.value, valueExponent ) )
 		);
 	}
 

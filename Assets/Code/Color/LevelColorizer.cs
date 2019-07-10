@@ -34,16 +34,18 @@ public class LevelColorizer : MonoBehaviour {
 		if ( role == ColorRole.Unknown || generator.ContainsColor ( role ) )
 			return;
 
-		var colorSettings = Settings.GetColorRandomizerSettings ( role );
+		var cs = Settings.GetColorRandomizerSettings ( role );
 		HsvColor generateColorFunc () => HsvColor.GenerateRandom (
-			colorSettings.TargetHue, colorSettings.TargetHueExponent,
-			colorSettings.RandomSaturationExponent, colorSettings.RandomValueExponent
+			cs.TargetHue, cs.TargetHueExponent,
+			cs.RandomSaturationExponent, cs.RandomValueExponent,
+			cs.SaturationMin, cs.SaturationMax,
+			cs.valueMin, cs.valueMax
 		);
 		generator.AddRandomColor (
 			role,
 			out var hsvColor, out var bestDistance,
-			colorSettings.MinColorDistance, colorSettings.ProbeIterations, colorSettings.UseAllIterations,
-			colorSettings.ValueComponentScale,
+			cs.MinColorDistance, cs.ProbeIterations, cs.UseAllIterations,
+			cs.ValueComponentScale,
 			generateColorFunc
 		);
 	}
