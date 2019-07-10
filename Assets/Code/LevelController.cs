@@ -57,6 +57,11 @@ public class LevelController : MonoBehaviour {
 	}
 
 	private void GenerateLevel () {
+		GenerateLevelGeometry ();
+		ColorizeLevel ();
+	}
+
+	private void GenerateLevelGeometry () {
 		var stdGen = GetComponent <StandardLevelGenerator> ();
 		if ( stdGen == null )
 			return;
@@ -74,10 +79,19 @@ public class LevelController : MonoBehaviour {
 				.Take ( FloorCount );
 
 		genEn.Consume ();
+	}
+
+	private void ColorizeLevel () {
 		var colorizer = GetComponent <LevelColorizer> ();
 		if ( colorizer != null )
 			colorizer.ColorizeLevel ( transform, RuntimeObjectsContainer );
 	}
+
+	public void Update () {
+		if ( Input.GetKeyDown ( KeyCode.Space ) )
+			ColorizeLevel ();
+	}
+
 	// TODO: move to HierarchyHelper or smth alike.
 	private static void DestroyChildren ( Transform rootTf ) {
 		var count = rootTf.childCount;
