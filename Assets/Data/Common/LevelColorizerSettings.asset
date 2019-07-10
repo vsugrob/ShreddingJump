@@ -18,7 +18,7 @@ MonoBehaviour:
     _probeIterations: 40
     _useAllIterations: 0
     _targetHue: 0
-    _targetHueExponent: 2
+    _targetHueExponent: 1
     _randomSaturationExponent: 1
     _saturationMin: 0
     _saturationMax: 0.8
@@ -31,7 +31,7 @@ MonoBehaviour:
     _probeIterations: 40
     _useAllIterations: 0
     _targetHue: 0
-    _targetHueExponent: 2
+    _targetHueExponent: 1
     _randomSaturationExponent: 1
     _saturationMin: 0
     _saturationMax: 0.8
@@ -44,7 +44,7 @@ MonoBehaviour:
     _probeIterations: 40
     _useAllIterations: 0
     _targetHue: 0
-    _targetHueExponent: 2
+    _targetHueExponent: 1
     _randomSaturationExponent: 1
     _saturationMin: 0.3
     _saturationMax: 0.7
@@ -57,7 +57,7 @@ MonoBehaviour:
     _probeIterations: 40
     _useAllIterations: 0
     _targetHue: 0
-    _targetHueExponent: 2
+    _targetHueExponent: 1
     _randomSaturationExponent: 1
     _saturationMin: 0
     _saturationMax: 1
