@@ -26,4 +26,12 @@ public class DevStatsOverlay : MonoBehaviour {
 		if ( CharacterVerticalVelocityText != null && character != null )
 			CharacterVerticalVelocityText.text = $"Vert. Vel: {character.VerticalVelocity:0.0}".ToString ( CultureInfo.InvariantCulture );
 	}
+
+	public void OnColorizeButtonClick () {
+		var levelController = FindObjectOfType <LevelController> ();
+		if ( levelController == null )
+			return;
+
+		levelController.ColorizeLevel ();
+	}
 }

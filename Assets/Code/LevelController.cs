@@ -81,7 +81,7 @@ public class LevelController : MonoBehaviour {
 		genEn.Consume ();
 	}
 
-	private void ColorizeLevel () {
+	public void ColorizeLevel () {
 		var colorizer = GetComponent <LevelColorizer> ();
 		if ( colorizer != null )
 			colorizer.ColorizeLevel ( transform, RuntimeObjectsContainer );
