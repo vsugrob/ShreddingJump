@@ -21,10 +21,10 @@ MonoBehaviour:
     _targetHueExponent: 1
     _randomSaturationExponent: 1
     _saturationMin: 0
-    _saturationMax: 0.8
+    _saturationMax: 0.6
     _randomValueExponent: 1
-    _valueMin: 0
-    _valueMax: 0.9
+    _valueMin: 0.3
+    _valueMax: 1
     _valueComponentScale: 0.5
   _platform:
     _minColorDistance: 0.4
@@ -34,10 +34,10 @@ MonoBehaviour:
     _targetHueExponent: 1
     _randomSaturationExponent: 1
     _saturationMin: 0
-    _saturationMax: 0.8
+    _saturationMax: 0.6
     _randomValueExponent: 1
-    _valueMin: 0
-    _valueMax: 0.9
+    _valueMin: 0.4
+    _valueMax: 1
     _valueComponentScale: 0.5
   _background:
     _minColorDistance: 0.4
@@ -47,10 +47,10 @@ MonoBehaviour:
     _targetHueExponent: 1
     _randomSaturationExponent: 1
     _saturationMin: 0.3
-    _saturationMax: 0.7
+    _saturationMax: 0.6
     _randomValueExponent: 1
     _valueMin: 0.15
-    _valueMax: 0.8
+    _valueMax: 1
     _valueComponentScale: 0.5
   _character:
     _minColorDistance: 0.4
