@@ -9,6 +9,12 @@ public class RendererColorizer : MonoBehaviour {
 		get => _role;
 		set => _role = value;
 	}
+	[SerializeField]
+	private string _colorPropertyName = "_Color";
+	public string ColorPropertyName {
+		get => _colorPropertyName;
+		set => _colorPropertyName = value;
+	}
     private Renderer _renderer;
 	public Renderer Renderer => _renderer ?? ( _renderer = GetComponent <Renderer> () );
 	private static List <RendererColorizer> colorizers = new List <RendererColorizer> ();
@@ -29,7 +35,7 @@ public class RendererColorizer : MonoBehaviour {
 		if ( material == null )
 			return	false;
 		material = cache.GetMaterial ( material );
-		material.color = color;
+		material.SetColor ( ColorPropertyName, color );
 		renderer.sharedMaterial = material;
 		return	true;
 	}

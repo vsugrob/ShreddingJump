@@ -1211,3 +1211,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _role: 3
+  _colorPropertyName: _BaseColor

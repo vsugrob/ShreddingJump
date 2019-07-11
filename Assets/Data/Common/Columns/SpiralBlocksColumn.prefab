@@ -138,6 +138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _role: 2
+  _colorPropertyName: _BaseColor
 --- !u!1 &1145476678418999580
 GameObject:
   m_ObjectHideFlags: 0
@@ -288,6 +289,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _role: 2
+  _colorPropertyName: _BaseColor
 --- !u!1 &1145476679151589374
 GameObject:
   m_ObjectHideFlags: 0
@@ -393,3 +395,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _role: 2
+  _colorPropertyName: _BaseColor

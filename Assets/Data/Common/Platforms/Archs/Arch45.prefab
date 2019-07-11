@@ -2122,6 +2122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _role: 3
+  _colorPropertyName: _BaseColor
 --- !u!1 &4694766110106596305
 GameObject:
   m_ObjectHideFlags: 0
