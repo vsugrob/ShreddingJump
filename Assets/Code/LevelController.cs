@@ -14,6 +14,10 @@ public class LevelController : MonoBehaviour {
 	[SerializeField]
 	private int _floorCount = 30;
 	public int FloorCount => _floorCount;
+	public float LevelStartTime { get; private set; } = float.NegativeInfinity;
+	public float LevelFinishTime { get; private set; } = float.NegativeInfinity;
+	public float TimeSinceLevelStart => ( IsLevelFinished ? LevelFinishTime : Time.realtimeSinceStartup ) - LevelStartTime;
+	public bool IsLevelFinished { get; private set; }
 
 	private void Start () {
 		Time.timeScale = 0;
@@ -38,6 +42,8 @@ public class LevelController : MonoBehaviour {
 		GenerateLevel ();
 		Character.Restart ();
 		Time.timeScale = 1;
+		LevelStartTime = Time.realtimeSinceStartup;
+		IsLevelFinished = false;
 	}
 
 	private void Character_KillerObstacleHit ( BouncingBallCharacter character, KillerObstacle obstacle ) {
@@ -54,6 +60,8 @@ public class LevelController : MonoBehaviour {
 
 	private void ShowLevelStartWindow () {
 		LevelStartPanel.gameObject.SetActive ( true );
+		LevelFinishTime = Time.realtimeSinceStartup;
+		IsLevelFinished = true;
 	}
 
 	private void GenerateLevel () {
