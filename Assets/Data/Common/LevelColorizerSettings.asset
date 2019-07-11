@@ -24,7 +24,7 @@ MonoBehaviour:
     _saturationMax: 0.6
     _randomValueExponent: 1
     _valueMin: 0.3
-    _valueMax: 1
+    _valueMax: 0.9
     _valueComponentScale: 0.5
   _platform:
     _minColorDistance: 0.4
@@ -36,8 +36,8 @@ MonoBehaviour:
     _saturationMin: 0
     _saturationMax: 0.6
     _randomValueExponent: 1
-    _valueMin: 0.4
-    _valueMax: 1
+    _valueMin: 0.2
+    _valueMax: 0.9
     _valueComponentScale: 0.5
   _background:
     _minColorDistance: 0.4
@@ -62,6 +62,6 @@ MonoBehaviour:
     _saturationMin: 0
     _saturationMax: 1
     _randomValueExponent: 1
-    _valueMin: 0
+    _valueMin: 0.1
     _valueMax: 1
     _valueComponentScale: 0.5
