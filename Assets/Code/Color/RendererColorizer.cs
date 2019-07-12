@@ -2,13 +2,7 @@
 using UnityEngine;
 
 [RequireComponent ( typeof ( Renderer ) )]
-public class RendererColorizer : MonoBehaviour {
-	[SerializeField]
-	private ColorRole _role = ColorRole.Unknown;
-	public ColorRole Role {
-		get => _role;
-		set => _role = value;
-	}
+public class RendererColorizer : Colorizer {
 	[SerializeField]
 	private string _colorPropertyName = "_Color";
 	public string ColorPropertyName {
@@ -17,16 +11,8 @@ public class RendererColorizer : MonoBehaviour {
 	}
     private Renderer _renderer;
 	public Renderer Renderer => _renderer ?? ( _renderer = GetComponent <Renderer> () );
-	private static List <RendererColorizer> colorizers = new List <RendererColorizer> ();
 
-	public bool SetColor ( IReadOnlyDictionary <ColorRole, HsvColor> palette, MaterialSubstitutionCache cache ) {
-		if ( !palette.TryGetValue ( Role, out var hsvColor ) )
-			return	false;
-
-		return	SetColor ( ( Color ) hsvColor, cache );
-	}
-
-	public bool SetColor ( Color color, MaterialSubstitutionCache cache ) {
+	public override bool SetColor ( Color color, MaterialSubstitutionCache cache ) {
 		var renderer = Renderer;
 		if ( renderer == null )
 			return	false;
@@ -38,19 +24,5 @@ public class RendererColorizer : MonoBehaviour {
 		material.SetColor ( ColorPropertyName, color );
 		renderer.sharedMaterial = material;
 		return	true;
-	}
-
-	public static void SetColors ( Transform rootTransform, IReadOnlyDictionary <ColorRole, HsvColor> palette, MaterialSubstitutionCache cache ) {
-		rootTransform.GetComponentsInChildren ( includeInactive : true, colorizers );
-		for ( int i = 0 ; i < colorizers.Count ; i++ ) {
-			colorizers [i].SetColor ( palette, cache );
-		}
-
-		colorizers.Clear ();
-	}
-
-	public static void SetColors ( Transform rootTransform, IReadOnlyDictionary <ColorRole, HsvColor> palette, Transform materialCacheContainerParentTf ) {
-		var cache = MaterialSubstitutionCache.GetInstance ( materialCacheContainerParentTf );
-		SetColors ( rootTransform, palette, cache );
 	}
 }

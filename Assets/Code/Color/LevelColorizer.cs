@@ -12,7 +12,7 @@ public class LevelColorizer : MonoBehaviour {
 
 	public void ColorizeLevel ( Transform rootTf, Transform runtimeObjectsContainerTf ) {
 		var palette = GeneratePalette ();
-		RendererColorizer.SetColors ( rootTf, palette, runtimeObjectsContainerTf );
+		Colorizer.SetColors ( rootTf, palette, runtimeObjectsContainerTf );
 		var camera = Camera.main;
 		if ( camera != null ) {
 			camera.backgroundColor = ( Color ) palette [ColorRole.Background];
