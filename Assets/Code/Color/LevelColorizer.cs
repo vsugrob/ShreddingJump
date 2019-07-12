@@ -14,10 +14,8 @@ public class LevelColorizer : MonoBehaviour {
 		var palette = GeneratePalette ();
 		Colorizer.SetColors ( rootTf, palette, runtimeObjectsContainerTf );
 		var camera = Camera.main;
-		if ( camera != null ) {
-			camera.backgroundColor = ( Color ) palette [ColorRole.Background];
-			camera.clearFlags = CameraClearFlags.SolidColor;
-		}
+		if ( camera != null )
+			Colorizer.SetColors ( camera.transform, palette, runtimeObjectsContainerTf );
 	}
 
 	private IReadOnlyDictionary <ColorRole, HsvColor> GeneratePalette () {

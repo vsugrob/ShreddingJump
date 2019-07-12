@@ -8,7 +8,7 @@ public abstract class Colorizer : MonoBehaviour {
 		get => _role;
 		set => _role = value;
 	}
-	private static List <RendererColorizer> colorizers = new List <RendererColorizer> ();
+	private static List <Colorizer> colorizers = new List <Colorizer> ();
 
 	public bool SetColor ( IReadOnlyDictionary <ColorRole, HsvColor> palette, MaterialSubstitutionCache cache ) {
 		if ( !palette.TryGetValue ( Role, out var hsvColor ) )

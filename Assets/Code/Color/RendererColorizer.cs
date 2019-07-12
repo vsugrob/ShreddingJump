@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent ( typeof ( Renderer ) )]
 public class RendererColorizer : Colorizer {
