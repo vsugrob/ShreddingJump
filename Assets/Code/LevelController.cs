@@ -14,6 +14,9 @@ public class LevelController : MonoBehaviour {
 	[SerializeField]
 	private int _floorCount = 30;
 	public int FloorCount => _floorCount;
+	[SerializeField]
+	private bool _generateLevelInRuntime = true;
+	public bool GenerateLevelInRuntime => _generateLevelInRuntime;
 	public float LevelStartTime { get; private set; } = float.NegativeInfinity;
 	public float LevelFinishTime { get; private set; } = float.NegativeInfinity;
 	public float TimeSinceLevelStart => ( IsLevelFinished ? LevelFinishTime : Time.realtimeSinceStartup ) - LevelStartTime;
@@ -65,6 +68,9 @@ public class LevelController : MonoBehaviour {
 	}
 
 	private void GenerateLevel () {
+		if ( !GenerateLevelInRuntime )
+			return;
+
 		GenerateLevelGeometry ();
 		ColorizeLevel ();
 	}
