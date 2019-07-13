@@ -4,5 +4,6 @@
 	Column,
 	Platform,
 	Background,
-	Character
+	Character,
+	Character2,
 }

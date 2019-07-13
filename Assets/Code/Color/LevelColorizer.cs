@@ -25,6 +25,7 @@ public class LevelColorizer : MonoBehaviour {
 		AddColor ( ColorRole.Column, generator );
 		AddColor ( ColorRole.Platform, generator );
 		AddColor ( ColorRole.Character, generator );
+		AddColor ( ColorRole.Character2, generator );
 		return	generator.Palette;
 	}
 
