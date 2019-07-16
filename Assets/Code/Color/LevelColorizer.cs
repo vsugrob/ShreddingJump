@@ -12,10 +12,10 @@ public class LevelColorizer : MonoBehaviour {
 
 	public void ColorizeLevel ( Transform rootTf, Transform runtimeObjectsContainerTf ) {
 		var palette = GeneratePalette ();
-		ColorizerSingle.SetColors ( rootTf, palette, runtimeObjectsContainerTf );
+		SimpleColorizer.SetColors ( rootTf, palette, runtimeObjectsContainerTf );
 		var camera = Camera.main;
 		if ( camera != null )
-			ColorizerSingle.SetColors ( camera.transform, palette, runtimeObjectsContainerTf );
+			SimpleColorizer.SetColors ( camera.transform, palette, runtimeObjectsContainerTf );
 	}
 
 	private IReadOnlyDictionary <ColorRole, HsvColor> GeneratePalette () {

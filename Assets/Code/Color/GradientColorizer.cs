@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class ColorizerGradient : Colorizer {
+public abstract class GradientColorizer : Colorizer {
 	[SerializeField]
 	private List <GradientStop> _gradientStops = new List <GradientStop> ();
 	public List <GradientStop> GradientStops {

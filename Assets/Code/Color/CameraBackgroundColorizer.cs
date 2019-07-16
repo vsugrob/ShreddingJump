@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [RequireComponent ( typeof ( Camera ) )]
-public class CameraBackgroundColorizer : ColorizerSingle {
+public class CameraBackgroundColorizer : SimpleColorizer {
     private Camera _camera;
 	public Camera Camera => _camera ?? ( _camera = GetComponent <Camera> () );
 

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [RequireComponent ( typeof ( TrailRendererColorizer ) )]
-public class TrailRendererColorizer : ColorizerSingle {
+public class TrailRendererColorizer : SimpleColorizer {
     private TrailRenderer _renderer;
 	public TrailRenderer Renderer => _renderer ?? ( _renderer = GetComponent <TrailRenderer> () );
 	[SerializeField]

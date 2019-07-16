@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class ColorizerSingle : Colorizer {
+public abstract class SimpleColorizer : Colorizer {
 	[SerializeField]
 	private ColorRole _role = ColorRole.Unknown;
 	public ColorRole Role {

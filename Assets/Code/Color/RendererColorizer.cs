@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [RequireComponent ( typeof ( Renderer ) )]
-public class RendererColorizer : ColorizerSingle {
+public class RendererColorizer : SimpleColorizer {
 	[SerializeField]
 	private string _colorPropertyName = "_Color";
 	public string ColorPropertyName {
