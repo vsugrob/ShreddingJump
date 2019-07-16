@@ -29,6 +29,18 @@ public class LevelColorizerSettings : ScriptableObject {
 		set => _background = value;
 	}
 	[SerializeField]
+	private ColorRandomizerSettings _background2 = new ColorRandomizerSettings ();
+	public ColorRandomizerSettings Background2 {
+		get => _background2;
+		set => _background2 = value;
+	}
+	[SerializeField]
+	private ColorRandomizerSettings _background3 = new ColorRandomizerSettings ();
+	public ColorRandomizerSettings Background3 {
+		get => _background3;
+		set => _background3 = value;
+	}
+	[SerializeField]
 	private ColorRandomizerSettings _character = new ColorRandomizerSettings ();
 	public ColorRandomizerSettings Character {
 		get => _character;
@@ -48,6 +60,8 @@ public class LevelColorizerSettings : ScriptableObject {
 		case ColorRole.Background: return	Background;
 		case ColorRole.Character: return	Character;
 		case ColorRole.Character2: return	Character2;
+		case ColorRole.Background2: return	Background2;
+		case ColorRole.Background3: return	Background3;
 		default: throw new ArgumentException ( $"Unknown color role {role}.", nameof ( role ) );
 		}
 	}

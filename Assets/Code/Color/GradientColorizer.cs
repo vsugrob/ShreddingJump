@@ -39,6 +39,7 @@ public abstract class GradientColorizer : Colorizer {
 			colorKeys [i].color = ( Color ) hsvColor;
 		}
 
+		Gradient.colorKeys = colorKeys;
 		return	true;
 	}
 
