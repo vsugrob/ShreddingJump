@@ -10989,7 +10989,7 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 5764573675073009395}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2138423708
+--- !u!114 &2138423710
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -11004,10 +11004,8 @@ MonoBehaviour:
   _gradientStops:
   - Position: 0
     Role: 4
-  - Position: 0.5
-    Role: 7
   - Position: 1
-    Role: 8
+    Role: 7
   _length: 10
   _pixelsPerUnit: 10
 --- !u!1001 &85218592959255745
