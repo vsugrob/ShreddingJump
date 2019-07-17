@@ -23,7 +23,8 @@ public class BouncingBallCharacterMouseAndTouchInput : MonoBehaviour {
 			$" mousePresent: {Input.mousePresent}," +
 			$" SimulateTouchWithMouse: {TouchHelper.SimulateTouchWithMouse}" +
 			$" touchSupported: {Input.touchSupported}" +
-			$" multiTouchEnabled: {Input.multiTouchEnabled}"
+			$" multiTouchEnabled: {Input.multiTouchEnabled}" +
+			$" simulateMouseWithTouches: {Input.simulateMouseWithTouches}"
 		);
 	}
 
