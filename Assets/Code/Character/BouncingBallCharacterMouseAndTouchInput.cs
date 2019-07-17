@@ -18,6 +18,15 @@ public class BouncingBallCharacterMouseAndTouchInput : MonoBehaviour {
 		character = GetComponent <BouncingBallCharacter> ();
 	}
 
+	private void Start () {
+		Debug.Log ( $"Input, " +
+			$" mousePresent: {Input.mousePresent}," +
+			$" SimulateTouchWithMouse: {TouchHelper.SimulateTouchWithMouse}" +
+			$" touchSupported: {Input.touchSupported}" +
+			$" multiTouchEnabled: {Input.multiTouchEnabled}"
+		);
+	}
+
 	private void Update () {
 		var camera = Camera.main;
 		if ( camera == null )
