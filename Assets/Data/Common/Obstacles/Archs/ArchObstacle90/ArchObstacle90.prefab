@@ -20,7 +20,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2206490592837960901
 Transform:
   m_ObjectHideFlags: 0
@@ -4106,20 +4106,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfc9ae89ef87a584ba7534f9dc6878f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8072176782890188968
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4431886328538870650}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 591764fa0dcb3fb4aa37d377686c7400, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _role: 1
-  _colorPropertyName: _BaseColor
 --- !u!64 &6497566665611214894
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -4134,6 +4120,20 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 14
   m_Mesh: {fileID: 1960654409700015248, guid: 812e754ce00aae44cae279ae2dc54f9a, type: 3}
+--- !u!114 &8072176782890188968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4431886328538870650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 591764fa0dcb3fb4aa37d377686c7400, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _role: 1
+  _colorPropertyName: _BaseColor
 --- !u!1001 &6879172760384672634
 PrefabInstance:
   m_ObjectHideFlags: 0
