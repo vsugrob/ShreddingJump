@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 public static class TouchHelper {
-	public static bool TreatMouseAsTouch { get; set; } = true;
+	public static bool SimulateTouchWithMouse { get; set; } = !Input.touchSupported;
 	public static int MouseButtonIndex { get; set; } = 0;
 	private static bool MouseButtonPressed => Input.GetMouseButtonDown ( MouseButtonIndex );
 	private static bool MouseButtonHeldDown => Input.GetMouseButton ( MouseButtonIndex );
@@ -9,7 +9,7 @@ public static class TouchHelper {
 	public static int TouchCount {
 		get {
 			var count = Input.touchCount;
-			if ( TreatMouseAsTouch &&
+			if ( SimulateTouchWithMouse &&
 				 MouseButtonPressed || MouseButtonHeldDown || MouseButtonReleased
 			) {
 				count++;
@@ -20,7 +20,7 @@ public static class TouchHelper {
 	}
 
 	public static Touch GetTouch ( int index ) {
-		if ( TreatMouseAsTouch && index == 0 ) {
+		if ( SimulateTouchWithMouse && index == 0 ) {
 			if ( MouseButtonPressed ) {
 				var touch = CreateTouchFromMouse ();
 				touch.phase = TouchPhase.Began;
