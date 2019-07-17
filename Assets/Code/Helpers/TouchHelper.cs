@@ -6,7 +6,8 @@ public static class TouchHelper {
 	private static bool MouseButtonPressed => Input.GetMouseButtonDown ( MouseButtonIndex );
 	private static bool MouseButtonHeldDown => Input.GetMouseButton ( MouseButtonIndex );
 	private static bool MouseButtonReleased => Input.GetMouseButtonUp ( MouseButtonIndex );
-	private static bool MouseTouchIsActive => SimulateTouchWithMouse && MouseButtonPressed || MouseButtonHeldDown || MouseButtonReleased;
+	private static bool MouseTouchIsActive =>
+		SimulateTouchWithMouse && ( MouseButtonPressed || MouseButtonHeldDown || MouseButtonReleased );
 	public static int TouchCount {
 		get {
 			var count = Input.touchCount;
