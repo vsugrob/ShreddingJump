@@ -6,14 +6,12 @@ public static class TouchHelper {
 	private static bool MouseButtonPressed => Input.GetMouseButtonDown ( MouseButtonIndex );
 	private static bool MouseButtonHeldDown => Input.GetMouseButton ( MouseButtonIndex );
 	private static bool MouseButtonReleased => Input.GetMouseButtonUp ( MouseButtonIndex );
+	private static bool MouseTouchIsActive => SimulateTouchWithMouse && MouseButtonPressed || MouseButtonHeldDown || MouseButtonReleased;
 	public static int TouchCount {
 		get {
 			var count = Input.touchCount;
-			if ( SimulateTouchWithMouse &&
-				 MouseButtonPressed || MouseButtonHeldDown || MouseButtonReleased
-			) {
+			if ( MouseTouchIsActive )
 				count++;
-			}
 
 			return	count;
 		}
@@ -34,6 +32,11 @@ public static class TouchHelper {
 				touch.phase = TouchPhase.Ended;
 				return	touch;
 			}
+		}
+
+		if ( MouseTouchIsActive ) {
+			// Touch with index 0 is held by mouse input.
+			index--;
 		}
 
 		return	Input.GetTouch ( index );
