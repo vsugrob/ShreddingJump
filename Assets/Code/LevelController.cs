@@ -9,8 +9,18 @@ public class LevelController : MonoBehaviour {
 	private Transform _floorsContainer = null;
 	public Transform FloorsContainer => _floorsContainer;
 	[SerializeField]
+	private Transform _runtimeObjectsContainer = null;
+	public Transform RuntimeObjectsContainer => _runtimeObjectsContainer;
+	[SerializeField]
 	private int _floorCount = 30;
 	public int FloorCount => _floorCount;
+	[SerializeField]
+	private bool _generateLevelInRuntime = true;
+	public bool GenerateLevelInRuntime => _generateLevelInRuntime;
+	public float LevelStartTime { get; private set; } = float.NegativeInfinity;
+	public float LevelFinishTime { get; private set; } = float.NegativeInfinity;
+	public float TimeSinceLevelStart => ( IsLevelFinished ? LevelFinishTime : Time.realtimeSinceStartup ) - LevelStartTime;
+	public bool IsLevelFinished { get; private set; }
 
 	private void Start () {
 		Time.timeScale = 0;
@@ -35,6 +45,8 @@ public class LevelController : MonoBehaviour {
 		GenerateLevel ();
 		Character.Restart ();
 		Time.timeScale = 1;
+		LevelStartTime = Time.realtimeSinceStartup;
+		IsLevelFinished = false;
 	}
 
 	private void Character_KillerObstacleHit ( BouncingBallCharacter character, KillerObstacle obstacle ) {
@@ -51,14 +63,26 @@ public class LevelController : MonoBehaviour {
 
 	private void ShowLevelStartWindow () {
 		LevelStartPanel.gameObject.SetActive ( true );
+		LevelFinishTime = Time.realtimeSinceStartup;
+		IsLevelFinished = true;
 	}
 
 	private void GenerateLevel () {
+		if ( !GenerateLevelInRuntime )
+			return;
+
+		GenerateLevelGeometry ();
+		ColorizeLevel ();
+	}
+
+	private void GenerateLevelGeometry () {
 		var stdGen = GetComponent <StandardLevelGenerator> ();
 		if ( stdGen == null )
 			return;
-
+		// Cleanup existing objects.
 		DestroyChildren ( FloorsContainer );
+		DestroyChildren ( RuntimeObjectsContainer );
+		// Generate level.
 		var dummyFloorInfo = CreateDummyFloor ();
 		var genEn = stdGen
 			.Generate ( dummyFloorInfo )
@@ -70,6 +94,18 @@ public class LevelController : MonoBehaviour {
 
 		genEn.Consume ();
 	}
+
+	public void ColorizeLevel () {
+		var colorizer = GetComponent <LevelColorizer> ();
+		if ( colorizer != null )
+			colorizer.ColorizeLevel ( transform, RuntimeObjectsContainer );
+	}
+
+	public void Update () {
+		if ( Input.GetKeyDown ( KeyCode.Space ) )
+			ColorizeLevel ();
+	}
+
 	// TODO: move to HierarchyHelper or smth alike.
 	private static void DestroyChildren ( Transform rootTf ) {
 		var count = rootTf.childCount;

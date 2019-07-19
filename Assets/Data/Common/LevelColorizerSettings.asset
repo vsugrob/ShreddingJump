@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8982907a5571aa449876dc9ac5d2a79d, type: 3}
+  m_Name: LevelColorizerSettings
+  m_EditorClassIdentifier: 
+  _obstacleColor: {r: 0.9137255, g: 0.18431373, b: 0.18431373, a: 1}
+  _column:
+    _minColorDistance: 0.4
+    _probeIterations: 40
+    _useAllIterations: 0
+    _targetHue: 0
+    _targetHueExponent: 1
+    _randomSaturationExponent: 1
+    _saturationMin: 0
+    _saturationMax: 0.6
+    _randomValueExponent: 1
+    _valueMin: 0.3
+    _valueMax: 0.9
+    _valueComponentScale: 0.5
+  _platform:
+    _minColorDistance: 0.4
+    _probeIterations: 40
+    _useAllIterations: 0
+    _targetHue: 0
+    _targetHueExponent: 1
+    _randomSaturationExponent: 1
+    _saturationMin: 0
+    _saturationMax: 0.6
+    _randomValueExponent: 1
+    _valueMin: 0.2
+    _valueMax: 0.9
+    _valueComponentScale: 0.5
+  _background:
+    _minColorDistance: 0.4
+    _probeIterations: 40
+    _useAllIterations: 0
+    _targetHue: 0
+    _targetHueExponent: 1
+    _randomSaturationExponent: 1
+    _saturationMin: 0.3
+    _saturationMax: 0.6
+    _randomValueExponent: 1
+    _valueMin: 0.15
+    _valueMax: 1
+    _valueComponentScale: 0.5
+  _character:
+    _minColorDistance: 0.4
+    _probeIterations: 40
+    _useAllIterations: 0
+    _targetHue: 0
+    _targetHueExponent: 1
+    _randomSaturationExponent: 1
+    _saturationMin: 0
+    _saturationMax: 1
+    _randomValueExponent: 1
+    _valueMin: 0.1
+    _valueMax: 1
+    _valueComponentScale: 0.5
