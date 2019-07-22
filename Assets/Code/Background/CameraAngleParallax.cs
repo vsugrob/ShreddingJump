@@ -19,7 +19,7 @@ public class CameraAngleParallax : MonoBehaviour {
 		var angle = MathHelper.ToNormAngleDeg ( cam.transform.eulerAngles.y );
 		float t = angle / 360;
 		var pos = transform.localPosition;
-		pos.x = initialX + t * UnitsPerFullRound;
+		pos.x = initialX - t * UnitsPerFullRound;
 		transform.localPosition = pos;
 	}
 }
