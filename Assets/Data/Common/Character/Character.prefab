@@ -233,6 +233,7 @@ GameObject:
   - component: {fileID: 1849128904}
   - component: {fileID: 1849128905}
   - component: {fileID: 1849128906}
+  - component: {fileID: 753662232}
   m_Layer: 31
   m_Name: Silhouette
   m_TagString: Untagged
@@ -316,6 +317,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _role: 8
   _colorPropertyName: _Color
+--- !u!114 &753662232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1849128903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe91db0420cd1454e8b3ef8a25e9ab86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _unitsPerFullRound: 30
 --- !u!1 &5764573674861064086
 GameObject:
   m_ObjectHideFlags: 0
