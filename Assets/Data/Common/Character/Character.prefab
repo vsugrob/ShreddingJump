@@ -157,8 +157,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 33154297
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 571fa6b8f148a204d91126a15189e426, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -233,6 +233,7 @@ GameObject:
   - component: {fileID: 1849128904}
   - component: {fileID: 1849128905}
   - component: {fileID: 1849128906}
+  - component: {fileID: 753662232}
   m_Layer: 31
   m_Name: Silhouette
   m_TagString: Untagged
@@ -288,15 +289,15 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 33154297
+  m_SortingLayer: 1
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 5071dceabfed8cd43b28b8df8489dc4f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 10.24, y: 10.24}
+  m_DrawMode: 2
+  m_Size: {x: 10, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -316,6 +317,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _role: 8
   _colorPropertyName: _Color
+--- !u!114 &753662232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1849128903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe91db0420cd1454e8b3ef8a25e9ab86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _unitsPerFullRound: 30
 --- !u!1 &5764573674861064086
 GameObject:
   m_ObjectHideFlags: 0
