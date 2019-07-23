@@ -1,19 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &1911715945155387486
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1747346904088216373}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 591764fa0dcb3fb4aa37d377686c7400, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _role: 3
-  _colorPropertyName: _BaseColor
 --- !u!64 &7082393620620280192
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -28,6 +14,20 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 14
   m_Mesh: {fileID: 1960654409700015248, guid: 0ad82f82b7c1ea640bb853a8cc64ff3a, type: 3}
+--- !u!114 &1911715945155387486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1747346904088216373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 591764fa0dcb3fb4aa37d377686c7400, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _role: 3
+  _colorPropertyName: _BaseColor
 --- !u!1 &4437237944040262067
 GameObject:
   m_ObjectHideFlags: 0
@@ -1252,6 +1252,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Arch (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 0ad82f82b7c1ea640bb853a8cc64ff3a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7131030064719568896, guid: 0ad82f82b7c1ea640bb853a8cc64ff3a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 0ad82f82b7c1ea640bb853a8cc64ff3a,
         type: 3}

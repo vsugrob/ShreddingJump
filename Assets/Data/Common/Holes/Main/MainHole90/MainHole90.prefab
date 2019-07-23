@@ -4090,6 +4090,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arch90 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: a7641868fd7b99e4595e28dee47ad032,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 8351309922280112682, guid: a7641868fd7b99e4595e28dee47ad032,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: a7641868fd7b99e4595e28dee47ad032,
         type: 3}
       propertyPath: m_LocalPosition.x

@@ -15548,6 +15548,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arch360 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: ad1e303751d100b459a82de49551d2d1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 1592554680211420199, guid: ad1e303751d100b459a82de49551d2d1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: ad1e303751d100b459a82de49551d2d1,
         type: 3}
       propertyPath: m_LocalPosition.x

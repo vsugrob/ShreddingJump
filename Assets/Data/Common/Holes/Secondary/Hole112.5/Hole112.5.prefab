@@ -5050,6 +5050,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arch112.5 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: d494d701839cfc4409789f94653e69e6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6176375615207816498, guid: d494d701839cfc4409789f94653e69e6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: -8177135637084910374, guid: d494d701839cfc4409789f94653e69e6,
         type: 3}
       propertyPath: m_Materials.Array.data[0]

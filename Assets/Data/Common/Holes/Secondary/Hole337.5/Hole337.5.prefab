@@ -14650,6 +14650,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arch337.5 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 8da79e4e9cc1c8e408b2dcbf05726608,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: -1305407197737934351, guid: 8da79e4e9cc1c8e408b2dcbf05726608,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 8da79e4e9cc1c8e408b2dcbf05726608,
         type: 3}
       propertyPath: m_LocalPosition.x

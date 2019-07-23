@@ -11770,6 +11770,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arch270 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: c89c9b2168364624a9ba79c261aa16f3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: -2465790421001398512, guid: c89c9b2168364624a9ba79c261aa16f3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: -8519193286877276242, guid: c89c9b2168364624a9ba79c261aa16f3,
         type: 3}
       propertyPath: m_Materials.Array.data[0]

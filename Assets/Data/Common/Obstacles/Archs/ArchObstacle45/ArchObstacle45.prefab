@@ -2226,6 +2226,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arch (1)
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: ea8cbd64c5bf39f4581f1adcb3529df5,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 7131030064719568896, guid: ea8cbd64c5bf39f4581f1adcb3529df5,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: ea8cbd64c5bf39f4581f1adcb3529df5,
         type: 3}
       propertyPath: m_LocalPosition.x

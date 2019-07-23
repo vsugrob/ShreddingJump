@@ -2916,6 +2916,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cylinder
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 9915f52e002ebc74b9946f1bf51e0cfe,
+        type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: -4425609515867240179, guid: 9915f52e002ebc74b9946f1bf51e0cfe,
+        type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 9915f52e002ebc74b9946f1bf51e0cfe,
         type: 3}
       propertyPath: m_LocalPosition.x
