@@ -318,6 +318,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unitsPerFullRound: 30
+  _horizontalMotionSpeedDegrees: 0
 --- !u!114 &894163502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -425,6 +426,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unitsPerFullRound: 30
+  _horizontalMotionSpeedDegrees: 0
 --- !u!114 &1955248941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -532,6 +534,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unitsPerFullRound: 30
+  _horizontalMotionSpeedDegrees: 20
 --- !u!114 &2040662862
 MonoBehaviour:
   m_ObjectHideFlags: 0
