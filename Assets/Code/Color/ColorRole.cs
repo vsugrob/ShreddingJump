@@ -8,4 +8,6 @@
 	Character2,
 	Background2,
 	Background3,
+	Background4,
+	Background5,
 }
