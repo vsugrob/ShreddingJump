@@ -44,3 +44,9 @@ TagManager:
   - name: Background
     uniqueID: 33154297
     locked: 0
+  - name: CharacterFx
+    uniqueID: 1113176903
+    locked: 0
+  - name: Flakes
+    uniqueID: 2328215477
+    locked: 0
