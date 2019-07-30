@@ -89,10 +89,12 @@ public class LevelController : MonoBehaviour {
 			.Take ( FloorCount - 1 );
 		var finishGen = GetComponent <FinishFloorGenerator> ();
 		if ( finishGen != null )
-			genEn = finishGen.Generate ( genEn )
-				.Take ( FloorCount );
+			genEn = finishGen.Generate ( genEn ).Take ( FloorCount );
 
-		genEn.Consume ();
+		var floors = genEn.ToArray ();
+		var decorator = GetComponent <LevelDecorator> ();
+		if ( decorator != null )
+			decorator.Decorate ( floors );
 	}
 
 	public void ColorizeLevel () {
