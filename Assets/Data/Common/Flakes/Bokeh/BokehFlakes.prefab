@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 5147475331897934062}
   - component: {fileID: 5147475331897934063}
   - component: {fileID: 5147475331897934048}
+  - component: {fileID: 8428232655319819555}
   m_Layer: 0
   m_Name: ParticleSystem
   m_TagString: Untagged
@@ -4796,3 +4797,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62e44f873ed73e2459eaac0676e134bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8428232655319819555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5147475331897934050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 591764fa0dcb3fb4aa37d377686c7400, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _role: 11
+  _colorPropertyName: _BaseColor
