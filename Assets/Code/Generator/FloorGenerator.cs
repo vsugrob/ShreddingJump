@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public abstract class LevelGenerator : MonoBehaviour {
-	public abstract LevelGeneratorSettings BasicSettings { get; }
+public abstract class FloorGenerator : MonoBehaviour {
+	public abstract FloorGeneratorSettings BasicSettings { get; }
 	[SerializeField]
 	private PrefabDatabase _prefabDatabase;
 	public PrefabDatabase PrefabDatabase {

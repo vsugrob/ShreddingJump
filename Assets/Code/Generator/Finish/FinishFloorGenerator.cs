@@ -1,14 +1,14 @@
 ﻿using System;
 using UnityEngine;
 
-public class FinishLineGenerator : LevelGenerator {
+public class FinishFloorGenerator : FloorGenerator {
 	[SerializeField]
-	private LevelGeneratorSettings _settings;
-	public LevelGeneratorSettings Settings {
-		get => _settings ?? ( _settings = ScriptableObject.CreateInstance <LevelGeneratorSettings> () );
+	private FloorGeneratorSettings _settings;
+	public FloorGeneratorSettings Settings {
+		get => _settings ?? ( _settings = ScriptableObject.CreateInstance <FloorGeneratorSettings> () );
 		set => _settings = value;
 	}
-	public override LevelGeneratorSettings BasicSettings => Settings;
+	public override FloorGeneratorSettings BasicSettings => Settings;
 
 	protected override void GenerateFloor () {
 		var prefab = PrefabDatabase

@@ -76,7 +76,7 @@ public class LevelController : MonoBehaviour {
 	}
 
 	private void GenerateLevelGeometry () {
-		var stdGen = GetComponent <StandardLevelGenerator> ();
+		var stdGen = GetComponent <StandardFloorGenerator> ();
 		if ( stdGen == null )
 			return;
 		// Cleanup existing objects.
@@ -87,7 +87,7 @@ public class LevelController : MonoBehaviour {
 		var genEn = stdGen
 			.Generate ( dummyFloorInfo )
 			.Take ( FloorCount - 1 );
-		var finishGen = GetComponent <FinishLineGenerator> ();
+		var finishGen = GetComponent <FinishFloorGenerator> ();
 		if ( finishGen != null )
 			genEn = finishGen.Generate ( genEn )
 				.Take ( FloorCount );
