@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class StandardLevelGenerator : LevelGenerator {
+public class StandardFloorGenerator : FloorGenerator {
 	[SerializeField]
-	private StandardLevelGeneratorSettings _settings;
-	public StandardLevelGeneratorSettings Settings {
-		get => _settings ?? ( _settings = ScriptableObject.CreateInstance <StandardLevelGeneratorSettings> () );
+	private StandardFloorGeneratorSettings _settings;
+	public StandardFloorGeneratorSettings Settings {
+		get => _settings ?? ( _settings = ScriptableObject.CreateInstance <StandardFloorGeneratorSettings> () );
 		set => _settings = value;
 	}
-	public override LevelGeneratorSettings BasicSettings => Settings;
+	public override FloorGeneratorSettings BasicSettings => Settings;
 	private float totalObstacleWidthLeft;
 	private int obstaclesLeft, wallCount, unpassableWallCount;
 

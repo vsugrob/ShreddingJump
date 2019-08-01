@@ -70,3 +70,5 @@ MonoBehaviour:
   _predefinedColumns:
   - {fileID: 6842570489401208665, guid: a338e1e5f3ae40b4bbe75815d0139bdd, type: 3}
   - {fileID: -4627247508190201626, guid: 54a076a10dfa96d419c6b7d2657ef2c7, type: 3}
+  _flakes:
+  - {fileID: 5147475331456652310, guid: 3d75e91b54c2dc04e9f2920be182c771, type: 3}

@@ -10,4 +10,5 @@
 	Background3,
 	Background4,
 	Background5,
+	Flakes,
 }

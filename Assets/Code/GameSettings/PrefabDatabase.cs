@@ -31,4 +31,10 @@ public class PrefabDatabase : ScriptableObject {
 		get => _predefinedColumns;
 		set => _predefinedColumns = value;
 	}
+	[SerializeField]
+	private List <GameObject> _flakes = new List <GameObject> ();
+	public List <GameObject> Flakes {
+		get => _flakes;
+		set => _flakes = value;
+	}
 }
