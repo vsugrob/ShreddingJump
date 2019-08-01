@@ -15,6 +15,19 @@ public class CharacterCameraController : MonoBehaviour {
 	[SerializeField]
 	private float _targetBottomViewportY = 0.5f;
 	public float TargetBottomViewportY => _targetBottomViewportY;
+	[SerializeField]
+	private bool _enableEasing = true;
+	public bool EnableEasing {
+		get => _enableEasing;
+		set => _enableEasing = value;
+	}
+	[SerializeField]
+	private float _easingArcDeg = 2;
+	public float EasingArcDeg => _easingArcDeg;
+	[SerializeField]
+	private float _easingTime = 1;
+	public float EasingTime => _easingTime;
+	public float EasingSpeedDeg => EasingArcDeg / EasingTime;
 	private new Camera camera;
 	private float initialLookAngleDeg;
 	private float initialDistFromCenter;
@@ -59,8 +72,19 @@ public class CharacterCameraController : MonoBehaviour {
 		var targetAngleAroundY = Mathf.Atan2 ( targetPos.x, targetPos.z );
 		var cameraPos = transform.position;
 		var cameraCenterPos = new Vector3 ( 0, cameraPos.y, 0 );
-		float cameraAngleAroundY = targetAngleAroundY + Mathf.PI;
-		transform.SetPositionAndRotation ( cameraCenterPos, Quaternion.Euler ( 0, cameraAngleAroundY * Mathf.Rad2Deg, 0 ) );
+		var currentCameraAngleAroundY = transform.rotation.eulerAngles.y;
+		var targetCameraAngleAroundY = ( targetAngleAroundY + Mathf.PI ) * Mathf.Rad2Deg;
+		if ( EnableEasing ) {
+			var arc = MathHelper.ShortestArc ( currentCameraAngleAroundY, targetCameraAngleAroundY, 180 );
+			var arcAbs = Math.Abs ( arc );
+			const float AngleEpsilon = 0.1f;
+			if ( arcAbs <= EasingArcDeg + AngleEpsilon )
+				targetCameraAngleAroundY = Mathf.MoveTowardsAngle ( currentCameraAngleAroundY, targetCameraAngleAroundY, Time.deltaTime * EasingSpeedDeg );
+			else
+				targetCameraAngleAroundY = Mathf.MoveTowardsAngle ( targetCameraAngleAroundY, currentCameraAngleAroundY, EasingArcDeg );
+		}
+
+		transform.SetPositionAndRotation ( cameraCenterPos, Quaternion.Euler ( 0, targetCameraAngleAroundY, 0 ) );
 		transform.position -= transform.forward * initialDistFromCenter;
 	}
 

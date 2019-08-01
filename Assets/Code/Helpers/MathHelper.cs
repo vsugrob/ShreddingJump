@@ -33,7 +33,7 @@ public static class MathHelper {
 	}
 
 	public static float ToNormAngle ( float angle, float pi ) {
-		angle %= pi;
+		angle %= pi * 2;
 		if ( angle < 0 )
 			angle += pi;
 
@@ -100,7 +100,7 @@ public static class MathHelper {
 	/// <param name="bAngle">Final angle.</param>
 	/// <returns>Angle which falls in range [-Pi;Pi].</returns>
 	public static float ShortestArc ( float aAngle, float bAngle, float pi ) {
-		return	ShortestArcNorm ( ToNormAngle ( aAngle, pi ), ToNormAngle ( bAngle ), pi );
+		return	ShortestArcNorm ( ToNormAngle ( aAngle, pi ), ToNormAngle ( bAngle, pi ), pi );
 	}
 
 	/// <summary>

@@ -740,6 +740,9 @@ MonoBehaviour:
   _targetTransform: {fileID: 5764573674861064085}
   _targetTopViewportY: 0.9
   _targetBottomViewportY: 0.6
+  _enableEasing: 1
+  _easingArcDeg: 2
+  _easingTime: 1
 --- !u!114 &7298940634323709098
 MonoBehaviour:
   m_ObjectHideFlags: 0
