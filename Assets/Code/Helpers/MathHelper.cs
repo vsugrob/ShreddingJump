@@ -25,15 +25,23 @@ public static class MathHelper {
 	}
 
 	public static float ToNormAngle ( float angle ) {
-		angle = angle % Pi2;
+		angle %= Pi2;
 		if ( angle < 0 )
 			angle += Pi2;
 
 		return	angle;
 	}
 
+	public static float ToNormAngle ( float angle, float pi ) {
+		angle %= pi;
+		if ( angle < 0 )
+			angle += pi;
+
+		return	angle;
+	}
+
 	public static float ToNormAngleDeg ( float angle ) {
-		angle = angle % 360;
+		angle %= 360;
 		if ( angle < 0 )
 			angle += 360;
 
@@ -83,5 +91,31 @@ public static class MathHelper {
 			diff += 360;
 
 		return	diff;
+	}
+
+	/// <summary>
+	/// Calculates shortest rotation from <paramref name="aAngle"/> to <paramref name="bAngle"/>.
+	/// </summary>
+	/// <param name="aAngle">Initial angle.</param>
+	/// <param name="bAngle">Final angle.</param>
+	/// <returns>Angle which falls in range [-Pi;Pi].</returns>
+	public static float ShortestArc ( float aAngle, float bAngle, float pi ) {
+		return	ShortestArcNorm ( ToNormAngle ( aAngle, pi ), ToNormAngle ( bAngle ), pi );
+	}
+
+	/// <summary>
+	/// Calculates shortest rotation from <paramref name="aNormAngle"/> to <paramref name="bNormAngle"/>.
+	/// </summary>
+	/// <param name="aNormAngle">Initial angle, must be in range [0;2 * Pi].</param>
+	/// <param name="bNormAngle">Final angle, must be in range [0;2 * Pi].</param>
+	/// <returns>Angle which falls in range [-Pi;Pi].</returns>
+	public static float ShortestArcNorm ( float aNormAngle, float bNormAngle, float pi ) {
+		var dAngle = bNormAngle - aNormAngle;
+		if ( dAngle > pi )
+			dAngle -= pi * 2;
+		else if ( dAngle < -pi )
+			dAngle += pi * 2;
+
+		return	dAngle;
 	}
 }
