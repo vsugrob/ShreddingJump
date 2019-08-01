@@ -52,6 +52,71 @@ MonoBehaviour:
     _valueMin: 0.15
     _valueMax: 1
     _valueComponentScale: 0.5
+  _background2:
+    _minColorDistance: 0.4
+    _probeIterations: 40
+    _useAllIterations: 0
+    _targetHue: 0
+    _targetHueExponent: 2
+    _randomSaturationExponent: 1
+    _saturationMin: 0
+    _saturationMax: 1
+    _randomValueExponent: 1
+    _valueMin: 0
+    _valueMax: 1
+    _valueComponentScale: 0.5
+  _background3:
+    _minColorDistance: 0.4
+    _probeIterations: 40
+    _useAllIterations: 0
+    _targetHue: 0
+    _targetHueExponent: 2
+    _randomSaturationExponent: 1
+    _saturationMin: 0
+    _saturationMax: 0.8
+    _randomValueExponent: 1
+    _valueMin: 0
+    _valueMax: 0.7
+    _valueComponentScale: 0.5
+  _background4:
+    _minColorDistance: 0.4
+    _probeIterations: 40
+    _useAllIterations: 0
+    _targetHue: 0
+    _targetHueExponent: 2
+    _randomSaturationExponent: 1
+    _saturationMin: 0
+    _saturationMax: 1
+    _randomValueExponent: 1
+    _valueMin: 0
+    _valueMax: 1
+    _valueComponentScale: 0.5
+  _background5:
+    _minColorDistance: 0.4
+    _probeIterations: 40
+    _useAllIterations: 0
+    _targetHue: 0
+    _targetHueExponent: 2
+    _randomSaturationExponent: 1
+    _saturationMin: 0
+    _saturationMax: 1
+    _randomValueExponent: 1
+    _valueMin: 0
+    _valueMax: 1
+    _valueComponentScale: 0.5
+  _flakes:
+    _minColorDistance: 0.4
+    _probeIterations: 40
+    _useAllIterations: 0
+    _targetHue: 0
+    _targetHueExponent: 2
+    _randomSaturationExponent: 1
+    _saturationMin: 0
+    _saturationMax: 0.5
+    _randomValueExponent: 1
+    _valueMin: 0.6
+    _valueMax: 0.9
+    _valueComponentScale: 0.5
   _character:
     _minColorDistance: 0.4
     _probeIterations: 40
@@ -63,5 +128,18 @@ MonoBehaviour:
     _saturationMax: 1
     _randomValueExponent: 1
     _valueMin: 0.1
+    _valueMax: 1
+    _valueComponentScale: 0.5
+  _character2:
+    _minColorDistance: 0.4
+    _probeIterations: 40
+    _useAllIterations: 0
+    _targetHue: 0
+    _targetHueExponent: 2
+    _randomSaturationExponent: 1
+    _saturationMin: 0
+    _saturationMax: 1
+    _randomValueExponent: 1
+    _valueMin: 0
     _valueMax: 1
     _valueComponentScale: 0.5

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu]
-public class StandardLevelGeneratorSettings : LevelGeneratorSettings {
+public class StandardFloorGeneratorSettings : FloorGeneratorSettings {
 	[Header ( "Platforms" )]
 	[SerializeField]
 	private float _platformWidthMin = 22.5f;

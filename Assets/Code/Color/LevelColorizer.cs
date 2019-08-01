@@ -28,6 +28,9 @@ public class LevelColorizer : MonoBehaviour {
 		AddColor ( ColorRole.Character2, generator );
 		AddColor ( ColorRole.Background2, generator );
 		AddColor ( ColorRole.Background3, generator );
+		AddColor ( ColorRole.Background4, generator );
+		AddColor ( ColorRole.Background5, generator );
+		AddColor ( ColorRole.Flakes, generator );
 		return	generator.Palette;
 	}
 
