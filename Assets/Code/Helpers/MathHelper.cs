@@ -68,10 +68,10 @@ public static class MathHelper {
 		return	stepIsExcessive;
 	}
 
-	public static float ArcBetweenDeg ( float startAngleNorm, float endAngleNorm, bool positiveStep ) {
-		startAngleNorm = ToNormAngleDeg ( startAngleNorm );
-		endAngleNorm = ToNormAngleDeg ( endAngleNorm );
-		return	ArcBetweenDegNorm ( startAngleNorm, endAngleNorm, positiveStep );
+	public static float ArcBetweenDeg ( float startAngle, float endAngle, bool positiveStep ) {
+		startAngle = ToNormAngleDeg ( startAngle );
+		endAngle = ToNormAngleDeg ( endAngle );
+		return	ArcBetweenDegNorm ( startAngle, endAngle, positiveStep );
 	}
 
 	public static float ArcBetweenDegNorm ( float startAngleNorm, float endAngleNorm, bool positiveStep ) {
