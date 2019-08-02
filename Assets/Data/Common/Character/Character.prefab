@@ -644,13 +644,13 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.00002215302
-      inSlope: 32.217056
-      outSlope: 32.217056
+      value: 0.70000386
+      inSlope: 9.027894
+      outSlope: 9.027894
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.024258759
+      outWeight: 0.05795148
     - serializedVersion: 3
       time: 0.099999994
       value: 1
