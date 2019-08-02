@@ -8,10 +8,16 @@ public class BouncingBallCharacterMouseAndTouchInput : MonoBehaviour {
 	[SerializeField]
 	private float _fullSwipeRotationDeg = 180;
 	public float FullSwipeRotationDeg => _fullSwipeRotationDeg;
+	[SerializeField]
+	private bool _enableSensitivityCurve = true;
+	public bool EnableSensitivityCurve => _enableSensitivityCurve;
+	[SerializeField]
+	private AnimationCurve _sensitivity = new AnimationCurve ( new Keyframe ( 0, 0.0f ), new Keyframe ( 0.5f, 1 ) );
+	public AnimationCurve Sensitivity => _sensitivity;
 	private BouncingBallCharacter character;
 	private bool isDragging;
 	private int draggingFingerId;
-	private float prevMousePosOnInputPlane;
+	private float prevDragPosOnInputPlane;
 	private float inputPlaneHorzExtentOnViewport;
 
 	private void Awake () {
@@ -48,18 +54,23 @@ public class BouncingBallCharacterMouseAndTouchInput : MonoBehaviour {
 			if ( phase == TouchPhase.Began ) {
 				isDragging = true;
 				draggingFingerId = fingerId;
-				prevMousePosOnInputPlane = GetInputPositionOnInputPlane ( camera, touch );
+				prevDragPosOnInputPlane = GetInputPositionOnInputPlane ( camera, touch );
 				// Drag is just started, there's no need to process displacement, as well as other touches.
 				return;
 			} else if ( phase == TouchPhase.Ended || phase == TouchPhase.Canceled )
 				isDragging = false;
 
 			if ( isDragging ) {
-				var curMousePosOnInputPlane = GetInputPositionOnInputPlane ( camera, touch );
-				var delta = curMousePosOnInputPlane - prevMousePosOnInputPlane;
-				prevMousePosOnInputPlane = curMousePosOnInputPlane;
-				var rotation = FullSwipeRotationDeg * delta;
-				character.InputHorizontalRotationDeg += rotation;
+				var curDragPosOnInputPlane = GetInputPositionOnInputPlane ( camera, touch );
+				var delta = curDragPosOnInputPlane - prevDragPosOnInputPlane;
+				if ( delta != 0 ) {
+					if ( EnableSensitivityCurve && GameSettings.Singleton.SmootInputAndCamera )
+						delta *= Sensitivity.Evaluate ( Mathf.Abs ( delta ) );
+
+					prevDragPosOnInputPlane = curDragPosOnInputPlane;
+					var rotation = FullSwipeRotationDeg * delta;
+					character.InputHorizontalRotationDeg += rotation;
+				}
 			}
 		}
 	}
