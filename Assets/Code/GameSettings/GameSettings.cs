@@ -10,6 +10,12 @@ public class GameSettings : MonoBehaviour {
 	[SerializeField]
 	private ObjectRemoverSettings _floorCompletion = new ObjectRemoverSettings ();
 	public ObjectRemoverSettings FloorCompletion => _floorCompletion;
+	[SerializeField]
+	private bool _smootInputAndCamera = true;
+	public bool SmootInputAndCamera {
+		get => _smootInputAndCamera;
+		set => _smootInputAndCamera = value;
+	}
 
 	#region Singleton
 	private static GameSettings _singleton;

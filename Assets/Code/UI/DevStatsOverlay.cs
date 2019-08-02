@@ -6,15 +6,18 @@ using UnityEngine.UI;
 [RequireComponent ( typeof ( FpsCounterComponent ) )]
 public class DevStatsOverlay : MonoBehaviour {
 	[SerializeField]
-	private Text fpsText;
-	public Text FpsText => fpsText;
+	private Text _fpsText;
+	public Text FpsText => _fpsText;
 	private FpsCounterComponent fpsCounter;
 	[SerializeField]
-	private Text characterVerticalVelocityText;
-	public Text CharacterVerticalVelocityText => characterVerticalVelocityText;
+	private Text _characterVerticalVelocityText;
+	public Text CharacterVerticalVelocityText => _characterVerticalVelocityText;
 	[SerializeField]
-	private Text levelTimeText;
-	public Text LevelTimeText => levelTimeText;
+	private Text _levelTimeText;
+	public Text LevelTimeText => _levelTimeText;
+	[SerializeField]
+	private Toggle _smoothCheckbox;
+	public Toggle SmoothCheckbox => _smoothCheckbox;
 	private BouncingBallCharacter character;
 	private LevelController levelController;
 
@@ -22,6 +25,7 @@ public class DevStatsOverlay : MonoBehaviour {
 		fpsCounter = GetComponent <FpsCounterComponent> ();
 		character = FindObjectOfType <BouncingBallCharacter> ();
 		levelController = FindObjectOfType <LevelController> ();
+		SmoothCheckbox.isOn = GameSettings.Singleton.SmootInputAndCamera;
 	}
 
 	private void Update () {
@@ -41,5 +45,9 @@ public class DevStatsOverlay : MonoBehaviour {
 			return;
 
 		levelController.ColorizeLevel ();
+	}
+
+	public void OnSmoothCheckboxValueChanged ( bool isChecked ) {
+		GameSettings.Singleton.SmootInputAndCamera = isChecked;
 	}
 }

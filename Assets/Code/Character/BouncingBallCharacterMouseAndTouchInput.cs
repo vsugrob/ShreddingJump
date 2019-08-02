@@ -64,7 +64,7 @@ public class BouncingBallCharacterMouseAndTouchInput : MonoBehaviour {
 				var curDragPosOnInputPlane = GetInputPositionOnInputPlane ( camera, touch );
 				var delta = curDragPosOnInputPlane - prevDragPosOnInputPlane;
 				if ( delta != 0 ) {
-					if ( EnableSensitivityCurve )
+					if ( EnableSensitivityCurve && GameSettings.Singleton.SmootInputAndCamera )
 						delta *= Sensitivity.Evaluate ( Mathf.Abs ( delta ) );
 
 					prevDragPosOnInputPlane = curDragPosOnInputPlane;
