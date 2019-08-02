@@ -72,9 +72,9 @@ public class CharacterCameraController : MonoBehaviour {
 		var targetAngleAroundY = Mathf.Atan2 ( targetPos.x, targetPos.z );
 		var cameraPos = transform.position;
 		var cameraCenterPos = new Vector3 ( 0, cameraPos.y, 0 );
-		var currentCameraAngleAroundY = transform.rotation.eulerAngles.y;
 		var targetCameraAngleAroundY = ( targetAngleAroundY + Mathf.PI ) * Mathf.Rad2Deg;
 		if ( EnableEasing ) {
+			var currentCameraAngleAroundY = transform.rotation.eulerAngles.y;
 			var arc = MathHelper.ShortestArc ( currentCameraAngleAroundY, targetCameraAngleAroundY, 180 );
 			var arcAbs = Math.Abs ( arc );
 			const float AngleEpsilon = 0.1f;
