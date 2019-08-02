@@ -741,8 +741,8 @@ MonoBehaviour:
   _targetTopViewportY: 0.9
   _targetBottomViewportY: 0.6
   _enableEasing: 1
-  _easingArcDeg: 2
-  _easingTime: 1
+  _easingArcDeg: 3
+  _easingTime: 0.2
 --- !u!114 &7298940634323709098
 MonoBehaviour:
   m_ObjectHideFlags: 0
