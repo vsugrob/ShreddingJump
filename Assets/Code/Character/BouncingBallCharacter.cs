@@ -26,6 +26,9 @@ public class BouncingBallCharacter : MonoBehaviour {
 	private float _rotationStepAngleDeg = 18;
 	public float RotationStepAngleDeg => _rotationStepAngleDeg;
 	[SerializeField]
+	private float _killerObstacleSafeTouchTime = 0.1f;
+	public float KillerObstacleSafeTouchTime => _killerObstacleSafeTouchTime;
+	[SerializeField]
 	private AudioClip _bounceSound;
 	public AudioClip BounceSound => _bounceSound;
 	[SerializeField]
@@ -80,6 +83,7 @@ public class BouncingBallCharacter : MonoBehaviour {
 			return	Quaternion.LookRotation ( vHorzFromCenter );
 		}
 	}
+	private float killerObstacleTouchStartTime = float.NaN;
 
 	private void Awake () {
 		charController = GetComponent <CharacterController> ();
@@ -110,6 +114,7 @@ public class BouncingBallCharacter : MonoBehaviour {
 		InputHorizontalRotationDeg = 0;
 		FloorStreak = 0;
 		lastJumpTime = float.NegativeInfinity;
+		killerObstacleTouchStartTime = float.NaN;
 		Start ();
 	}
 
@@ -184,8 +189,15 @@ public class BouncingBallCharacter : MonoBehaviour {
 		} else {
 			var obstacle = gameObject.GetComponentInParent <KillerObstacle> ();
 			if ( obstacle != null ) {
-				DeathSound.PlayOneShot ( audioSource );
-				KillerObstacleHit?.Invoke ( this, obstacle );
+				if ( float.IsNaN ( killerObstacleTouchStartTime ) )
+					killerObstacleTouchStartTime = Time.fixedTime;
+
+				var timeSinceTouchStart = Time.fixedTime - killerObstacleTouchStartTime;
+				if ( timeSinceTouchStart > KillerObstacleSafeTouchTime ) {
+					DeathSound.PlayOneShot ( audioSource );
+					KillerObstacleHit?.Invoke ( this, obstacle );
+				}
+
 				return;
 			}
 		}
@@ -197,6 +209,8 @@ public class BouncingBallCharacter : MonoBehaviour {
 			ClearFloorStreak ();
 			Jump ();
 		}
+
+		killerObstacleTouchStartTime = float.NaN;
 	}
 
 	private void ClearFloorStreak () {
