@@ -136,8 +136,10 @@ public class BouncingBallCharacter : MonoBehaviour {
 
 	private void PerformRotationMotion () {
 		const float AngleStepDegEpsilon = 1f / 180 * 0.5f;
-		if ( Mathf.Abs ( InputHorizontalRotationDeg ) < AngleStepDegEpsilon )
+		if ( Mathf.Abs ( InputHorizontalRotationDeg ) < AngleStepDegEpsilon ) {
+			InputHorizontalRotationDeg = 0;
 			return;
+		}
 
 		InputHorizontalRotationDeg = Mathf.Clamp ( InputHorizontalRotationDeg, -MaxInputHorizontalRotationDeg, MaxInputHorizontalRotationDeg );
 		var pos = transform.position;
