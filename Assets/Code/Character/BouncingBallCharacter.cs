@@ -145,7 +145,6 @@ public class BouncingBallCharacter : MonoBehaviour {
 		var pos = transform.position;
 		var angleAroundY = Mathf.Atan2 ( pos.x, pos.z );
 		var inputAngle = InputHorizontalRotationDeg * Mathf.Deg2Rad;
-		int inputAngleSign = Math.Sign ( inputAngle );
 		var targetAngle = angleAroundY + inputAngle;
 		var angleStep = Mathf.Sign ( inputAngle ) * RotationStepAngleDeg * Mathf.Deg2Rad;
 		bool angleStepIsExcessive = false;
