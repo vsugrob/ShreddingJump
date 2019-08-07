@@ -8,6 +8,12 @@ public delegate void FinishLineHit ( BouncingBallCharacter character, FinishLine
 [RequireComponent ( typeof ( CharacterController ) )]
 public class BouncingBallCharacter : MonoBehaviour {
 	[SerializeField]
+	private float _distanceFromCenter = 2.5f;
+	public float DistanceFromCenter {
+		get => _distanceFromCenter;
+		set => _distanceFromCenter = value;
+	}
+	[SerializeField]
 	private float _maxVelocity = 20;
 	public float MaxVelocity => _maxVelocity;
 	[SerializeField]
@@ -74,7 +80,6 @@ public class BouncingBallCharacter : MonoBehaviour {
 	private CharacterController charController;
 	private AudioSource audioSource;
 	private Quaternion initialRotationRelativeToCenter;
-	private float initialDistFromCenter;
 	private float lastJumpTime = float.NegativeInfinity;
 	private Quaternion RotationFromCenter {
 		get {
@@ -96,17 +101,16 @@ public class BouncingBallCharacter : MonoBehaviour {
 
 	private void CaptureInitalValues () {
 		CaptureInitialRotation ();
-		CaptureInitialDistFromCenter ();
 	}
 
 	private void CaptureInitialRotation () {
 		initialRotationRelativeToCenter = RotationFromCenter * transform.rotation;
 	}
 
-	private void CaptureInitialDistFromCenter () {
+	public void CalculateDistanceFromCenterInCurrentPosition () {
 		var pos = transform.position;
 		var vFromCenterHorz = new Vector3 ( pos.x, 0, pos.z );
-		initialDistFromCenter = vFromCenterHorz.magnitude;
+		DistanceFromCenter = vFromCenterHorz.magnitude;
 	}
 
 	public void Restart () {
@@ -121,6 +125,7 @@ public class BouncingBallCharacter : MonoBehaviour {
 	private void FixedUpdate () {
 		PerformVerticalMotion ();
 		PerformRotationMotion ();
+		PreserveDistanceFromCenter ();
 		SetRotation ();
 	}
 
@@ -132,29 +137,43 @@ public class BouncingBallCharacter : MonoBehaviour {
 
 	private void PerformRotationMotion () {
 		const float AngleStepDegEpsilon = 1f / 180 * 0.5f;
-		if ( Mathf.Abs ( InputHorizontalRotationDeg ) < AngleStepDegEpsilon )
+		if ( Mathf.Abs ( InputHorizontalRotationDeg ) < AngleStepDegEpsilon ) {
+			InputHorizontalRotationDeg = 0;
 			return;
+		}
 
 		InputHorizontalRotationDeg = Mathf.Clamp ( InputHorizontalRotationDeg, -MaxInputHorizontalRotationDeg, MaxInputHorizontalRotationDeg );
 		var pos = transform.position;
 		var angleAroundY = Mathf.Atan2 ( pos.x, pos.z );
 		var inputAngle = InputHorizontalRotationDeg * Mathf.Deg2Rad;
-		int inputAngleSign = Math.Sign ( inputAngle );
 		var targetAngle = angleAroundY + inputAngle;
 		var angleStep = Mathf.Sign ( inputAngle ) * RotationStepAngleDeg * Mathf.Deg2Rad;
-		bool angleStepIsExcessive;
-		do {
+		bool angleStepIsExcessive = false;
+		const int MaxRotationMotionSteps = 100;
+		for ( int i = 0 ; i < MaxRotationMotionSteps && !angleStepIsExcessive ; i++ ) {
 			angleStepIsExcessive = MathHelper.StepTowards ( ref angleAroundY, targetAngle, angleStep );
 			var newPos = new Vector3 (
-				Mathf.Sin ( angleAroundY ) * initialDistFromCenter,
+				Mathf.Sin ( angleAroundY ) * DistanceFromCenter,
 				pos.y,
-				Mathf.Cos ( angleAroundY ) * initialDistFromCenter
+				Mathf.Cos ( angleAroundY ) * DistanceFromCenter
 			);
 			var motion = newPos - pos;
 			charController.Move ( motion );
 			pos = newPos;
-		} while ( !angleStepIsExcessive );
+		}
 		InputHorizontalRotationDeg = 0;
+	}
+
+	private void PreserveDistanceFromCenter () {
+		var pos = transform.position;
+		var nFromCenterHorz = new Vector3 ( pos.x, 0, pos.z ).normalized;
+		var targetPos = new Vector3 (
+			nFromCenterHorz.x * DistanceFromCenter,
+			pos.y,
+			nFromCenterHorz.z * DistanceFromCenter
+		);
+		var motion = targetPos - pos;
+		charController.Move ( motion );
 	}
 
 	private void SetRotation () {
