@@ -8,6 +8,12 @@ public delegate void FinishLineHit ( BouncingBallCharacter character, FinishLine
 [RequireComponent ( typeof ( CharacterController ) )]
 public class BouncingBallCharacter : MonoBehaviour {
 	[SerializeField]
+	private float _distanceFromCenter = 2.5f;
+	public float DistanceFromCenter {
+		get => _distanceFromCenter;
+		set => _distanceFromCenter = value;
+	}
+	[SerializeField]
 	private float _maxVelocity = 20;
 	public float MaxVelocity => _maxVelocity;
 	[SerializeField]
@@ -74,7 +80,6 @@ public class BouncingBallCharacter : MonoBehaviour {
 	private CharacterController charController;
 	private AudioSource audioSource;
 	private Quaternion initialRotationRelativeToCenter;
-	private float initialDistFromCenter;
 	private float lastJumpTime = float.NegativeInfinity;
 	private Quaternion RotationFromCenter {
 		get {
@@ -96,17 +101,16 @@ public class BouncingBallCharacter : MonoBehaviour {
 
 	private void CaptureInitalValues () {
 		CaptureInitialRotation ();
-		CaptureInitialDistFromCenter ();
 	}
 
 	private void CaptureInitialRotation () {
 		initialRotationRelativeToCenter = RotationFromCenter * transform.rotation;
 	}
 
-	private void CaptureInitialDistFromCenter () {
+	public void CalculateDistanceFromCenterInCurrentPosition () {
 		var pos = transform.position;
 		var vFromCenterHorz = new Vector3 ( pos.x, 0, pos.z );
-		initialDistFromCenter = vFromCenterHorz.magnitude;
+		DistanceFromCenter = vFromCenterHorz.magnitude;
 	}
 
 	public void Restart () {
@@ -147,9 +151,9 @@ public class BouncingBallCharacter : MonoBehaviour {
 		for ( int i = 0 ; i < MaxRotationMotionSteps && !angleStepIsExcessive ; i++ ) {
 			angleStepIsExcessive = MathHelper.StepTowards ( ref angleAroundY, targetAngle, angleStep );
 			var newPos = new Vector3 (
-				Mathf.Sin ( angleAroundY ) * initialDistFromCenter,
+				Mathf.Sin ( angleAroundY ) * DistanceFromCenter,
 				pos.y,
-				Mathf.Cos ( angleAroundY ) * initialDistFromCenter
+				Mathf.Cos ( angleAroundY ) * DistanceFromCenter
 			);
 			var motion = newPos - pos;
 			charController.Move ( motion );
