@@ -125,6 +125,7 @@ public class BouncingBallCharacter : MonoBehaviour {
 	private void FixedUpdate () {
 		PerformVerticalMotion ();
 		PerformRotationMotion ();
+		PreserveDistanceFromCenter ();
 		SetRotation ();
 	}
 
@@ -161,6 +162,18 @@ public class BouncingBallCharacter : MonoBehaviour {
 			pos = newPos;
 		}
 		InputHorizontalRotationDeg = 0;
+	}
+
+	private void PreserveDistanceFromCenter () {
+		var pos = transform.position;
+		var nFromCenterHorz = new Vector3 ( pos.x, 0, pos.z ).normalized;
+		var targetPos = new Vector3 (
+			nFromCenterHorz.x * DistanceFromCenter,
+			pos.y,
+			nFromCenterHorz.z * DistanceFromCenter
+		);
+		var motion = targetPos - pos;
+		charController.Move ( motion );
 	}
 
 	private void SetRotation () {
