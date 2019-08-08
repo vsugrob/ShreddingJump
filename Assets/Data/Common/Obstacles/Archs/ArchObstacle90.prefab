@@ -4054,6 +4054,7 @@ GameObject:
   - component: {fileID: 7860059245069485606}
   - component: {fileID: 6630786359793649695}
   - component: {fileID: 1207841163826440832}
+  - component: {fileID: 3142120730580263951}
   m_Layer: 11
   m_Name: ArchObstacle90
   m_TagString: Untagged
@@ -4105,3 +4106,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfc9ae89ef87a584ba7534f9dc6878f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3142120730580263951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3066254330872649081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fa1d4d5495e71f4785978662dfc2af4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tags:
+  - Name: BasicGeometry
+    Weight: 0.6
+  - Name: Angular
+    Weight: 0.7
+  - Name: Solid
+    Weight: 1

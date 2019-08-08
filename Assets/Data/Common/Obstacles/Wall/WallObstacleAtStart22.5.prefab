@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4248233933526154430}
   - component: {fileID: 4248233933526154431}
   - component: {fileID: 5004599425481482660}
+  - component: {fileID: 8671872868327910117}
   m_Layer: 11
   m_Name: WallObstacleAtStart22.5
   m_TagString: Untagged
@@ -63,6 +64,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfc9ae89ef87a584ba7534f9dc6878f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8671872868327910117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4248233933526154304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fa1d4d5495e71f4785978662dfc2af4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tags:
+  - Name: BasicGeometry
+    Weight: 1
+  - Name: Angular
+    Weight: 1
+  - Name: Solid
+    Weight: 1
 --- !u!1 &4248233934259481187
 GameObject:
   m_ObjectHideFlags: 0

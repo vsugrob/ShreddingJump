@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2706395525713057642}
   - component: {fileID: -2735413540160076443}
+  - component: {fileID: 7685627932582246483}
   m_Layer: 10
   m_Name: Arch135
   m_TagString: Untagged
@@ -51,6 +52,25 @@ MonoBehaviour:
   _endAngle: 0
   _height: 0.5
   _dismantleChildren: 1
+--- !u!114 &7685627932582246483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2349030363259125154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fa1d4d5495e71f4785978662dfc2af4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tags:
+  - Name: BasicGeometry
+    Weight: 0.6
+  - Name: Angular
+    Weight: 0.7
+  - Name: Solid
+    Weight: 1
 --- !u!1001 &3096401749898083269
 PrefabInstance:
   m_ObjectHideFlags: 0
