@@ -2,6 +2,13 @@
 
 [CreateAssetMenu]
 public class FloorGeneratorSettings : ScriptableObject {
+	[Header ( "Style" )]
+	[SerializeField]
+	private GeneratorStyleSettings _style;
+	public GeneratorStyleSettings Style {
+		get => _style;
+		set => _style = value;
+	}
 	[Header ( "Floor" )]
 	[SerializeField]
 	private float _floorHeightMin = 3;
