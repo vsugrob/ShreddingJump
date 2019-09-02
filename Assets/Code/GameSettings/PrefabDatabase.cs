@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu]
@@ -24,7 +21,6 @@ public class PrefabDatabase : ScriptableObject {
 		get => _predefinedPlatforms;
 		set => _predefinedPlatforms = value;
 	}
-	public IEnumerable <Platform> Platforms => PredefinedPlatforms.Where ( p => p != null );
 	[SerializeField]
 	private List <Column> _predefinedColumns = new List <Column> ();
 	public List <Column> PredefinedColumns {

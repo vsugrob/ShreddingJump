@@ -12,7 +12,7 @@ public class FinishFloorGenerator : FloorGenerator {
 
 	protected override void GenerateFloor () {
 		var prefab = PrefabDatabase
-			.Platforms
+			.PredefinedPlatforms
 			.MatchFlags ( PlatformKindFlags.Platform | PlatformKindFlags.FinishLine )
 			.TakeRandomSingleOrDefault ();
 		if ( prefab == null )

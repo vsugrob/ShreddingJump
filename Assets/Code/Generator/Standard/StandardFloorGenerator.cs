@@ -72,7 +72,7 @@ public class StandardFloorGenerator : FloorGenerator {
 		if ( isMain )
 			flags |= PlatformKindFlags.Main;
 
-		var holePrefab = PrefabDatabase.Platforms
+		var holePrefab = PrefabDatabase.PredefinedPlatforms
 			.MatchFlags ( flags )
 			.WidthBetween ( desiredWidth, desiredWidth )
 			.TakeRandomSingleOrDefault ();
@@ -147,7 +147,7 @@ public class StandardFloorGenerator : FloorGenerator {
 		while ( floorPlatformCircle.TryFindEmptyRange ( out var emptyRange ) ) {
 			var start = emptyRange.Start;
 			var platformPrefab = PrefabDatabase
-				.Platforms
+				.PredefinedPlatforms
 				.MatchFlags ( PlatformKindFlags.Platform )
 				.WidthBetween ( Settings.PlatformWidthMin, emptyRange.Width () )
 				.OrderByDescending ( p => p.AngleWidth )
@@ -336,7 +336,7 @@ public class StandardFloorGenerator : FloorGenerator {
 
 		var desiredWidth = RandomHelper.Range ( Settings.ObstacleWidthMin, maxWidth, Settings.ObstacleWidthStep );
 		var prefab = PrefabDatabase
-			.Platforms
+			.PredefinedPlatforms
 			.MatchFlags ( flags )
 			.WidthBetween ( desiredWidth, desiredWidth )
 			.TakeRandomSingleOrDefault ();
