@@ -47,6 +47,6 @@ public class StyleComponent : MonoBehaviour {
 
 	public static float Distance ( GeneratorStyleSettings reference, Component component ) {
 		var subject = GetOrCreate ( component.gameObject );
-		return	Mathf.Sqrt ( DistanceSq ( reference, subject ) );
+		return	Distance ( reference, subject );
 	}
 }
