@@ -24,6 +24,16 @@ public static class MathHelper {
 		return	Mathf.Lerp ( a, b, Mathf.Pow ( t, tPower ) );
 	}
 
+	public static float Round ( float v, RoundingMode mode ) {
+		switch ( mode ) {
+		case RoundingMode.Floor: return	Mathf.Floor ( v );
+		case RoundingMode.RoundAwayFromZero: return	( float ) Math.Round ( v, MidpointRounding.AwayFromZero );
+		case RoundingMode.RoundToEven: return	( float ) Math.Round ( v, MidpointRounding.ToEven );
+		case RoundingMode.Ceil: return	Mathf.Ceil ( v );
+		default: throw new ArgumentException ( nameof ( mode ) );
+		}
+	}
+
 	public static float ToNormAngle ( float angle ) {
 		angle %= Pi2;
 		if ( angle < 0 )

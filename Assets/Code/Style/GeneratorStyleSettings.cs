@@ -9,4 +9,10 @@ public class GeneratorStyleSettings : ScriptableObject {
 		get => _tags;
 		set => _tags = value;
 	}
+	[SerializeField]
+	private float _distanceCutoff = 0.6f;
+	public float DistanceCutoff {
+		get => _distanceCutoff;
+		set => _distanceCutoff = value;
+	}
 }
