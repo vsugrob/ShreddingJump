@@ -77,7 +77,7 @@ public abstract class FloorGenerator : MonoBehaviour {
 			return	null;
 		}
 
-		var prefab = columns [UnityEngine.Random.Range ( 0, columns.Count )];
+		var prefab = columns.FindByStyle ( BasicSettings.Style );
 		var column = Instantiate ( prefab, floorTf );
 		var columnTf = column.transform;
 		columnTf.localPosition = Vector3.zero;

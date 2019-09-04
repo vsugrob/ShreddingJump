@@ -14,7 +14,7 @@ public class FinishFloorGenerator : FloorGenerator {
 		var prefab = PrefabDatabase
 			.PredefinedPlatforms
 			.MatchFlags ( PlatformKindFlags.Platform | PlatformKindFlags.FinishLine )
-			.TakeRandomSingleOrDefault ();
+			.FindByStyle ( Settings.Style );
 		if ( prefab == null )
 			return;
 		Platform.Instantiate ( prefab, startAngle : 0, platformContainerTf );
