@@ -5,17 +5,24 @@ using UnityEngine;
 using UnityRandom = UnityEngine.Random;
 
 public static class StyleComponentExt {
-	public static IEnumerable <StyleDistance <TComponent>> CalculateStyleDistance <TComponent> ( this IEnumerable <TComponent> components, GeneratorStyleSettings reference )
+	public static IEnumerable <StyleDistance <TComponent>> CalculateStyleDistance <TComponent> (
+		this IEnumerable <TComponent> components, GeneratorStyleSettings reference,
+		Func <GeneratorStyleSettings, Component, float> distanceFunc = null
+	)
 		where TComponent : Component
 	{
-		return	components.Select ( c => StyleDistance.Create ( c, StyleComponent.Distance ( reference, c ) ) );
+		if ( distanceFunc == null ) distanceFunc = StyleComponent.Distance;
+		return	components.Select ( c => StyleDistance.Create ( c, distanceFunc ( reference, c ) ) );
 	}
 
-	public static TComponent FindByStyle <TComponent> ( this IEnumerable <TComponent> components, GeneratorStyleSettings reference )
+	public static TComponent FindByStyle <TComponent> (
+		this IEnumerable <TComponent> components, GeneratorStyleSettings reference,
+		Func <GeneratorStyleSettings, Component, float> distanceFunc = null
+	)
 		where TComponent : Component
 	{
 		var all = components
-			.CalculateStyleDistance ( reference )
+			.CalculateStyleDistance ( reference, distanceFunc )
 			.OrderBy ( sd => sd.Distance )
 			.ToArray ();
 		if ( all.Length == 0 )

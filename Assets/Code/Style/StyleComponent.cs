@@ -49,4 +49,22 @@ public class StyleComponent : MonoBehaviour {
 		var subject = GetOrCreate ( component.gameObject );
 		return	Distance ( reference, subject );
 	}
+
+	public static float ManhattanAverageDistance ( GeneratorStyleSettings reference, StyleComponent subject ) {
+		var refTags = reference.Tags;
+		var sum = 0f;
+		for ( int i = 0 ; i < refTags.Count ; i++ ) {
+			var t1 = refTags [i];
+			subject.TryGetTagWeight ( t1.Name, out var w2 );
+			var dw = t1.Weight - w2;
+			sum += Mathf.Abs ( dw );
+		}
+
+		return	sum / refTags.Count;
+	}
+
+	public static float ManhattanAverageDistance ( GeneratorStyleSettings reference, Component component ) {
+		var subject = GetOrCreate ( component.gameObject );
+		return	ManhattanAverageDistance ( reference, subject );
+	}
 }
