@@ -10,9 +10,9 @@ public class GeneratorStyleSettings : ScriptableObject {
 		set => _tags = value;
 	}
 	[SerializeField]
-	private float _distanceCutoff = 0.6f;
-	public float DistanceCutoff {
-		get => _distanceCutoff;
-		set => _distanceCutoff = value;
+	private AnimationCurve _distanceWeightCurve = new AnimationCurve ( new Keyframe ( 0, 1 ), new Keyframe ( 0.9f, 0 ) );
+	public AnimationCurve DistanceWeightCurve {
+		get => _distanceWeightCurve;
+		set => _distanceWeightCurve = value;
 	}
 }

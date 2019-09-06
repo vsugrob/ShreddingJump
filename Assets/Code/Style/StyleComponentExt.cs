@@ -15,40 +15,22 @@ public static class StyleComponentExt {
 		return	components.Select ( c => StyleDistance.Create ( c, distanceFunc ( reference, c ) ) );
 	}
 
-	public static TComponent FindByStyle <TComponent> (
-		this IEnumerable <TComponent> components, GeneratorStyleSettings reference,
-		Func <GeneratorStyleSettings, Component, float> distanceFunc = null
-	)
+	public static TComponent FindByStyle <TComponent> ( this IEnumerable <TComponent> components, GeneratorStyleSettings reference )
 		where TComponent : Component
 	{
 		var all = components
-			.CalculateStyleDistance ( reference, distanceFunc )
-			.OrderBy ( sd => sd.Distance )
+			.CalculateStyleDistance ( reference, StyleComponent.ManhattanAverageDistance )
 			.ToArray ();
 		if ( all.Length == 0 )
 			return	null;
 
-		var last = all [all.Length - 1];
-		var threshold = UnityRandom.value * Mathf.Clamp01 ( reference.DistanceCutoff ) * last.Distance;
-		var equals = all
-			.Where ( sd => sd.Distance <= threshold )
-			.ToArray ();
-		if ( equals.Length == 0 )
-			return	GetClosest ( all );
+		var weightedComponents = all
+			.Select ( sd => WeightedValue.Create ( sd.Component, reference.DistanceWeightCurve.Evaluate ( sd.Distance ) ) );
+		var bestMatch = weightedComponents.TakeRandomSingleOrDefault ();
+		if ( !( bestMatch is null ) )
+			return	bestMatch;
 
-		return	equals.TakeRandomSingleOrDefault ().Component;
-	}
-
-	private static TComponent GetClosest <TComponent> ( StyleDistance <TComponent> [] styleDistances )
-		where TComponent : Component
-	{
-		if ( styleDistances.Length == 0 )
-			return	null;
-
-		var minDistance = styleDistances.Min ( sd => sd.Distance );
-		var equals = styleDistances
-			.Where ( sd => sd.Distance == minDistance )
-			.ToArray ();
-		return	equals.TakeRandomSingleOrDefault ().Component;
+		var minDistance = all.Min ( sd => sd.Distance );
+		return	all.Where ( e => e.Distance <= minDistance ).TakeRandomSingleOrDefault ().Component;
 	}
 }
