@@ -7,7 +7,7 @@ namespace Tests {
     public class CollectionRandomExtTests {
 		[Test]
 		public void WeightedRandomElementPicking_Empty () {
-			Assert.IsNull ( new WeightedValue <string> [0].TakeRandomSingleOrDefault () );
+			Assert.IsNull ( new WeightedValue <string> [0].TakeRandomSingleOrDefaultByWeight () );
 		}
 
 		[Test]
@@ -66,7 +66,7 @@ namespace Tests {
 			Assert.AreEqual ( weightedValues.Length, weightedValues.Select ( wv => wv.Value ).Distinct ().Count () );
 			var counters = new Dictionary <TValue, int> ();
 			for ( int i = 0 ; i < pickCount ; i++ ) {
-				var value = weightedValues.TakeRandomSingleOrDefault ();
+				var value = weightedValues.TakeRandomSingleOrDefaultByWeight ();
 				counters.TryGetValue ( value, out var counter );
 				counters [value] = counter + 1;
 			}

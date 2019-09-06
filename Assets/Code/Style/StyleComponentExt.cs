@@ -15,7 +15,7 @@ public static class StyleComponentExt {
 		return	components.Select ( c => StyleDistance.Create ( c, distanceFunc ( reference, c ) ) );
 	}
 
-	public static TComponent FindByStyle <TComponent> ( this IEnumerable <TComponent> components, GeneratorStyleSettings reference )
+	public static TComponent TakeRandomByStyleProximity <TComponent> ( this IEnumerable <TComponent> components, GeneratorStyleSettings reference )
 		where TComponent : Component
 	{
 		var all = components
@@ -26,7 +26,7 @@ public static class StyleComponentExt {
 
 		var weightedComponents = all
 			.Select ( sd => WeightedValue.Create ( sd.Component, reference.DistanceWeightCurve.Evaluate ( sd.Distance ) ) );
-		var bestMatch = weightedComponents.TakeRandomSingleOrDefault ();
+		var bestMatch = weightedComponents.TakeRandomSingleOrDefaultByWeight ();
 		if ( !( bestMatch is null ) )
 			return	bestMatch;
 

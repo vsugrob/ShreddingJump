@@ -55,7 +55,7 @@ namespace System {
 			return	items [index];
 		}
 
-		public static TElement TakeRandomSingleOrDefault <TElement> ( this IEnumerable <WeightedValue <TElement>> source ) {
+		public static TElement TakeRandomSingleOrDefaultByWeight <TElement> ( this IEnumerable <WeightedValue <TElement>> source ) {
 			if ( source == null )
 				throw new ArgumentNullException ( nameof ( source ) );
 

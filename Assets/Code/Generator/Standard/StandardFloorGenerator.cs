@@ -75,7 +75,7 @@ public class StandardFloorGenerator : FloorGenerator {
 		var holePrefab = PrefabDatabase.PredefinedPlatforms
 			.MatchFlags ( flags )
 			.WidthBetween ( desiredWidth, desiredWidth )
-			.FindByStyle ( Settings.Style );
+			.TakeRandomByStyleProximity ( Settings.Style );
 		if ( holePrefab == null ) {
 			holeWidth = 0;
 			return	false;
@@ -150,7 +150,7 @@ public class StandardFloorGenerator : FloorGenerator {
 				.PredefinedPlatforms
 				.MatchFlags ( PlatformKindFlags.Platform )
 				.WidthBetween ( Settings.PlatformWidthMin, emptyRange.Width () )
-				.FindByStyle ( Settings.Style );
+				.TakeRandomByStyleProximity ( Settings.Style );
 			if ( platformPrefab == null ) {
 				Debug.LogWarning ( $"No suitable platform was found for the range {emptyRange} at {platformContainerTf.name}." );
 				// Fill whole range to not revisit it in the next iteration.
@@ -338,7 +338,7 @@ public class StandardFloorGenerator : FloorGenerator {
 			.PredefinedPlatforms
 			.MatchFlags ( flags )
 			.WidthBetween ( desiredWidth, desiredWidth )
-			.FindByStyle ( Settings.Style );
+			.TakeRandomByStyleProximity ( Settings.Style );
 		if ( prefab == null )
 			return	false;
 
