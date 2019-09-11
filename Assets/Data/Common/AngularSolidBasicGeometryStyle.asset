@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _tags:
   - Name: BasicGeometry
-    Weight: 1
+    Weight: 0.8
   - Name: Angular
     Weight: 1
   - Name: Solid
-    Weight: 1
+    Weight: 0.8
   _distanceWeightCurve:
     serializedVersion: 2
     m_Curve:
