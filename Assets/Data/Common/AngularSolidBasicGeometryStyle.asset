@@ -19,3 +19,27 @@ MonoBehaviour:
     Weight: 1
   - Name: Solid
     Weight: 1
+  _distanceWeightCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -3.4076478
+      outSlope: -3.4076478
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.021563342
+    - serializedVersion: 3
+      time: 0.9
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
