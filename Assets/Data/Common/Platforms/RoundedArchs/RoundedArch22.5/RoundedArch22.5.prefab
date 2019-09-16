@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4437237944040262065}
   - component: {fileID: -6767785247923958710}
   m_Layer: 10
-  m_Name: BevelArch22.5
+  m_Name: RoundedArch22.5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1244,7 +1244,7 @@ GameObject:
   - component: {fileID: 3521857592727773559}
   - component: {fileID: 4224629723814819236}
   - component: {fileID: 4864525935393937748}
-  - component: {fileID: 4982124960655664561}
+  - component: {fileID: 6700576093107107910}
   - component: {fileID: 2343937686650909478}
   m_Layer: 0
   m_Name: default
@@ -1312,7 +1312,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &4982124960655664561
+--- !u!64 &6700576093107107910
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
