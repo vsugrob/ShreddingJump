@@ -79,6 +79,9 @@ public class LevelController : MonoBehaviour {
 		var stdGen = GetComponent <StandardFloorGenerator> ();
 		if ( stdGen == null )
 			return;
+
+		var settings = stdGen.Settings;
+		settings.Style = settings.Style == settings.Style1 ? settings.Style2 : settings.Style1;
 		// Cleanup existing objects.
 		DestroyChildren ( FloorsContainer );
 		DestroyChildren ( RuntimeObjectsContainer );
