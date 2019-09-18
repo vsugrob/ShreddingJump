@@ -64,11 +64,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tags:
-  - Name: BasicGeometry
-    Weight: 0.6
-  - Name: Angular
-    Weight: 0.3
-  - Name: Solid
+  - Name: Rounded
     Weight: 1
 --- !u!1 &4437237945898304863
 GameObject:

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: -5864905890091116524}
   - component: {fileID: -7354679132206646345}
   m_Layer: 10
-  m_Name: BevelArch315
+  m_Name: RoundedArch315
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69,11 +69,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tags:
-  - Name: BasicGeometry
-    Weight: 0.6
-  - Name: Angular
-    Weight: 0.3
-  - Name: Solid
+  - Name: Rounded
     Weight: 1
 --- !u!1001 &375440424400486354
 PrefabInstance:
@@ -141,6 +137,41 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[1].Name
+      value: Angular
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[1].Weight
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[2].Name
+      value: Solid
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[2].Weight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[0].Name
+      value: BasicGeometry
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[0].Weight
+      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57d6acaf04b59064db58b449b66730c8, type: 3}
@@ -216,6 +247,41 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[1].Name
+      value: Angular
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[1].Weight
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[2].Name
+      value: Solid
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[2].Weight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[0].Name
+      value: BasicGeometry
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[0].Weight
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 3809270017981040153, guid: 57d6acaf04b59064db58b449b66730c8,
         type: 3}
@@ -302,6 +368,41 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[1].Name
+      value: Angular
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[1].Weight
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[2].Name
+      value: Solid
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[2].Weight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[0].Name
+      value: BasicGeometry
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[0].Weight
+      value: 0.6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57d6acaf04b59064db58b449b66730c8, type: 3}
 --- !u!4 &3311099420254863210 stripped
@@ -376,6 +477,41 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[1].Name
+      value: Angular
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[1].Weight
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[2].Name
+      value: Solid
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[2].Weight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[0].Name
+      value: BasicGeometry
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[0].Weight
+      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57d6acaf04b59064db58b449b66730c8, type: 3}
@@ -452,6 +588,41 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[1].Name
+      value: Angular
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[1].Weight
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[2].Name
+      value: Solid
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[2].Weight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[0].Name
+      value: BasicGeometry
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[0].Weight
+      value: 0.6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57d6acaf04b59064db58b449b66730c8, type: 3}
 --- !u!4 &2083561837624375635 stripped
@@ -527,6 +698,41 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[1].Name
+      value: Angular
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[1].Weight
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[2].Name
+      value: Solid
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[2].Weight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[0].Name
+      value: BasicGeometry
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[0].Weight
+      value: 0.6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57d6acaf04b59064db58b449b66730c8, type: 3}
 --- !u!4 &8407516847486977958 stripped
@@ -601,6 +807,41 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[1].Name
+      value: Angular
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[1].Weight
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[2].Name
+      value: Solid
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[2].Weight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[0].Name
+      value: BasicGeometry
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 57d6acaf04b59064db58b449b66730c8,
+        type: 3}
+      propertyPath: _tags.Array.data[0].Weight
+      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57d6acaf04b59064db58b449b66730c8, type: 3}

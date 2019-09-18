@@ -67,11 +67,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tags:
-  - Name: BasicGeometry
-    Weight: 0.6
-  - Name: Angular
-    Weight: 0.7
-  - Name: Solid
+  - Name: Default
     Weight: 1
 --- !u!1001 &540125338716865057
 PrefabInstance:
@@ -154,6 +150,41 @@ PrefabInstance:
         type: 3}
       propertyPath: _height
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[1].Name
+      value: Angular
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[1].Weight
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[2].Name
+      value: Solid
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[2].Weight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[0].Name
+      value: BasicGeometry
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[0].Weight
+      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c1277a81c6d1fb49975c0bc8f232326, type: 3}
@@ -245,6 +276,41 @@ PrefabInstance:
       propertyPath: _height
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[1].Name
+      value: Angular
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[1].Weight
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[2].Name
+      value: Solid
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[2].Weight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[0].Name
+      value: BasicGeometry
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[0].Weight
+      value: 0.6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c1277a81c6d1fb49975c0bc8f232326, type: 3}
 --- !u!4 &4462185592706506477 stripped
@@ -334,6 +400,41 @@ PrefabInstance:
         type: 3}
       propertyPath: _height
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[1].Name
+      value: Angular
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[1].Weight
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[2].Name
+      value: Solid
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[2].Weight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[0].Name
+      value: BasicGeometry
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[0].Weight
+      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c1277a81c6d1fb49975c0bc8f232326, type: 3}
@@ -425,6 +526,41 @@ PrefabInstance:
       propertyPath: _height
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[1].Name
+      value: Angular
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[1].Weight
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[2].Name
+      value: Solid
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[2].Weight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[0].Name
+      value: BasicGeometry
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[0].Weight
+      value: 0.6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c1277a81c6d1fb49975c0bc8f232326, type: 3}
 --- !u!4 &2160163270975186080 stripped
@@ -514,6 +650,41 @@ PrefabInstance:
         type: 3}
       propertyPath: _height
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[1].Name
+      value: Angular
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[1].Weight
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[2].Name
+      value: Solid
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[2].Weight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[0].Name
+      value: BasicGeometry
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[0].Weight
+      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c1277a81c6d1fb49975c0bc8f232326, type: 3}

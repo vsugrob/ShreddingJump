@@ -151,7 +151,7 @@ GameObject:
   - component: {fileID: -4627247508190201626}
   - component: {fileID: -7832341769661118110}
   m_Layer: 12
-  m_Name: SpiralBlocksColumn2
+  m_Name: SpiralBlocksColumnSmallMiddle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -198,12 +198,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tags:
-  - Name: BasicGeometry
+  - Name: Blocky
     Weight: 1
-  - Name: Angular
-    Weight: 1
-  - Name: Solid
-    Weight: 0.6
 --- !u!1 &1145476678978458727
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: -7572012969867061938}
   - component: {fileID: -4637960608601920206}
   m_Layer: 10
-  m_Name: Blocky180
+  m_Name: Gear180
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -66,11 +66,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tags:
-  - Name: BasicGeometry
-    Weight: 0.8
-  - Name: Angular
-    Weight: 1
-  - Name: Solid
+  - Name: Blocky
     Weight: 1
 --- !u!1001 &1918757828980169657
 PrefabInstance:

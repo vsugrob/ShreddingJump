@@ -13,11 +13,7 @@ MonoBehaviour:
   m_Name: RoundedSolidBasicGeometryStyle
   m_EditorClassIdentifier: 
   _tags:
-  - Name: BasicGeometry
-    Weight: 0.6
-  - Name: Angular
-    Weight: 0.3
-  - Name: Solid
+  - Name: Rounded
     Weight: 1
   _distanceWeightCurve:
     serializedVersion: 2
@@ -32,13 +28,13 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0.077476114
     - serializedVersion: 3
-      time: 0.34930217
+      time: 0.9
       value: 0
-      inSlope: 0
-      outSlope: 0
+      inSlope: -0.22301632
+      outSlope: -0.22301632
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.055286422
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2

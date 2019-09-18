@@ -77,11 +77,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tags:
-  - Name: BasicGeometry
-    Weight: 1
-  - Name: Angular
-    Weight: 1
-  - Name: Solid
+  - Name: Default
     Weight: 1
 --- !u!1 &4248233934259481187
 GameObject:

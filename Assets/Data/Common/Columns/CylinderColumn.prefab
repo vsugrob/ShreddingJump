@@ -2889,9 +2889,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tags:
-  - Name: BasicGeometry
-    Weight: 1
-  - Name: Angular
-    Weight: 0.2
-  - Name: Solid
+  - Name: Rounded
     Weight: 1

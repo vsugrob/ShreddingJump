@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4758036351934770772}
   - component: {fileID: -5145005538850990666}
   m_Layer: 11
-  m_Name: WallObstacle
+  m_Name: CubicWallObstacle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,11 +76,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tags:
-  - Name: BasicGeometry
-    Weight: 1
-  - Name: Angular
-    Weight: 1
-  - Name: Solid
+  - Name: Default
     Weight: 1
 --- !u!1 &8833656716736072308
 GameObject:

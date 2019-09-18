@@ -4125,12 +4125,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tags:
-  - Name: BasicGeometry
-    Weight: 0.7
-  - Name: Angular
+  - Name: Blocky
     Weight: 1
-  - Name: Solid
-    Weight: 0.7
 --- !u!1 &5509615833150423010
 GameObject:
   m_ObjectHideFlags: 0

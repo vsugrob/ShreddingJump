@@ -64,11 +64,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tags:
-  - Name: BasicGeometry
-    Weight: 0.6
-  - Name: Angular
-    Weight: 0.7
-  - Name: Solid
+  - Name: Default
     Weight: 1
 --- !u!1001 &512418369902714402
 PrefabInstance:

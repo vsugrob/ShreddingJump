@@ -13,12 +13,8 @@ MonoBehaviour:
   m_Name: AngularSolidBasicGeometryStyle
   m_EditorClassIdentifier: 
   _tags:
-  - Name: BasicGeometry
-    Weight: 0.8
-  - Name: Angular
+  - Name: Blocky
     Weight: 1
-  - Name: Solid
-    Weight: 0.8
   _distanceWeightCurve:
     serializedVersion: 2
     m_Curve:

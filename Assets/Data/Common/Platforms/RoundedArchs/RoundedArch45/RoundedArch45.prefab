@@ -2242,7 +2242,7 @@ GameObject:
   - component: {fileID: -7572012969867061938}
   - component: {fileID: -4637960608601920206}
   m_Layer: 10
-  m_Name: BevelArch45
+  m_Name: RoundedArch45
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2294,9 +2294,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tags:
-  - Name: BasicGeometry
-    Weight: 0.6
-  - Name: Angular
-    Weight: 0.3
-  - Name: Solid
+  - Name: Rounded
     Weight: 1
