@@ -81,7 +81,9 @@ public class LevelController : MonoBehaviour {
 			return;
 
 		var settings = stdGen.Settings;
-		settings.Style = settings.Style == settings.Style1 ? settings.Style2 : settings.Style1;
+		settings.Style =
+			settings.Style == settings.Style1 ? settings.Style2 :
+			( settings.Style == settings.Style2 ? settings.Style3 : settings.Style1 );
 		// Cleanup existing objects.
 		DestroyChildren ( FloorsContainer );
 		DestroyChildren ( RuntimeObjectsContainer );

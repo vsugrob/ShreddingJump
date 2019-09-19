@@ -24,6 +24,13 @@ public class FloorGeneratorSettings : ScriptableObject {
 		get => _style2;
 		set => _style2 = value;
 	}
+	// TODO: remove. This is temporary, just to check style variance.
+	[SerializeField]
+	private GeneratorStyleSettings _style3;
+	public GeneratorStyleSettings Style3 {
+		get => _style3;
+		set => _style3 = value;
+	}
 	[Header ( "Floor" )]
 	[SerializeField]
 	private float _floorHeightMin = 3;
