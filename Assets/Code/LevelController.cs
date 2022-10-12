@@ -79,6 +79,11 @@ public class LevelController : MonoBehaviour {
 		var stdGen = GetComponent <StandardFloorGenerator> ();
 		if ( stdGen == null )
 			return;
+
+		var settings = stdGen.Settings;
+		settings.Style =
+			settings.Style == settings.Style1 ? settings.Style2 :
+			( settings.Style == settings.Style2 ? settings.Style3 : settings.Style1 );
 		// Cleanup existing objects.
 		DestroyChildren ( FloorsContainer );
 		DestroyChildren ( RuntimeObjectsContainer );
@@ -129,7 +134,7 @@ public class LevelController : MonoBehaviour {
 		holePlatform.StartAngle = 0;
 		holePlatform.EndAngle = 360;
 		holePlatform.transform.SetParent ( platformsContainer.transform, worldPositionStays : false );
-		platformCircle.Add ( holePlatform, Range.Create ( 0, 360f ) );
+		platformCircle.Add ( holePlatform, RangeFactory.Create ( 0, 360f ) );
 		return	new FloorInfo ( floorRoot, baseAngle, platformCircle, new PlatformCircle () );
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using UnityEngine;
 
 public abstract class FloorGenerator : MonoBehaviour {
@@ -77,7 +78,7 @@ public abstract class FloorGenerator : MonoBehaviour {
 			return	null;
 		}
 
-		var prefab = columns [UnityEngine.Random.Range ( 0, columns.Count )];
+		var prefab = columns.TakeRandomByStyleProximity ( BasicSettings.Style );
 		var column = Instantiate ( prefab, floorTf );
 		var columnTf = column.transform;
 		columnTf.localPosition = Vector3.zero;
@@ -85,5 +86,67 @@ public abstract class FloorGenerator : MonoBehaviour {
 		scale.y = floorHeight / column.InitialHeight;
 		columnTf.localScale = scale;
 		return	column;
+	}
+
+	[ContextMenu ( "Evaluate chances" )]
+	private void EvaluateChances () {
+		EvaluateChances (
+			"Platforms 45°",
+			PrefabDatabase
+				.PredefinedPlatforms
+				.MatchFlags ( PlatformKindFlags.Platform )
+				.WidthBetween ( 45, 45 )
+		);
+		EvaluateChances (
+			"Obstacles 45°",
+			PrefabDatabase
+				.PredefinedPlatforms
+				.MatchFlags ( PlatformKindFlags.KillerObstacle | PlatformKindFlags.Platform )
+				.WidthBetween ( 45, 45 )
+		);
+		EvaluateChances (
+			"Walls 22.5°",
+			PrefabDatabase
+				.PredefinedPlatforms
+				.MatchFlags ( PlatformKindFlags.KillerObstacle | PlatformKindFlags.Wall )
+				.WidthBetween ( 22.5f, 22.5f )
+		);
+		EvaluateChances (
+			"Columns",
+			PrefabDatabase.PredefinedColumns
+		);
+	}
+
+	private void EvaluateChances <TComponent> ( string header, IEnumerable <TComponent> elements, int numTakes = 50 )
+		where TComponent : Component
+	{
+		var elementsArray = elements.ToArray ();
+		var style = BasicSettings.Style;
+		var styleDistances = new Dictionary <TComponent, float> ();
+		foreach ( var sd in elementsArray.CalculateStyleDistance ( style, StyleComponent.ManhattanAverageDistance ) ) {
+			styleDistances [sd.Component] = sd.Distance;
+		}
+
+		var counters = new Dictionary <TComponent, int> ();
+		var totalNumTakes = elementsArray.Length * numTakes;
+		for ( int i = 0 ; i < totalNumTakes ; i++ ) {
+			var component = elementsArray.TakeRandomByStyleProximity ( style );
+			counters.TryGetValue ( component, out var count );
+			counters [component] = count + 1;
+		}
+
+		var elementRarities = styleDistances
+			.OrderBy ( kv => kv.Value )
+			.Select ( kv => {
+				counters.TryGetValue ( kv.Key, out var counter );
+				return	new { Element = kv.Key, Distance = kv.Value, Percent = ( float ) counter / totalNumTakes };
+			} );
+		var sb = new StringBuilder ();
+		sb.AppendLine ( $"{header}, elements: {elementsArray.Length}" );
+		foreach ( var er in elementRarities ) {
+			sb.AppendLine ( $"  {er.Percent * 100:##}% {er.Element.name}, Distance: {er.Distance}" );
+		}
+
+		Debug.Log ( sb );
 	}
 }

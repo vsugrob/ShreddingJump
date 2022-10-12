@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8302489270233264404}
   - component: {fileID: -586221174072117224}
+  - component: {fileID: 4144411333976406840}
   m_Layer: 10
   m_Name: Sector225
   m_TagString: Untagged
@@ -49,6 +50,25 @@ MonoBehaviour:
   _endAngle: 0
   _height: 0.4
   _dismantleChildren: 1
+--- !u!114 &4144411333976406840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2671625017585472060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fa1d4d5495e71f4785978662dfc2af4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tags:
+  - Name: BasicGeometry
+    Weight: 0.6
+  - Name: Angular
+    Weight: 0.7
+  - Name: Solid
+    Weight: 1
 --- !u!1 &4069227382893941764
 GameObject:
   m_ObjectHideFlags: 0

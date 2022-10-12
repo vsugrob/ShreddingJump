@@ -2,6 +2,35 @@
 
 [CreateAssetMenu]
 public class FloorGeneratorSettings : ScriptableObject {
+	[Header ( "Style" )]
+	[SerializeField]
+	private GeneratorStyleSettings _style;
+	public GeneratorStyleSettings Style {
+		get => _tmpStyle ?? _style;
+		set => _tmpStyle = value;
+	}
+	private GeneratorStyleSettings _tmpStyle;
+	// TODO: remove. This is temporary, just to check style variance.
+	[SerializeField]
+	private GeneratorStyleSettings _style1;
+	public GeneratorStyleSettings Style1 {
+		get => _style1;
+		set => _style1 = value;
+	}
+	// TODO: remove. This is temporary, just to check style variance.
+	[SerializeField]
+	private GeneratorStyleSettings _style2;
+	public GeneratorStyleSettings Style2 {
+		get => _style2;
+		set => _style2 = value;
+	}
+	// TODO: remove. This is temporary, just to check style variance.
+	[SerializeField]
+	private GeneratorStyleSettings _style3;
+	public GeneratorStyleSettings Style3 {
+		get => _style3;
+		set => _style3 = value;
+	}
 	[Header ( "Floor" )]
 	[SerializeField]
 	private float _floorHeightMin = 3;

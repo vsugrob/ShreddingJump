@@ -129,7 +129,7 @@ namespace Tests {
 				circle.Add ( "Element" + i++, circleRangeEnds [j++], circleRangeEnds [j++] );
 			}
 
-			Assert.AreEqual ( expectedResult, circle.Intersects ( Range.Create ( arcStart, arcEnd ), includeTouch ) );
+			Assert.AreEqual ( expectedResult, circle.Intersects ( RangeFactory.Create ( arcStart, arcEnd ), includeTouch ) );
 		}
 	}
 }

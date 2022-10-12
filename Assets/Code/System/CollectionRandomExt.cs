@@ -54,5 +54,27 @@ namespace System {
 			int index = UnityEngine.Random.Range ( 0, items.Count );
 			return	items [index];
 		}
+
+		public static TElement TakeRandomSingleOrDefaultByWeight <TElement> ( this IEnumerable <WeightedValue <TElement>> source ) {
+			if ( source == null )
+				throw new ArgumentNullException ( nameof ( source ) );
+
+			var elements = source.Where ( e => e.Weight > 0 ).ToArray ();
+			var count = elements.Length;
+			if ( count == 0 )
+				return	default;
+
+			var weightSum = elements.Sum ( e => e.Weight );
+			var point = UnityEngine.Random.value * weightSum;
+			var boundary = 0f;
+			for ( int i = 0 ; i < count ; i++ ) {
+				var e = elements [i];
+				boundary += e.Weight;
+				if ( point <= boundary )
+					return	e.Value;
+			}
+
+			return	default;	// Should never happen. Can only occur when some of the weights is set to float.NaN.
+		}
 	}
 }

@@ -149,6 +149,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1145476678418999581}
   - component: {fileID: -4627247508190201626}
+  - component: {fileID: -7832341769661118110}
   m_Layer: 12
   m_Name: SpiralBlocksColumn
   m_TagString: Untagged
@@ -184,6 +185,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _initialHeight: 3
+--- !u!114 &-7832341769661118110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1145476678418999580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fa1d4d5495e71f4785978662dfc2af4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tags:
+  - Name: Blocky
+    Weight: 1
 --- !u!1 &1145476678978458727
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68d7984394d1d3f48adb1c51dcd0f871, type: 3}
   m_Name: FloorGeneratorSettings
   m_EditorClassIdentifier: 
+  _style: {fileID: 11400000, guid: 95a9a7209c1ff1243a4878c68ba28b0f, type: 2}
+  _style1: {fileID: 11400000, guid: 95a9a7209c1ff1243a4878c68ba28b0f, type: 2}
+  _style2: {fileID: 11400000, guid: 7271e42bdb8a01d4fa77deb484e70615, type: 2}
+  _style3: {fileID: 11400000, guid: f831ff8feb6b48845a71672e3a1f7405, type: 2}
   _floorHeightMin: 3.75
   _floorHeightMax: 4.5
   _baseAngleOffsetMin: -67.5

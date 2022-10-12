@@ -42,7 +42,7 @@ public class Platform : MonoBehaviour {
 		get => EndAngle + transform.RoundedEulerY ();
 		set => transform.eulerAngles = new Vector3 ( 0, value - EndAngle, 0 );
 	}
-	public Range <float> RangeWorld => Range.Create ( StartAngleWorld, EndAngleWorld );
+	public Range <float> RangeWorld => RangeFactory.Create ( StartAngleWorld, EndAngleWorld );
 	public Range <float> RangeWorldClosestBase => CircleMath.ShiftToClosestCircleBase ( RangeWorld, 360 );
 	public float StartAngleLocal {
 		get => StartAngle + transform.RoundedLocalEulerY ();
@@ -60,7 +60,7 @@ public class Platform : MonoBehaviour {
 			transform.localEulerAngles = euler;
 		}
 	}
-	public Range <float> RangeLocal => Range.Create ( StartAngleLocal, EndAngleLocal );
+	public Range <float> RangeLocal => RangeFactory.Create ( StartAngleLocal, EndAngleLocal );
 	public Range <float> RangeLocalClosestBase => CircleMath.ShiftToClosestCircleBase ( RangeLocal, 360 );
 
 	private void Start () {

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7995719361533977550}
   - component: {fileID: 4236992426186950515}
+  - component: {fileID: -7103225478230972291}
   m_Layer: 10
   m_Name: Arch180
   m_TagString: Untagged
@@ -52,6 +53,21 @@ MonoBehaviour:
   _endAngle: 0
   _height: 0.5
   _dismantleChildren: 1
+--- !u!114 &-7103225478230972291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7773462177159956742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fa1d4d5495e71f4785978662dfc2af4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tags:
+  - Name: Default
+    Weight: 1
 --- !u!1001 &4560284162727816927
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -133,6 +149,41 @@ PrefabInstance:
         type: 3}
       propertyPath: _height
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[1].Name
+      value: Angular
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[1].Weight
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[2].Name
+      value: Solid
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[2].Weight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[0].Name
+      value: BasicGeometry
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[0].Weight
+      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c1277a81c6d1fb49975c0bc8f232326, type: 3}
@@ -224,6 +275,41 @@ PrefabInstance:
       propertyPath: _height
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[1].Name
+      value: Angular
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[1].Weight
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[2].Name
+      value: Solid
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[2].Weight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[0].Name
+      value: BasicGeometry
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[0].Weight
+      value: 0.6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c1277a81c6d1fb49975c0bc8f232326, type: 3}
 --- !u!4 &6020624761659888025 stripped
@@ -314,6 +400,41 @@ PrefabInstance:
       propertyPath: _height
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[1].Name
+      value: Angular
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[1].Weight
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[2].Name
+      value: Solid
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[2].Weight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[0].Name
+      value: BasicGeometry
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[0].Weight
+      value: 0.6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c1277a81c6d1fb49975c0bc8f232326, type: 3}
 --- !u!4 &6562619837263041453 stripped
@@ -403,6 +524,41 @@ PrefabInstance:
         type: 3}
       propertyPath: _height
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[1].Name
+      value: Angular
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[1].Weight
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[2].Name
+      value: Solid
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[2].Weight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[0].Name
+      value: BasicGeometry
+      objectReference: {fileID: 0}
+    - target: {fileID: -4637960608601920206, guid: 9c1277a81c6d1fb49975c0bc8f232326,
+        type: 3}
+      propertyPath: _tags.Array.data[0].Weight
+      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c1277a81c6d1fb49975c0bc8f232326, type: 3}
