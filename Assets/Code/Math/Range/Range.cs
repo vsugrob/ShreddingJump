@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
 namespace System {
-	public static class Range {
+	public static class RangeFactory {
 		public static Range <T> Create <T> ( T start, T end )
 			where T : IComparable <T>
 		{

@@ -134,7 +134,7 @@ public class LevelController : MonoBehaviour {
 		holePlatform.StartAngle = 0;
 		holePlatform.EndAngle = 360;
 		holePlatform.transform.SetParent ( platformsContainer.transform, worldPositionStays : false );
-		platformCircle.Add ( holePlatform, Range.Create ( 0, 360f ) );
+		platformCircle.Add ( holePlatform, RangeFactory.Create ( 0, 360f ) );
 		return	new FloorInfo ( floorRoot, baseAngle, platformCircle, new PlatformCircle () );
 	}
 }

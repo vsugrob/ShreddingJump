@@ -26,7 +26,7 @@ namespace System.Collections.Generic {
 		}
 
 		public virtual void Add ( TElement element, TLimit start, TLimit end ) {
-			Add ( element, Range.Create ( start, end ) );
+			Add ( element, RangeFactory.Create ( start, end ) );
 		}
 
 		public virtual void Add ( TElement element, Range <TLimit> range ) {
@@ -92,7 +92,7 @@ namespace System.Collections.Generic {
 				var range = fragments [i].Range;
 				var rangeStart = range.Start;
 				if ( rangeStart.CompareTo ( prevRangeEnd ) > 0 ) {
-					emptyRange = Range.Create ( prevRangeEnd, rangeStart );
+					emptyRange = RangeFactory.Create ( prevRangeEnd, rangeStart );
 					return	true;
 				}
 
@@ -100,7 +100,7 @@ namespace System.Collections.Generic {
 			}
 
 			if ( prevRangeEnd.CompareTo ( MaxLimit ) < 0 ) {
-				emptyRange = Range.Create ( prevRangeEnd, MaxLimit );
+				emptyRange = RangeFactory.Create ( prevRangeEnd, MaxLimit );
 				return	true;
 			}
 
@@ -111,7 +111,7 @@ namespace System.Collections.Generic {
 		public List <Range <TLimit>> GetAllEmptyRanges () {
 			var emptyRanges = new List <Range <TLimit>> ();
 			if ( fragmentsByStart.Count == 0 ) {
-				emptyRanges.Add ( Range.Create ( MinLimit, MaxLimit ) );
+				emptyRanges.Add ( RangeFactory.Create ( MinLimit, MaxLimit ) );
 				return	emptyRanges;
 			}
 
@@ -121,13 +121,13 @@ namespace System.Collections.Generic {
 				var range = fragments [i].Range;
 				var rangeStart = range.Start;
 				if ( rangeStart.CompareTo ( prevRangeEnd ) > 0 )
-					emptyRanges.Add ( Range.Create ( prevRangeEnd, rangeStart ) );
+					emptyRanges.Add ( RangeFactory.Create ( prevRangeEnd, rangeStart ) );
 
 				prevRangeEnd = range.End;
 			}
 
 			if ( prevRangeEnd.CompareTo ( MaxLimit ) < 0 )
-				emptyRanges.Add ( Range.Create ( prevRangeEnd, MaxLimit ) );
+				emptyRanges.Add ( RangeFactory.Create ( prevRangeEnd, MaxLimit ) );
 
 			return	emptyRanges;
 		}
