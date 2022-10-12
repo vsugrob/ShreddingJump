@@ -203,7 +203,7 @@ public class StandardFloorGenerator : FloorGenerator {
 			.Where ( f => predicate ( f.Element.Kind ) )
 			.Select ( f => f.Range )
 			.ToList ();
-		Range.MergeAdjacentRanges ( allowedRanges );
+		RangeFactory.MergeAdjacentRanges ( allowedRanges );
 		CutRangesUnderPreviousFloorHoles ( allowedRanges );
 		var obstacles = GenerateObstaclesInAllowedRanges (
 			allowedRanges.ToList (),	// Method modifies list, while we need original contents after this operation.
@@ -226,7 +226,7 @@ public class StandardFloorGenerator : FloorGenerator {
 				continue;
 
 			for ( int i = 0 ; i < platformRanges.Count ; ) {
-				Range.SubtractOrdered ( platformRanges [i], holeRange, out var r1, out var r2 );
+				RangeFactory.SubtractOrdered ( platformRanges [i], holeRange, out var r1, out var r2 );
 				if ( r1.HasValue ) {
 					int step = 1;
 					platformRanges.RemoveAt ( i );
@@ -298,7 +298,7 @@ public class StandardFloorGenerator : FloorGenerator {
 			generatedObstacles.Add ( LineFragment.Create ( platform, occupiedRange ) );
 			occupiedRange = occupiedRange.Grow ( Settings.MinSpaceBetweenObstacles );
 			if ( !oneObstaclePerRange ) {
-				Range.SubtractOrdered ( range, occupiedRange, out var r1, out var r2 );
+				RangeFactory.SubtractOrdered ( range, occupiedRange, out var r1, out var r2 );
 				if ( r2.HasValue ) allowedRanges.Insert ( index, r2.Value );
 				if ( r1.HasValue ) allowedRanges.Insert ( index, r1.Value );
 			}
@@ -351,7 +351,7 @@ public class StandardFloorGenerator : FloorGenerator {
 		var actualWidth = prefab.AngleWidth;
 		var startAngle = RandomHelper.Range ( targetRange.Start, targetRange.End - actualWidth, Settings.ObstacleWidthStep );
 		platform = Platform.Instantiate ( prefab, startAngle, platformContainerTf );
-		occupiedRange = Range.Create ( startAngle, startAngle + actualWidth );
+		occupiedRange = RangeFactory.Create ( startAngle, startAngle + actualWidth );
 		floorObstacleCircle.Add ( platform, occupiedRange );
 		totalObstacleWidthLeft -= actualWidth;
 		return	true;
@@ -421,7 +421,7 @@ public class StandardFloorGenerator : FloorGenerator {
 			if ( resultsInNoSpace )
 				continue;
 
-			var arc = CircleMath.ArcEndsToArc ( Range.Create ( minBound, maxBound ), dir : 1, pi2 : 360 );
+			var arc = CircleMath.ArcEndsToArc ( RangeFactory.Create ( minBound, maxBound ), dir : 1, pi2 : 360 );
 			minBound = arc.Start;
 			maxBound = arc.End;
 			var rotator = platform.gameObject.AddComponent <PlatformRotator> ();
@@ -446,7 +446,7 @@ public class StandardFloorGenerator : FloorGenerator {
 					 rotator1.StartAngle % 360 == range0.End
 				) {
 					// Make rotating platforms meet at their bisector instead of overlapping.
-					var arc = CircleMath.ArcEndsToArc ( Range.Create ( range0.End, range1.Start ), dir : 1, pi2 : 360 );
+					var arc = CircleMath.ArcEndsToArc ( RangeFactory.Create ( range0.End, range1.Start ), dir : 1, pi2 : 360 );
 					var halfDistance = arc.End - arc.Middle ();
 					rotator0.EndAngle -= halfDistance;
 					rotator1.StartAngle += halfDistance;
@@ -476,8 +476,8 @@ public class StandardFloorGenerator : FloorGenerator {
 		occlusionCircle.SeekFragmentBoundary ( platformRange.End  , dir :  1, out var maxOccluderBound );
 		CircleMath.IntersectArcs (
 			360,
-			Range.Create ( minBound, maxBound ), dir1 : 1,
-			Range.Create ( minOccluderBound, maxOccluderBound ), dir2 : 1,
+			RangeFactory.Create ( minBound, maxBound ), dir1 : 1,
+			RangeFactory.Create ( minOccluderBound, maxOccluderBound ), dir2 : 1,
 			out var intersectionArc1, out var intersectionArc2
 		);
 		// Both arcs grew up from the same point, therefore there is always at least one intersection.

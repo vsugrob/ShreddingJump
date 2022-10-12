@@ -12,7 +12,7 @@
 		}
 
 		public void Add ( TElement element, float arcEnd1, float arcEnd2, int dir ) {
-			Add ( element, Range.Create ( arcEnd1, arcEnd2 ), dir );
+			Add ( element, RangeFactory.Create ( arcEnd1, arcEnd2 ), dir );
 		}
 
 		public void Add ( TElement element, Range <float> arcEnds, int dir ) {

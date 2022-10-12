@@ -22,7 +22,7 @@ namespace Tests {
 		private static void AssertSubtractOrdered <T> ( T s, T e, T p, int expectedResult )
 			where T : IComparable <T>
 		{
-			var r = Range.Create ( s, e );
+			var r = RangeFactory.Create ( s, e );
 			Assert.IsTrue ( r.IsOrdered );
 			Assert.AreEqual ( expectedResult, r.CompareOrderedTo ( p ) );
 		}

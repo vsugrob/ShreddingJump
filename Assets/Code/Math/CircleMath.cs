@@ -20,10 +20,10 @@
 			}
 
 			if ( arc.End <= pi2 ) {
-				resultArc1 = Range.Create ( arc.Start, arc.End );
+				resultArc1 = RangeFactory.Create ( arc.Start, arc.End );
 			} else {
-				resultArc1 = Range.Create ( 0, arc.End - pi2 );
-				resultArc2 = Range.Create ( arc.Start, pi2 );
+				resultArc1 = RangeFactory.Create ( 0, arc.End - pi2 );
+				resultArc2 = RangeFactory.Create ( arc.Start, pi2 );
 			}
 		}
 
@@ -32,7 +32,7 @@
 			if ( diff >= pi2 ) {
 				splitIsPossible = false;
 				baseAngle = 0;
-				return	Range.Create ( 0, pi2 );
+				return	RangeFactory.Create ( 0, pi2 );
 			} else if ( diff == 0 ) {
 				splitIsPossible = false;
 				baseAngle = 0;
@@ -88,7 +88,7 @@
 
 			var absDiff = Math.Abs ( diff );
 			if ( absDiff >= pi2 )
-				return	Range.Create ( 0, pi2 );
+				return	RangeFactory.Create ( 0, pi2 );
 
 			dir = Math.Sign ( dir );
 			if ( Math.Sign ( diff ) != dir ) {
@@ -181,14 +181,14 @@
 		}
 
 		private static void IntersectArcsNormalizedOrdered ( float pi2, Range <float> a, Range <float> b, out Range <float>? r ) {
-			Range.IntersectOrdered ( a, b, out r );
+			RangeFactory.IntersectOrdered ( a, b, out r );
 			if ( r.HasValue )
 				return;
 
 			if ( ( ( a.Start == 0 || a.End == 0 ) && ( b.Start == pi2 || b.End == pi2 ) ) ||
 				 ( ( b.Start == 0 || b.End == 0 ) && ( a.Start == pi2 || a.End == pi2 ) )
 			) {
-				r = Range.Point ( 0f );
+				r = RangeFactory.Point ( 0f );
 			}
 		}
 	}
